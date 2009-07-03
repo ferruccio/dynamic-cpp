@@ -40,10 +40,15 @@ namespace dynamic {
 
     class exception : public std::exception
     {
-    public :
-        exception(const char* message) : std::exception(message) {}
-        ~exception() {}
-    };
+		public :
+        exception(const char* message) : std::exception() { _message = message; }
+        ~exception() throw() {}
+		
+        const char* what() const throw() { return _message; }
+		
+        private :
+        const char* _message;
+    };	
 
     class var {
     public :

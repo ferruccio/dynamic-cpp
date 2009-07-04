@@ -117,7 +117,7 @@ namespace dynamic {
         struct deref_visitor : public boost::static_visitor<var&> {
             var& operator() (list_t::iterator i) const { return *i; }
             var& operator() (array_t::iterator i) const { return *i; }
-            var& operator() (set_t::iterator i) const { return *i; }
+            var& operator() (set_t::iterator i) const { return const_cast<var&>(*i); }
             var& operator() (dict_t::iterator i) const { return const_cast<var&>(i->first); }
         };
 

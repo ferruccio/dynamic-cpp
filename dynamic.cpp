@@ -38,22 +38,17 @@ namespace dynamic {
 
         // they are of the same type, order by value
         struct lt_visitor : public boost::static_visitor<bool> {
-            lt_visitor(const var& rhs) : _rhs(rhs) {}
-
-            bool operator () (null_t) const { return false; }
-            bool operator () (int_t n) const { return n < int(_rhs); }
-            bool operator () (double_t n) const { return n < double(_rhs); }
-            bool operator () (string_t s) const { return *s.ps < string(_rhs); }
-            bool operator () (list_ptr) const { return false; }
-            bool operator () (array_ptr) const { return false; }
-            bool operator () (set_ptr) const { return false; }
-            bool operator () (dict_ptr) const { return false; }
-
-            const var& _rhs;
+            bool operator () (null_t, null_t) const { return false; }
+            bool operator () (int_t a, int_t b) const { return a < b; }
+            bool operator () (double_t a, double_t b) const { return a < b; }
+            bool operator () (string_t a, string_t b) const { return a.ps < b.ps; }
+            bool operator () (list_ptr, list_ptr) const { return false; }
+            bool operator () (array_ptr, array_ptr) const { return false; }
+            bool operator () (set_ptr, set_ptr) const { return false; }
+            bool operator () (dict_ptr, dict_ptr) const { return false; }
         };
     
-        lt_visitor ltvis(rhs);
-        return boost::apply_visitor(ltvis, lhs._var);
+        return boost::apply_visitor(lt_visitor(), lhs._var, rhs._var);
     }
 
     var& var::operator () (int n) { return operator() (var(n)); }
@@ -145,7 +140,7 @@ namespace dynamic {
                 if (_n < 0 || _n >= int(s->size())) throw exception("[] out of range in set");
                 set_t::iterator si = s->begin();
                 advance(si, _n);
-                return *si;
+                return const_cast<var&>(*si);
             }
 
             var& operator () (dict_ptr d) const {

@@ -40,17 +40,21 @@ namespace dynamic {
 
     class exception : public std::exception
     {
-		public :
+	public :
         exception(const char* message) : std::exception() { _message = message; }
         ~exception() throw() {}
 		
         const char* what() const throw() { return _message; }
 		
-        private :
+	private :
         const char* _message;
-    };	
+    };
+	
+	class var;
+	
+	extern const var $;
 
-    class var {
+	class var {
     public :
         var();
         var(int n);
@@ -232,6 +236,15 @@ namespace dynamic {
         type_t get_type() const;
 
         var_t _var;
+
+		// misc visitors - these used to be local types within the functions that actually used them
+		// but it turned out that g++ didn't like passing locally defined objects to boost::apply_visitor().
+		// They're here because they need access to the internals of var
+#include "visitors.h"
+#include "iterator_visitors.h"
+#include "relational_visitors.h"
+		// put visitors into separate headers to keep this file from getting out of hand
+		
     };
 
     inline ostream& operator << (ostream& os, var& v) { return v._write_var(os); }
@@ -247,6 +260,4 @@ namespace dynamic {
     inline var new_dict(const var& k) { return var::new_dict()(k); }
     inline var new_dict(const var& k, const var& v) { return var::new_dict()(k, v); }
 
-    extern const var $;
-
-};
+}

@@ -52,33 +52,11 @@ namespace dynamic {
     }
 
     string var::type() const {
-        struct type_visitor : public boost::static_visitor<string> {
-            string operator () (null_t) const { return "null"; }
-            string operator () (int_t) const { return "int"; }
-            string operator () (double_t) const { return "double"; }
-            string operator () (string_t s) const { return "string"; }
-            string operator () (list_ptr) const { return "list"; }
-            string operator () (array_ptr) const { return "array"; }
-            string operator () (set_ptr) const { return "set"; }
-            string operator () (dict_ptr) const {return "dict"; }
-        };
-
         return boost::apply_visitor(type_visitor(), _var);
     }
 
     var::type_t var::get_type() const {
-        struct type_visitor : public boost::static_visitor<type_t> {
-            type_t operator () (null_t) const { return type_null; }
-            type_t operator () (int_t) const { return type_int; }
-            type_t operator () (double_t) const { return type_double; }
-            type_t operator () (string_t s) const { return type_string; }
-            type_t operator () (list_ptr) const { return type_list; }
-            type_t operator () (array_ptr) const { return type_array; }
-            type_t operator () (set_ptr) const { return type_set; }
-            type_t operator () (dict_ptr) const { return type_dict; }
-        };
-    
-        return boost::apply_visitor(type_visitor(), _var);
+        return boost::apply_visitor(type2_visitor(), _var);
     }
 
 }

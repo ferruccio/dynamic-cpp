@@ -46,22 +46,7 @@ namespace dynamic {
     }
 
     bool var::operator == (const var& v) const {
-        struct eq_visitor : public boost::static_visitor<bool> {
-            eq_visitor(const var& rhs) : _rhs(rhs) {}
-
-            bool operator () (null_t) const { return _rhs.is_null(); }
-            bool operator () (int_t n) const { return _rhs.is_int() && n == int(_rhs); }
-            bool operator () (double_t n) const { return _rhs.is_double() && n == double(_rhs); }
-            bool operator () (string_t s) const { return _rhs.is_string() && *s.ps == string(_rhs); }
-            bool operator () (list_ptr) const { return false; }
-            bool operator () (array_ptr) const { return false; }
-            bool operator () (set_ptr) const { return false; }
-            bool operator () (dict_ptr) const { return false; }
-
-            const var& _rhs;
-        };
-    
-        eq_visitor eqvis(v);
+        rel_eq_visitor eqvis(v);
         return boost::apply_visitor(eqvis, _var);
     }
 
@@ -84,22 +69,7 @@ namespace dynamic {
     }
 
     bool var::operator != (const var& v) const {
-        struct eq_visitor : public boost::static_visitor<bool> {
-            eq_visitor(const var& rhs) : _rhs(rhs) {}
-
-            bool operator () (null_t) const { return !_rhs.is_null(); }
-            bool operator () (int_t n) const { return !_rhs.is_int() || n != int(_rhs); }
-            bool operator () (double_t n) const { return !_rhs.is_double() || n != double(_rhs); }
-            bool operator () (string_t s) const { return !_rhs.is_string() || *s.ps != string(_rhs); }
-            bool operator () (list_ptr) const { return false; }
-            bool operator () (array_ptr) const { return false; }
-            bool operator () (set_ptr) const { return false; }
-            bool operator () (dict_ptr) const { return false; }
-
-            const var& _rhs;
-        };
-    
-        eq_visitor evis(v);
+        rel_eq_visitor evis(v);
         return boost::apply_visitor(evis, _var);
     }
 
@@ -126,22 +96,7 @@ namespace dynamic {
     }
 
     bool var::operator < (const var& v) const {
-        struct lt_visitor : public boost::static_visitor<bool> {
-            lt_visitor(const var& rhs) : _rhs(rhs) {}
-
-            bool operator () (null_t) const { throw exception("invalid < comparison to $"); }
-            bool operator () (int_t n) const { if (!_rhs.is_int()) throw exception("invalid < comparison to int"); return n < int(_rhs); }
-            bool operator () (double_t n) const { if (!_rhs.is_double()) throw exception("invalid < comparison to double"); return n < double(_rhs); }
-            bool operator () (string_t s) const { if (!_rhs.is_string()) throw exception("invalid < comparison to string"); return *s.ps < string(_rhs); }
-            bool operator () (list_ptr) const { throw exception("invalid < comparison to list"); }
-            bool operator () (array_ptr) const { throw exception("invalid < comparison to array"); }
-            bool operator () (set_ptr) const { throw exception("invalid < comparison to set"); }
-            bool operator () (dict_ptr) const { throw exception("invalid < comparison to dict"); }
-
-            const var& _rhs;
-        };
-    
-        lt_visitor ltvis(v);
+        rel_lt_visitor ltvis(v);
         return boost::apply_visitor(ltvis, _var);
     }
 
@@ -168,22 +123,7 @@ namespace dynamic {
     }
 
     bool var::operator <= (const var& v) const {
-        struct le_visitor : public boost::static_visitor<bool> {
-            le_visitor(const var& rhs) : _rhs(rhs) {}
-
-            bool operator () (null_t) const { throw exception("invalid <= comparison to $"); }
-            bool operator () (int_t n) const { if (!_rhs.is_int()) throw exception("invalid <= comparison to int"); return n <= int(_rhs); }
-            bool operator () (double_t n) const { if (!_rhs.is_double()) throw exception("invalid <= comparison to double"); return n <= double(_rhs); }
-            bool operator () (string_t s) const { if (!_rhs.is_string()) throw exception("invalid <= comparison to string"); return *s.ps <= string(_rhs); }
-            bool operator () (list_ptr) const { throw exception("invalid <= comparison to list"); }
-            bool operator () (array_ptr) const { throw exception("invalid <= comparison to array"); }
-            bool operator () (set_ptr) const { throw exception("invalid <= comparison to set"); }
-            bool operator () (dict_ptr) const { throw exception("invalid <= comparison to dict"); }
-
-            const var& _rhs;
-        };
-    
-        le_visitor levis(v);
+        rel_le_visitor levis(v);
         return boost::apply_visitor(levis, _var);
     }
 
@@ -210,22 +150,7 @@ namespace dynamic {
     }
 
     bool var::operator > (const var& v) const {
-        struct gt_visitor : public boost::static_visitor<bool> {
-            gt_visitor(const var& rhs) : _rhs(rhs) {}
-
-            bool operator () (null_t) const { throw exception("invalid > comparison to $"); }
-            bool operator () (int_t n) const { if (!_rhs.is_int()) throw exception("invalid > comparison to int"); return n > int(_rhs); }
-            bool operator () (double_t n) const { if (!_rhs.is_double()) throw exception("invalid > comparison to double"); return n > double(_rhs); }
-            bool operator () (string_t s) const { if (!_rhs.is_string()) throw exception("invalid > comparison to string"); return *s.ps > string(_rhs); }
-            bool operator () (list_ptr) const { throw exception("invalid > comparison to list"); }
-            bool operator () (array_ptr) const { throw exception("invalid > comparison to array"); }
-            bool operator () (set_ptr) const { throw exception("invalid > comparison to set"); }
-            bool operator () (dict_ptr) const { throw exception("invalid > comparison to dict"); }
-
-            const var& _rhs;
-        };
-    
-        gt_visitor gtvis(v);
+        rel_gt_visitor gtvis(v);
         return boost::apply_visitor(gtvis, _var);
     }
 
@@ -252,22 +177,7 @@ namespace dynamic {
     }
 
     bool var::operator >= (const var& v) const {
-        struct ge_visitor : public boost::static_visitor<bool> {
-            ge_visitor(const var& rhs) : _rhs(rhs) {}
-
-            bool operator () (null_t) const { throw exception("invalid >= comparison to $"); }
-            bool operator () (int_t n) const { if (!_rhs.is_int()) throw exception("invalid >= comparison to int"); return n >= int(_rhs); }
-            bool operator () (double_t n) const { if (!_rhs.is_double()) throw exception("invalid >= comparison to double"); return n >= double(_rhs); }
-            bool operator () (string_t s) const { if (!_rhs.is_string()) throw exception("invalid >= comparison to string"); return *s.ps >= string(_rhs); }
-            bool operator () (list_ptr) const { throw exception("invalid >= comparison to list"); }
-            bool operator () (array_ptr) const { throw exception("invalid >= comparison to array"); }
-            bool operator () (set_ptr) const { throw exception("invalid >= comparison to set"); }
-            bool operator () (dict_ptr) const { throw exception("invalid >= comparison to dict"); }
-
-            const var& _rhs;
-        };
-    
-        ge_visitor gevis(v);
+        rel_ge_visitor gevis(v);
         return boost::apply_visitor(gevis, _var);
     }
 

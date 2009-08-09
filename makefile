@@ -10,7 +10,8 @@ OBJS =	dynamic.o \
 		dict.o \
 		set.o \
 		assign.o \
-		relational.o
+		relational.o \
+		iterator.o
 
 dynamic.a: $(OBJS)
 	echo build dynamic.a
@@ -41,6 +42,9 @@ assign.o: assign.cpp dynamic.h
 
 relational.o: relational.cpp dynamic.h
 	$(CC) -c $(CCFLAGS) $< -o $@
-
+	
+iterator.o: iterator.cpp dynamic.h
+	$(CC) -c $(CCFLAGS) $< -o $@
+	
 clean:
 	rm *.o

@@ -199,6 +199,10 @@
 				RelativePath=".\dynamic.h"
 				>
 			</File>
+			<File
+				RelativePath=".\iterator_visitors.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"

@@ -29,7 +29,7 @@
 
 namespace dynamic {
 
-    //const var $;
+    const var $;
 	
     bool var::less_var::operator () (const var& lhs, const var& rhs) {
         // if the two vars are of different types, order by type
@@ -37,7 +37,18 @@ namespace dynamic {
         if (lht != rht) return lht < rht;
 
         // they are of the same type, order by value
-        return boost::apply_visitor(lt_visitor(), lhs._var, rhs._var);
+        switch (lht) {
+            case type_null : return false;
+            case type_int : return get<int_t>(lhs._var) < get<int_t>(rhs._var);
+            case type_double : return get<double_t>(lhs._var) < get<double_t>(rhs._var);
+            case type_string : return *(get<string_t>(lhs._var).ps) < *(get<string_t>(rhs._var).ps);
+            case type_list :
+            case type_array :
+            case type_set :
+            case type_dict :
+                return false;
+            default : throw exception("unhandled type");
+        }
     }
 
     var& var::operator () (int n) { return operator() (var(n)); }
@@ -48,22 +59,88 @@ namespace dynamic {
 
     var& var::operator () (const string& s) { return operator() (var(s)); }
 
+    /*  append single value
+    */
     var& var::operator () (const var& v) {    
-        boost::apply_visitor(append_visitor(v), _var);
+        switch (get_type()) {
+	        case type_null :    throw exception("invalid () operation on $");
+	        case type_int :     throw exception("invalid () operation on int");
+	        case type_double :  throw exception("invalid () operation on double");
+	        case type_string :  throw exception("invalid () operation on string");
+	        case type_list :    get<list_ptr>(_var)->push_back(v); break;
+	        case type_array :   get<array_ptr>(_var)->push_back(v); break;
+	        case type_set :     get<set_ptr>(_var)->insert(v); break;
+	        case type_dict :    get<dict_ptr>(_var)->insert(make_pair<var,var>(v, $)); break;
+            default :           throw exception("unhandled () operation");
+        }
         return *this;
     }
 
+    /*  append value pair
+    */
     var& var::operator () (const var& k, const var& v) {
-		boost::apply_visitor(append2_visitor(k, v), _var);
+        switch (get_type()) {
+	        case type_null :    throw exception("invalid (,) operation on $");
+	        case type_int :     throw exception("invalid (,) operation on int");
+	        case type_double :  throw exception("invalid (,) operation on double");
+	        case type_string :  throw exception("invalid (,) operation on string");
+	        case type_list :    throw exception("invalid (,) operation on list");
+	        case type_array :   throw exception("invalid (,) operation on array");
+	        case type_set :     throw exception("invalid (,) operation on set");
+	        case type_dict :    get<dict_ptr>(_var)->insert(make_pair<var,var>(k, v)); break;
+            default :           throw exception("unhandled (,) operation");
+        }
         return *this;
     }
 
     unsigned int var::count() const {
-		return boost::apply_visitor(count_visitor(), _var);
+        switch (get_type()) {
+	        case type_null :    throw exception("invalid .count() operation on $");
+	        case type_int :     throw exception("invalid .count() operation on int");
+	        case type_double :  throw exception("invalid .count() operation on double");
+	        case type_string :  return get<string_t>(_var).ps->length();
+	        case type_list :    return get<list_ptr>(_var)->size();
+	        case type_array :   return get<array_ptr>(_var)->size();
+	        case type_set :     return get<set_ptr>(_var)->size();
+	        case type_dict :    return get<dict_ptr>(_var)->size();
+	        default :           throw exception("unhandled .count() operation");
+        }
     }
 
     var& var::operator [] (int n) {
-		return boost::apply_visitor(index_visitor(n), _var);
+        switch (get_type()) {
+	        case type_null :    throw exception("cannot apply [] to $");
+	        case type_int :     throw exception("cannot apply [] to int");
+	        case type_double :  throw exception("cannot apply [] to double");
+	        case type_string :  throw exception("cannot apply [] to string");
+            case type_list :    {
+                                    list_ptr& l = get<list_ptr>(_var);
+                                    if (n < 0 || n >= int(l->size())) throw exception("[] out of range in list");
+                                    list_t::iterator li = l->begin();
+                                    advance(li, n);
+                                    return *li;
+                                }
+            case type_array :   {
+                                    array_ptr& a = get<array_ptr>(_var);
+		                            if (n < 0 || n >= int(a->size())) throw exception("[] out of range in array");
+		                            return (*a)[n];
+                                }
+	        case type_set :     {
+                                    set_ptr& s = get<set_ptr>(_var);
+		                            if (n < 0 || n >= int(s->size())) throw exception("[] out of range in set");
+		                            set_t::iterator si = s->begin();
+		                            advance(si, n);
+		                            return const_cast<var&>(*si);
+	                            }
+	        case type_dict :    {
+                                    dict_ptr& d = get<dict_ptr>(_var);
+		                            var key(n);
+		                            dict_t::iterator di = d->find(key);
+		                            if (di == d->end()) throw exception("[] not found in dict");
+		                            return di->second;
+	                            }
+	        default :           throw exception("unhandled [] operation");
+        }
     }
 
     var& var::operator [] (double n) { return operator[] (var(n)); }
@@ -73,12 +150,38 @@ namespace dynamic {
     var& var::operator [] (const string& s) { return operator[] (var(s)); }
 
     var& var::operator [] (const var& v) {    
-        return boost::apply_visitor(index2_visitor(const_cast<var&>(v)), _var);
+        switch (get_type()) {
+	        case type_null :    throw exception("cannot apply [var] to $");
+	        case type_int :     throw exception("cannot apply [var] to int");
+	        case type_double :  throw exception("cannot apply [var] to double");
+	        case type_string :  throw exception("cannot apply [var] to string");
+	        case type_list :    throw exception("list[] requires int");
+	        case type_array :   throw exception("array[] requires int");
+	        case type_set :     throw exception("set[] requires int");
+	        case type_dict :    {
+		                            var key(v);
+                                    dict_ptr& d = get<dict_ptr>(_var);
+		                            dict_t::iterator di = d->find(key);
+		                            if (di != d->end()) return di->second;
+		                            (*d)[key] = $;
+		                            return (*d)[key];
+	                            }
+	        default :           throw exception("unhandled [var] operation");
+        }
     }
 
     ostream& var::_write_var(ostream& os) {
-        output_visitor ovis(os, *this);
-        return boost::apply_visitor(ovis, _var);
+        switch (get_type()) {
+	        case type_null :    os << "$"; return os;
+	        case type_int :     os << get<int>(_var); return os;
+	        case type_double :  os << get<double>(_var); return os;
+	        case type_string :  return _write_string(os);
+	        case type_list :    return _write_list(os);
+	        case type_array :   return _write_array(os);
+	        case type_set :     return _write_set(os);
+	        case type_dict :    return _write_dict(os);
+            default :           throw exception("var::_write_var() unhandled type");
+        }
     }
 
     ostream& var::_write_string(ostream& os) {

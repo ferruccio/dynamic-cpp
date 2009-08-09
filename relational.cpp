@@ -46,8 +46,17 @@ namespace dynamic {
     }
 
     bool var::operator == (const var& v) const {
-        rel_eq_visitor eqvis(v);
-        return boost::apply_visitor(eqvis, _var);
+        switch (get_type()) {
+            case type_null :    return v.is_null();
+            case type_int :     return v.is_int() && get<int_t>(_var) == get<int_t>(v._var);
+            case type_double :  return v.is_double() && get<double_t>(_var) == get<double_t>(v._var);
+            case type_string :  return v.is_string() && *get<string_t>(_var).ps == *get<string_t>(v._var).ps;
+            case type_list :    throw exception("list == not implemented");
+            case type_array :   throw exception("array == not implemented");
+            case type_set :     throw exception("set == not implemented");
+            case type_dict :    throw exception("dict == not implemented");
+            default :           throw exception("(unhandled type) == not implemented");
+        }
     }
 
     /*  !=
@@ -69,8 +78,17 @@ namespace dynamic {
     }
 
     bool var::operator != (const var& v) const {
-        rel_eq_visitor evis(v);
-        return boost::apply_visitor(evis, _var);
+        switch (get_type()) {
+            case type_null :    return !v.is_null();
+            case type_int :     return !v.is_int() || get<int_t>(_var) != get<int_t>(v._var);
+            case type_double :  return !v.is_double() || get<double_t>(_var) != get<double_t>(v._var);
+            case type_string :  return !v.is_string() || *get<string_t>(_var).ps != *get<string_t>(v._var).ps;
+            case type_list :    throw exception("list != not implemented");
+            case type_array :   throw exception("array != not implemented");
+            case type_set :     throw exception("set != not implemented");
+            case type_dict :    throw exception("dict != not implemented");
+            default :           throw exception("(unhandled type) != not implemented");
+        }
     }
 
     /*  <
@@ -96,8 +114,17 @@ namespace dynamic {
     }
 
     bool var::operator < (const var& v) const {
-        rel_lt_visitor ltvis(v);
-        return boost::apply_visitor(ltvis, _var);
+        switch (get_type()) {
+            case type_null :    throw exception("invalid < comparison to $");
+            case type_int :     return v.is_int() && get<int_t>(_var) < get<int_t>(v._var);
+            case type_double :  return v.is_double() && get<double_t>(_var) < get<double_t>(v._var);
+            case type_string :  return v.is_string() && *get<string_t>(_var).ps < *get<string_t>(v._var).ps;
+            case type_list :    throw exception("list < not implemented");
+            case type_array :   throw exception("array < not implemented");
+            case type_set :     throw exception("set < not implemented");
+            case type_dict :    throw exception("dict < not implemented");
+            default :           throw exception("(unhandled type) < not implemented");
+        }
     }
 
     /*  <=
@@ -123,8 +150,17 @@ namespace dynamic {
     }
 
     bool var::operator <= (const var& v) const {
-        rel_le_visitor levis(v);
-        return boost::apply_visitor(levis, _var);
+        switch (get_type()) {
+            case type_null :    throw exception("invalid <= comparison to $");
+            case type_int :     return v.is_int() && get<int_t>(_var) <= get<int_t>(v._var);
+            case type_double :  return v.is_double() && get<double_t>(_var) <= get<double_t>(v._var);
+            case type_string :  return v.is_string() && *get<string_t>(_var).ps <= *get<string_t>(v._var).ps;
+            case type_list :    throw exception("list <= not implemented");
+            case type_array :   throw exception("array <= not implemented");
+            case type_set :     throw exception("set <= not implemented");
+            case type_dict :    throw exception("dict <= not implemented");
+            default :           throw exception("(unhandled type) <= not implemented");
+        }
     }
 
     /*  >
@@ -150,8 +186,17 @@ namespace dynamic {
     }
 
     bool var::operator > (const var& v) const {
-        rel_gt_visitor gtvis(v);
-        return boost::apply_visitor(gtvis, _var);
+        switch (get_type()) {
+            case type_null :    throw exception("invalid > comparison to $");
+            case type_int :     return v.is_int() && get<int_t>(_var) > get<int_t>(v._var);
+            case type_double :  return v.is_double() && get<double_t>(_var) > get<double_t>(v._var);
+            case type_string :  return v.is_string() && *get<string_t>(_var).ps > *get<string_t>(v._var).ps;
+            case type_list :    throw exception("list > not implemented");
+            case type_array :   throw exception("array > not implemented");
+            case type_set :     throw exception("set > not implemented");
+            case type_dict :    throw exception("dict > not implemented");
+            default :           throw exception("(unhandled type) > not implemented");
+        }
     }
 
     /*  >=
@@ -177,8 +222,17 @@ namespace dynamic {
     }
 
     bool var::operator >= (const var& v) const {
-        rel_ge_visitor gevis(v);
-        return boost::apply_visitor(gevis, _var);
+        switch (get_type()) {
+            case type_null :    throw exception("invalid >= comparison to $");
+            case type_int :     return v.is_int() && get<int_t>(_var) >= get<int_t>(v._var);
+            case type_double :  return v.is_double() && get<double_t>(_var) >= get<double_t>(v._var);
+            case type_string :  return v.is_string() && *get<string_t>(_var).ps >= *get<string_t>(v._var).ps;
+            case type_list :    throw exception("list >= not implemented");
+            case type_array :   throw exception("array >= not implemented");
+            case type_set :     throw exception("set >= not implemented");
+            case type_dict :    throw exception("dict >= not implemented");
+            default :           throw exception("(unhandled type) >= not implemented");
+        }
     }
 
 }

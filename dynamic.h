@@ -183,10 +183,10 @@ namespace dynamic {
 
         class reverse_iterator {
         public :
-            reverse_iterator(list_t::reverse_iterator iter) : _iter(iter) {}
-            reverse_iterator(array_t::reverse_iterator iter) : _iter(iter) {}
-            reverse_iterator(set_t::reverse_iterator iter) : _iter(iter) {}
-            reverse_iterator(dict_t::reverse_iterator iter) : _iter(iter) {}
+            reverse_iterator(list_t::reverse_iterator riter) : _riter(riter) {}
+            reverse_iterator(array_t::reverse_iterator riter) : _riter(riter) {}
+            reverse_iterator(set_t::reverse_iterator riter) : _riter(riter) {}
+            reverse_iterator(dict_t::reverse_iterator riter) : _riter(riter) {}
 
             reverse_iterator operator++();
             reverse_iterator operator++(int);
@@ -197,9 +197,9 @@ namespace dynamic {
             bool operator!=(reverse_iterator rhs) { return !(*this == rhs); }
 
         private :
-            typedef variant<list_t::reverse_iterator, array_t::reverse_iterator, set_t::reverse_iterator, dict_t::reverse_iterator> iter_t;
+            typedef variant<list_t::reverse_iterator, array_t::reverse_iterator, set_t::reverse_iterator, dict_t::reverse_iterator> riter_t;
 
-            iter_t _iter;
+            riter_t _riter;
         };
 
         reverse_iterator rbegin();
@@ -240,10 +240,19 @@ namespace dynamic {
 		// misc visitors - these used to be local types within the functions that actually used them
 		// but it turned out that g++ didn't like passing locally defined objects to boost::apply_visitor().
 		// They're here because they need access to the internals of var
-#include "visitors.h"
 #include "iterator_visitors.h"
-#include "relational_visitors.h"
 		// put visitors into separate headers to keep this file from getting out of hand
+
+        struct type_visitor : public boost::static_visitor<type_t> {
+	        type_t operator () (null_t) const { return type_null; }
+	        type_t operator () (int_t) const { return type_int; }
+	        type_t operator () (double_t) const { return type_double; }
+	        type_t operator () (string_t s) const { return type_string; }
+	        type_t operator () (list_ptr) const { return type_list; }
+	        type_t operator () (array_ptr) const { return type_array; }
+	        type_t operator () (set_ptr) const { return type_set; }
+	        type_t operator () (dict_ptr) const { return type_dict; }
+        };
 		
     };
 

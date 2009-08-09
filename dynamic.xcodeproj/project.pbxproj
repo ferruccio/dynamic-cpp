@@ -7,9 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C10080FD0FFF0DE1008498D6 /* visitors.h in Headers */ = {isa = PBXBuildFile; fileRef = C10080FC0FFF0DE1008498D6 /* visitors.h */; };
-		C10081000FFF0E9F008498D6 /* iterator_visitors.h in Headers */ = {isa = PBXBuildFile; fileRef = C10080FF0FFF0E9F008498D6 /* iterator_visitors.h */; };
-		C10081070FFF1101008498D6 /* relational_visitors.h in Headers */ = {isa = PBXBuildFile; fileRef = C10081060FFF1101008498D6 /* relational_visitors.h */; };
 		C1E0CEF80FFD80B200D93A35 /* dynamic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C1E0CEED0FFD80B200D93A35 /* dynamic.cpp */; };
 		C1E0CEF90FFD80B200D93A35 /* list.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C1E0CEEE0FFD80B200D93A35 /* list.cpp */; };
 		C1E0CEFA0FFD80B200D93A35 /* iterator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C1E0CEEF0FFD80B200D93A35 /* iterator.cpp */; };
@@ -24,9 +21,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		C10080FC0FFF0DE1008498D6 /* visitors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = visitors.h; sourceTree = "<group>"; };
-		C10080FF0FFF0E9F008498D6 /* iterator_visitors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iterator_visitors.h; sourceTree = "<group>"; };
-		C10081060FFF1101008498D6 /* relational_visitors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = relational_visitors.h; sourceTree = "<group>"; };
 		C1E0CEED0FFD80B200D93A35 /* dynamic.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = dynamic.cpp; sourceTree = "<group>"; };
 		C1E0CEEE0FFD80B200D93A35 /* list.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = list.cpp; sourceTree = "<group>"; };
 		C1E0CEEF0FFD80B200D93A35 /* iterator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = iterator.cpp; sourceTree = "<group>"; };
@@ -76,9 +70,6 @@
 				C1E0CEF50FFD80B200D93A35 /* assign.cpp */,
 				C1E0CEF60FFD80B200D93A35 /* array.cpp */,
 				C1E0CEF70FFD80B200D93A35 /* dict.cpp */,
-				C10080FC0FFF0DE1008498D6 /* visitors.h */,
-				C10080FF0FFF0E9F008498D6 /* iterator_visitors.h */,
-				C10081060FFF1101008498D6 /* relational_visitors.h */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -106,9 +97,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				C1E0CEFD0FFD80B200D93A35 /* dynamic.h in Headers */,
-				C10080FD0FFF0DE1008498D6 /* visitors.h in Headers */,
-				C10081000FFF0E9F008498D6 /* iterator_visitors.h in Headers */,
-				C10081070FFF1101008498D6 /* relational_visitors.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

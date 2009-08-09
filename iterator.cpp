@@ -111,7 +111,7 @@ namespace dynamic {
         switch (_iter.which()) {
             case list_type :    return *get<list_t::iterator>(_iter);
             case array_type :   return *get<array_t::iterator>(_iter);
-            case set_type :     return *get<set_t::iterator>(_iter);
+            case set_type :     return const_cast<var&>(*get<set_t::iterator>(_iter));
             case dict_type :    return const_cast<var&>(get<dict_t::iterator>(_iter)->first);
             default :           throw exception("unhandled *iter");
         }

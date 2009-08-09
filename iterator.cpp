@@ -56,19 +56,43 @@ namespace dynamic {
     }
 
     var::iterator var::iterator::operator++() {
-        return boost::apply_visitor(preinc_visitor(), _iter);
+        switch (_iter.which()) {
+            case list_type :    return ++get<list_t::iterator&>(_iter);
+            case array_type :   return ++get<array_t::iterator&>(_iter);
+            case set_type :     return ++get<set_t::iterator&>(_iter);
+            case dict_type :    return ++get<dict_t::iterator&>(_iter);
+            default :           throw exception("unhandled ++iter");
+        }
     }
 
     var::iterator var::iterator::operator++(int) {
-        return boost::apply_visitor(postinc_visitor(), _iter);
+        switch (_iter.which()) {
+            case list_type :    return get<list_t::iterator&>(_iter)++;
+            case array_type :   return get<array_t::iterator&>(_iter)++;
+            case set_type :     return get<set_t::iterator&>(_iter)++;
+            case dict_type :    return get<dict_t::iterator&>(_iter)++;
+            default :           throw exception("unhandled iter++");
+        }
     }
 
     var::iterator var::iterator::operator--() {
-        return boost::apply_visitor(predec_visitor(), _iter);
+        switch (_iter.which()) {
+            case list_type :    return --get<list_t::iterator&>(_iter);
+            case array_type :   return --get<array_t::iterator&>(_iter);
+            case set_type :     return --get<set_t::iterator&>(_iter);
+            case dict_type :    return --get<dict_t::iterator&>(_iter);
+            default :           throw exception("unhandled --iter");
+        }
     }
 
     var::iterator var::iterator::operator--(int) {
-        return boost::apply_visitor(postdec_visitor(), _iter);
+        switch (_iter.which()) {
+            case list_type :    return get<list_t::iterator&>(_iter)--;
+            case array_type :   return get<array_t::iterator&>(_iter)--;
+            case set_type :     return get<set_t::iterator&>(_iter)--;
+            case dict_type :    return get<dict_t::iterator&>(_iter)++;
+            default :           throw exception("unhandled iter--");
+        }
     }
 
     struct are_strict_equals : public boost::static_visitor<bool> {
@@ -84,7 +108,13 @@ namespace dynamic {
     }
 
     var& var::iterator::operator*() {
-        return boost::apply_visitor(deref_visitor(), _iter);
+        switch (_iter.which()) {
+            case list_type :    return *get<list_t::iterator>(_iter);
+            case array_type :   return *get<array_t::iterator>(_iter);
+            case set_type :     return *get<set_t::iterator>(_iter);
+            case dict_type :    return const_cast<var&>(get<dict_t::iterator>(_iter)->first);
+            default :           throw exception("unhandled *iter");
+        }
     }
 
     var::reverse_iterator var::rbegin() {
@@ -116,19 +146,43 @@ namespace dynamic {
     }
 
     var::reverse_iterator var::reverse_iterator::operator++() {
-        return boost::apply_visitor(rpreinc_visitor(), _riter);
+        switch (_riter.which()) {
+            case list_type :    return ++get<list_t::reverse_iterator&>(_riter);
+            case array_type :   return ++get<array_t::reverse_iterator&>(_riter);
+            case set_type :     return ++get<set_t::reverse_iterator&>(_riter);
+            case dict_type :    return ++get<dict_t::reverse_iterator&>(_riter);
+            default :           throw exception("unhandled ++riter");
+        }
     }
 
     var::reverse_iterator var::reverse_iterator::operator++(int) {
-        return boost::apply_visitor(rpostinc_visitor(), _riter);
+        switch (_riter.which()) {
+            case list_type :    return get<list_t::reverse_iterator&>(_riter)++;
+            case array_type :   return get<array_t::reverse_iterator&>(_riter)++;
+            case set_type :     return get<set_t::reverse_iterator&>(_riter)++;
+            case dict_type :    return get<dict_t::reverse_iterator&>(_riter)++;
+            default :           throw exception("unhandled riter++");
+        }
     }
 
     var::reverse_iterator var::reverse_iterator::operator--() {
-        return boost::apply_visitor(rpredec_visitor(), _riter);
+        switch (_riter.which()) {
+            case list_type :    return --get<list_t::reverse_iterator&>(_riter);
+            case array_type :   return --get<array_t::reverse_iterator&>(_riter);
+            case set_type :     return --get<set_t::reverse_iterator&>(_riter);
+            case dict_type :    return --get<dict_t::reverse_iterator&>(_riter);
+            default :           throw exception("unhandled --riter");
+        }
     }
 
     var::reverse_iterator var::reverse_iterator::operator--(int) {
-        return boost::apply_visitor(rpostdec_visitor(), _riter);
+        switch (_riter.which()) {
+            case list_type :    return get<list_t::reverse_iterator&>(_riter)--;
+            case array_type :   return get<array_t::reverse_iterator&>(_riter)--;
+            case set_type :     return get<set_t::reverse_iterator&>(_riter)--;
+            case dict_type :    return get<dict_t::reverse_iterator&>(_riter)++;
+            default :           throw exception("unhandled iter--");
+        }
     }
 
     bool var::reverse_iterator::operator==(var::reverse_iterator rhs) {

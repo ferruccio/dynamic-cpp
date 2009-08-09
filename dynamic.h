@@ -173,6 +173,8 @@ namespace dynamic {
             var& operator*();
 
         private :
+            // make sure base_type and the variant list for iter_t always match
+            enum base_type { list_type = 0, array_type, set_type, dict_type };
             typedef variant<list_t::iterator, array_t::iterator, set_t::iterator, dict_t::iterator> iter_t;
 
             iter_t _iter;
@@ -197,6 +199,8 @@ namespace dynamic {
             bool operator!=(reverse_iterator rhs) { return !(*this == rhs); }
 
         private :
+            // make sure base_type and the variant list for riter_t always match
+            enum base_type { list_type = 0, array_type, set_type, dict_type };
             typedef variant<list_t::reverse_iterator, array_t::reverse_iterator, set_t::reverse_iterator, dict_t::reverse_iterator> riter_t;
 
             riter_t _riter;
@@ -237,12 +241,6 @@ namespace dynamic {
 
         var_t _var;
 
-		// misc visitors - these used to be local types within the functions that actually used them
-		// but it turned out that g++ didn't like passing locally defined objects to boost::apply_visitor().
-		// They're here because they need access to the internals of var
-#include "iterator_visitors.h"
-		// put visitors into separate headers to keep this file from getting out of hand
-
         struct type_visitor : public boost::static_visitor<type_t> {
 	        type_t operator () (null_t) const { return type_null; }
 	        type_t operator () (int_t) const { return type_int; }
@@ -253,7 +251,7 @@ namespace dynamic {
 	        type_t operator () (set_ptr) const { return type_set; }
 	        type_t operator () (dict_ptr) const { return type_dict; }
         };
-		
+
     };
 
     inline ostream& operator << (ostream& os, var& v) { return v._write_var(os); }

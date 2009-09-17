@@ -1,3 +1,5 @@
+project( dynamic CXX )
+
 cmake_minimum_required( VERSION 2.6 FATAL_ERROR )
 
 find_package( Boost 1.35 REQUIRED )
@@ -6,7 +8,6 @@ link_directories ( ${Boost_LIBRARY_DIRS} )
 
 include_directories ( ${Boost_INCLUDE_DIRS} )
 
-project( dynamic CXX )
 add_library( dynamic STATIC
 	array.cpp
 	assign.cpp

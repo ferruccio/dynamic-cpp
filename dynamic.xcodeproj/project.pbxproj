@@ -193,7 +193,7 @@
 				GCC_VERSION = 4.2;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = /opt/local/var/macports/software/boost/1.39.0_2/opt/local/include;
+				HEADER_SEARCH_PATHS = /opt/local/var/macports/software/boost/1.40.0_1/opt/local/include;
 				ONLY_ACTIVE_ARCH = YES;
 				PREBINDING = NO;
 				SDKROOT = macosx10.5;
@@ -207,6 +207,7 @@
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = /opt/local/var/macports/software/boost/1.40.0_1/opt/local/include;
 				PREBINDING = NO;
 				SDKROOT = macosx10.5;
 			};

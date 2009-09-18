@@ -25,7 +25,7 @@ Tested with the following configurations:
 
 OSX Leopard, Boost 1.38.0
 OSX Snow Leopard, Boost 1.40.0
-Windows XP, Boost 1.35.0, Boost 1.40.0
+Windows XP, Boost 1.35.0, Boost 1.39.0
 Ubuntu Linux 9.04, Boost 1.37.0
 
 Contact: ferruccio.barletta@gmail.com

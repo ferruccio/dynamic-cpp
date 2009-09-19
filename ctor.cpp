@@ -36,6 +36,10 @@ namespace dynamic {
     var::var(const string& s) : _var(string_t(s)) {}
 
     var::var(const char* s) : _var(string_t(s)) {}
+    
+    var::var(const wstring& s) : _var(wstring_t(s)) {}
+
+    var::var(const wchar_t* s) : _var(wstring_t(s)) {}
 
     var::var(const var& v) : _var(v._var) {}
 

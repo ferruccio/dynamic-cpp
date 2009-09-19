@@ -46,6 +46,16 @@ namespace dynamic {
         _var = string_t(s);
         return *this;
     }
+    
+    var& var::operator = (const wstring& s) {
+        _var = wstring_t(s);
+        return *this;
+    }
+
+    var& var::operator = (const wchar_t* s) {
+        _var = wstring_t(s);
+        return *this;
+    }
 
     var& var::operator = (const var& v) {
         _var = v._var;

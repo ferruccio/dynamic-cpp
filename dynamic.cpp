@@ -42,6 +42,7 @@ namespace dynamic {
             case type_int : return get<int_t>(lhs._var) < get<int_t>(rhs._var);
             case type_double : return get<double_t>(lhs._var) < get<double_t>(rhs._var);
             case type_string : return *(get<string_t>(lhs._var).ps) < *(get<string_t>(rhs._var).ps);
+            case type_wstring : return *(get<wstring_t>(lhs._var).ps) < *(get<wstring_t>(rhs._var).ps);
             case type_list :
             case type_array :
             case type_set :
@@ -55,9 +56,13 @@ namespace dynamic {
 
     var& var::operator () (double n) { return operator() (var(n)); }
 
+    var& var::operator () (const string& s) { return operator() (var(s)); }
+
     var& var::operator () (const char* s) { return operator() (var(s)); }
 
-    var& var::operator () (const string& s) { return operator() (var(s)); }
+    var& var::operator () (const wstring& s) { return operator() (var(s)); }
+
+    var& var::operator () (const wchar_t* s) { return operator() (var(s)); }
 
     /*  append single value
     */
@@ -67,6 +72,7 @@ namespace dynamic {
 	        case type_int :     throw exception("invalid () operation on int");
 	        case type_double :  throw exception("invalid () operation on double");
 	        case type_string :  throw exception("invalid () operation on string");
+	        case type_wstring : throw exception("invalid () operation on wstring");
 	        case type_list :    get<list_ptr>(_var)->push_back(v); break;
 	        case type_array :   get<array_ptr>(_var)->push_back(v); break;
 	        case type_set :     get<set_ptr>(_var)->insert(v); break;
@@ -84,6 +90,7 @@ namespace dynamic {
 	        case type_int :     throw exception("invalid (,) operation on int");
 	        case type_double :  throw exception("invalid (,) operation on double");
 	        case type_string :  throw exception("invalid (,) operation on string");
+	        case type_wstring : throw exception("invalid (,) operation on wstring");
 	        case type_list :    throw exception("invalid (,) operation on list");
 	        case type_array :   throw exception("invalid (,) operation on array");
 	        case type_set :     throw exception("invalid (,) operation on set");
@@ -99,6 +106,7 @@ namespace dynamic {
 	        case type_int :     throw exception("invalid .count() operation on int");
 	        case type_double :  throw exception("invalid .count() operation on double");
 	        case type_string :  return get<string_t>(_var).ps->length();
+	        case type_wstring : return get<wstring_t>(_var).ps->length();
 	        case type_list :    return get<list_ptr>(_var)->size();
 	        case type_array :   return get<array_ptr>(_var)->size();
 	        case type_set :     return get<set_ptr>(_var)->size();
@@ -113,6 +121,7 @@ namespace dynamic {
 	        case type_int :     throw exception("cannot apply [] to int");
 	        case type_double :  throw exception("cannot apply [] to double");
 	        case type_string :  throw exception("cannot apply [] to string");
+	        case type_wstring : throw exception("cannot apply [] to wstring");
             case type_list :    {
                                     list_ptr& l = get<list_ptr>(_var);
                                     if (n < 0 || n >= int(l->size())) throw exception("[] out of range in list");
@@ -145,16 +154,21 @@ namespace dynamic {
 
     var& var::operator [] (double n) { return operator[] (var(n)); }
 
-    var& var::operator [] (const char* s) { return operator[] (var(s)); }
-
     var& var::operator [] (const string& s) { return operator[] (var(s)); }
 
+    var& var::operator [] (const char* s) { return operator[] (var(s)); }
+
+    var& var::operator [] (const wstring& s) { return operator[] (var(s)); }
+
+    var& var::operator [] (const wchar_t* s) { return operator[] (var(s)); }
+    
     var& var::operator [] (const var& v) {    
         switch (get_type()) {
 	        case type_null :    throw exception("cannot apply [var] to $");
 	        case type_int :     throw exception("cannot apply [var] to int");
 	        case type_double :  throw exception("cannot apply [var] to double");
 	        case type_string :  throw exception("cannot apply [var] to string");
+	        case type_wstring : throw exception("cannot apply [var] to wstring");
 	        case type_list :    throw exception("list[] requires int");
 	        case type_array :   throw exception("array[] requires int");
 	        case type_set :     throw exception("set[] requires int");
@@ -176,6 +190,7 @@ namespace dynamic {
 	        case type_int :     os << get<int>(_var); return os;
 	        case type_double :  os << get<double>(_var); return os;
 	        case type_string :  return _write_string(os);
+	        case type_wstring : return _write_wstring(os);
 	        case type_list :    return _write_list(os);
 	        case type_array :   return _write_array(os);
 	        case type_set :     return _write_set(os);
@@ -204,6 +219,26 @@ namespace dynamic {
         return os;
     }
 
+    ostream& var::_write_wstring(ostream& os) {
+        assert(is_wstring());
+        os << '\'';
+        for (const wchar_t* s = (*get<wstring_t>(_var).ps).c_str(); *s; ++s)
+            switch (*s) {
+                case '\b' : os << L"\\b"; break;
+                case '\r' : os << L"\\r"; break;
+                case '\n' : os << L"\\n"; break;
+                case '\f' : os << L"\\f"; break;
+                case '\t' : os << L"\\t"; break;
+                case '\\' : os << L"\\\\"; break;
+                case '\'' : os << L"\\'"; break;
+                default :
+                    if (*s < ' ') os << format("\\%03o") % int(*s);
+                    else os << *s;
+            }
+        os << '\'';
+        return os;
+    }
+    
     ostream& var::_write_list(ostream& os) {
         assert(is_list());
         os << '(';

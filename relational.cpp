@@ -45,12 +45,21 @@ namespace dynamic {
         return is_string() && *get<string_t>(_var).ps == s;
     }
 
+    bool var::operator == (const wstring& s) const {
+        return is_wstring() && *get<wstring_t>(_var).ps == s;
+    }
+
+    bool var::operator == (const wchar_t* s) const {
+        return is_wstring() && *get<wstring_t>(_var).ps == s;
+    }
+
     bool var::operator == (const var& v) const {
         switch (get_type()) {
             case type_null :    return v.is_null();
             case type_int :     return v.is_int() && get<int_t>(_var) == get<int_t>(v._var);
             case type_double :  return v.is_double() && get<double_t>(_var) == get<double_t>(v._var);
             case type_string :  return v.is_string() && *get<string_t>(_var).ps == *get<string_t>(v._var).ps;
+            case type_wstring : return v.is_wstring() && *get<wstring_t>(_var).ps == *get<wstring_t>(v._var).ps;
             case type_list :    throw exception("list == not implemented");
             case type_array :   throw exception("array == not implemented");
             case type_set :     throw exception("set == not implemented");
@@ -77,12 +86,21 @@ namespace dynamic {
         return !is_string() || *get<string_t>(_var).ps != s;
     }
 
+    bool var::operator != (const wstring& s) const {
+        return !is_wstring() || *get<wstring_t>(_var).ps != s;
+    }
+
+    bool var::operator != (const wchar_t* s) const {
+        return !is_wstring() || *get<wstring_t>(_var).ps != s;
+    }
+
     bool var::operator != (const var& v) const {
         switch (get_type()) {
             case type_null :    return !v.is_null();
             case type_int :     return !v.is_int() || get<int_t>(_var) != get<int_t>(v._var);
             case type_double :  return !v.is_double() || get<double_t>(_var) != get<double_t>(v._var);
             case type_string :  return !v.is_string() || *get<string_t>(_var).ps != *get<string_t>(v._var).ps;
+            case type_wstring : return !v.is_wstring() || *get<wstring_t>(_var).ps != *get<wstring_t>(v._var).ps;
             case type_list :    throw exception("list != not implemented");
             case type_array :   throw exception("array != not implemented");
             case type_set :     throw exception("set != not implemented");
@@ -113,12 +131,23 @@ namespace dynamic {
         throw exception("invalid < comparison to char*");
     }
 
+    bool var::operator < (const wstring& s) const {
+        if (is_wstring()) return *get<wstring_t>(_var).ps < s;
+        throw exception("invalid < comparison to wstring");
+    }
+
+    bool var::operator < (const wchar_t* s) const {
+        if (is_wstring()) return *get<wstring_t>(_var).ps < s;
+        throw exception("invalid < comparison to wchar_t*");
+    }
+
     bool var::operator < (const var& v) const {
         switch (get_type()) {
             case type_null :    throw exception("invalid < comparison to $");
             case type_int :     return v.is_int() && get<int_t>(_var) < get<int_t>(v._var);
             case type_double :  return v.is_double() && get<double_t>(_var) < get<double_t>(v._var);
             case type_string :  return v.is_string() && *get<string_t>(_var).ps < *get<string_t>(v._var).ps;
+            case type_wstring : return v.is_wstring() && *get<wstring_t>(_var).ps < *get<wstring_t>(v._var).ps;
             case type_list :    throw exception("list < not implemented");
             case type_array :   throw exception("array < not implemented");
             case type_set :     throw exception("set < not implemented");
@@ -148,6 +177,16 @@ namespace dynamic {
         if (is_string()) return *get<string_t>(_var).ps <= s;
         throw exception("invalid <= comparison to char*");
     }
+    
+    bool var::operator <= (const wstring& s) const {
+        if (is_wstring()) return *get<wstring_t>(_var).ps <= s;
+        throw exception("invalid <= comparison to wstring");
+    }
+
+    bool var::operator <= (const wchar_t* s) const {
+        if (is_wstring()) return *get<wstring_t>(_var).ps <= s;
+        throw exception("invalid <= comparison to wchar_t*");
+    }
 
     bool var::operator <= (const var& v) const {
         switch (get_type()) {
@@ -155,6 +194,7 @@ namespace dynamic {
             case type_int :     return v.is_int() && get<int_t>(_var) <= get<int_t>(v._var);
             case type_double :  return v.is_double() && get<double_t>(_var) <= get<double_t>(v._var);
             case type_string :  return v.is_string() && *get<string_t>(_var).ps <= *get<string_t>(v._var).ps;
+            case type_wstring : return v.is_wstring() && *get<wstring_t>(_var).ps <= *get<wstring_t>(v._var).ps;
             case type_list :    throw exception("list <= not implemented");
             case type_array :   throw exception("array <= not implemented");
             case type_set :     throw exception("set <= not implemented");
@@ -185,12 +225,23 @@ namespace dynamic {
         throw exception("invalid > comparison to char*");
     }
 
+    bool var::operator > (const wstring& s) const {
+        if (is_wstring()) return *get<wstring_t>(_var).ps > s;
+        throw exception("invalid > comparison to wstring");
+    }
+
+    bool var::operator > (const wchar_t* s) const {
+        if (is_wstring()) return *get<wstring_t>(_var).ps > s;
+        throw exception("invalid > comparison to wchar_t*");
+    }
+
     bool var::operator > (const var& v) const {
         switch (get_type()) {
             case type_null :    throw exception("invalid > comparison to $");
             case type_int :     return v.is_int() && get<int_t>(_var) > get<int_t>(v._var);
             case type_double :  return v.is_double() && get<double_t>(_var) > get<double_t>(v._var);
             case type_string :  return v.is_string() && *get<string_t>(_var).ps > *get<string_t>(v._var).ps;
+            case type_wstring : return v.is_wstring() && *get<wstring_t>(_var).ps > *get<wstring_t>(v._var).ps;
             case type_list :    throw exception("list > not implemented");
             case type_array :   throw exception("array > not implemented");
             case type_set :     throw exception("set > not implemented");
@@ -220,6 +271,16 @@ namespace dynamic {
         if (is_string()) return *get<string_t>(_var).ps >= s;
         throw exception("invalid >= comparison to char*");
     }
+    
+    bool var::operator >= (const wstring& s) const {
+        if (is_wstring()) return *get<wstring_t>(_var).ps >= s;
+        throw exception("invalid >= comparison to wstring");
+    }
+
+    bool var::operator >= (const wchar_t* s) const {
+        if (is_wstring()) return *get<wstring_t>(_var).ps >= s;
+        throw exception("invalid >= comparison to wchar_t*");
+    }
 
     bool var::operator >= (const var& v) const {
         switch (get_type()) {
@@ -227,6 +288,7 @@ namespace dynamic {
             case type_int :     return v.is_int() && get<int_t>(_var) >= get<int_t>(v._var);
             case type_double :  return v.is_double() && get<double_t>(_var) >= get<double_t>(v._var);
             case type_string :  return v.is_string() && *get<string_t>(_var).ps >= *get<string_t>(v._var).ps;
+            case type_wstring : return v.is_wstring() && *get<wstring_t>(_var).ps >= *get<wstring_t>(v._var).ps;
             case type_list :    throw exception("list >= not implemented");
             case type_array :   throw exception("array >= not implemented");
             case type_set :     throw exception("set >= not implemented");

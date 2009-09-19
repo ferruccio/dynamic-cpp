@@ -51,12 +51,21 @@ namespace dynamic {
         }
     }
 
+    var::operator wstring() const {
+        try {
+            return *get<wstring_t>(_var).ps;
+        } catch (bad_get) {
+            throw exception("cannot convert to wstring");
+        }
+    }
+
     string var::type() const {
         switch (get_type()) {
 	        case type_null :    return "null";
 	        case type_int :     return "int";
 	        case type_double :  return "double";
 	        case type_string :  return "string";
+	        case type_wstring : return "wstring";
 	        case type_list :    return "list";
 	        case type_array :   return "array";
 	        case type_set :     return "set";

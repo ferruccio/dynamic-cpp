@@ -61,17 +61,22 @@ namespace dynamic {
         var(double n);
         var(const string& s);
         var(const char* s);
+        var(const wstring& s);
+        var(const wchar_t* s);
         var(const var& v);
 
         var& operator = (int n);
         var& operator = (double n);
         var& operator = (const string& s);
         var& operator = (const char* s);
+        var& operator = (const wstring& s);
+        var& operator = (const wchar_t* s);
         var& operator = (const var& v);
 
         operator int() const;
         operator double() const;
         operator string() const;
+        operator wstring() const;
 
         string type() const;
 
@@ -79,36 +84,48 @@ namespace dynamic {
         bool operator == (double n) const;
         bool operator == (const string& s) const;
         bool operator == (const char* s) const;
+        bool operator == (const wstring& s) const;
+        bool operator == (const wchar_t* s) const;
         bool operator == (const var& v) const;
 
         bool operator != (int n) const;
         bool operator != (double n) const;
         bool operator != (const string& s) const;
         bool operator != (const char* s) const;
+        bool operator != (const wstring& s) const;
+        bool operator != (const wchar_t* s) const;
         bool operator != (const var& v) const;
 
         bool operator < (int n) const;
         bool operator < (double n) const;
         bool operator < (const string& s) const;
         bool operator < (const char* s) const;
+        bool operator < (const wstring& s) const;
+        bool operator < (const wchar_t* s) const;
         bool operator < (const var& v) const;
 
         bool operator <= (int n) const;
         bool operator <= (double n) const;
         bool operator <= (const string& s) const;
         bool operator <= (const char* s) const;
+        bool operator <= (const wstring& s) const;
+        bool operator <= (const wchar_t* s) const;
         bool operator <= (const var& v) const;
 
         bool operator > (int n) const;
         bool operator > (double n) const;
         bool operator > (const string& s) const;
         bool operator > (const char* s) const;
+        bool operator > (const wstring& s) const;
+        bool operator > (const wchar_t* s) const;
         bool operator > (const var& v) const;
 
         bool operator >= (int n) const;
         bool operator >= (double n) const;
         bool operator >= (const string& s) const;
         bool operator >= (const char* s) const;
+        bool operator >= (const wstring& s) const;
+        bool operator >= (const wchar_t* s) const;
         bool operator >= (const var& v) const;
 
         bool is_null() const { return get_type() == type_null; }
@@ -116,6 +133,8 @@ namespace dynamic {
         bool is_double() const { return get_type() == type_double; }
         bool is_numeric() const { return is_int() || is_double(); }
         bool is_string() const { return get_type() == type_string; }
+        bool is_wstring() const { return get_type() == type_string; }
+        bool is_string_type() const { return is_string() || is_wstring(); }
         bool is_list() const { return get_type() == type_list; }
         bool is_array() const { return get_type() == type_array; }
         bool is_set() const { return get_type() == type_set; }
@@ -124,13 +143,16 @@ namespace dynamic {
 
         var& operator () (int n);
         var& operator () (double n);
-        var& operator () (const char* s);
         var& operator () (const string& s);
+        var& operator () (const char* s);
+        var& operator () (const wstring& s);
+        var& operator () (const wchar_t* s);
         var& operator () (const var& v);
         var& operator () (const var& k, const var& v);
         
         ostream& _write_var(ostream& os);
         ostream& _write_string(ostream& os);
+        ostream& _write_wstring(ostream& os);
         ostream& _write_list(ostream& os);
         ostream& _write_array(ostream& os);
         ostream& _write_set(ostream& os);
@@ -144,8 +166,10 @@ namespace dynamic {
         unsigned int count() const;
         var& operator [] (int n);
         var& operator [] (double n);
-        var& operator [] (const char* s);
         var& operator [] (const string& s);
+        var& operator [] (const char* s);
+        var& operator [] (const wstring& s);
+        var& operator [] (const wchar_t* s);
         var& operator [] (const var& v);
 
         struct less_var { bool operator () (const var& lhs, const var& rhs); };
@@ -210,7 +234,7 @@ namespace dynamic {
         reverse_iterator rend();
 
     private :
-        enum type_t { type_null, type_int, type_double, type_string, type_list, type_array, type_set, type_dict };
+        enum type_t { type_null, type_int, type_double, type_string, type_wstring, type_list, type_array, type_set, type_dict };
 
         struct null_t { null_t() {} };
 
@@ -220,6 +244,14 @@ namespace dynamic {
             string_t(const char* s) : ps(new string(s)) {}
 
             shared_ptr<string>  ps;
+        };
+        
+        struct wstring_t {
+            wstring_t() : ps(new wstring) {}
+            wstring_t(const wstring& s) : ps(new wstring(s)) {}
+            wstring_t(const wchar_t* s) : ps(new wstring(s)) {}
+
+            shared_ptr<wstring>  ps;
         };
 
         typedef int int_t;
@@ -235,7 +267,7 @@ namespace dynamic {
         var(set_ptr _set);
         var(dict_ptr _dict);
 
-        typedef variant<null_t, int_t, double_t, string_t, list_ptr, array_ptr, set_ptr, dict_ptr> var_t;
+        typedef variant<null_t, int_t, double_t, string_t, wstring_t, list_ptr, array_ptr, set_ptr, dict_ptr> var_t;
 
         type_t get_type() const;
 
@@ -246,6 +278,7 @@ namespace dynamic {
 	        type_t operator () (int_t) const { return type_int; }
 	        type_t operator () (double_t) const { return type_double; }
 	        type_t operator () (string_t s) const { return type_string; }
+            type_t operator () (wstring_t s) const { return type_wstring; }
 	        type_t operator () (list_ptr) const { return type_list; }
 	        type_t operator () (array_ptr) const { return type_array; }
 	        type_t operator () (set_ptr) const { return type_set; }

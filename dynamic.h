@@ -40,21 +40,21 @@ namespace dynamic {
 
     class exception : public std::exception
     {
-	public :
+    public :
         exception(const char* message) : std::exception() { _message = message; }
         ~exception() throw() {}
-		
+        
         const char* what() const throw() { return _message; }
-		
-	private :
+        
+    private :
         const char* _message;
     };
-	
-	class var;
-	
-	extern const var $;
+    
+    class var;
+    
+    extern const var $;
 
-	class var {
+    class var {
     public :
         var();
         var(int n);
@@ -276,15 +276,15 @@ namespace dynamic {
         var_t _var;
 
         struct type_visitor : public boost::static_visitor<type_t> {
-	        type_t operator () (null_t) const { return type_null; }
-	        type_t operator () (int_t) const { return type_int; }
-	        type_t operator () (double_t) const { return type_double; }
-	        type_t operator () (string_t s) const { return type_string; }
+            type_t operator () (null_t) const { return type_null; }
+            type_t operator () (int_t) const { return type_int; }
+            type_t operator () (double_t) const { return type_double; }
+            type_t operator () (string_t s) const { return type_string; }
             type_t operator () (wstring_t s) const { return type_wstring; }
-	        type_t operator () (list_ptr) const { return type_list; }
-	        type_t operator () (array_ptr) const { return type_array; }
-	        type_t operator () (set_ptr) const { return type_set; }
-	        type_t operator () (dict_ptr) const { return type_dict; }
+            type_t operator () (list_ptr) const { return type_list; }
+            type_t operator () (array_ptr) const { return type_array; }
+            type_t operator () (set_ptr) const { return type_set; }
+            type_t operator () (dict_ptr) const { return type_dict; }
         };
 
     };

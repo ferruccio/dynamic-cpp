@@ -61,15 +61,15 @@ namespace dynamic {
 
     string var::type() const {
         switch (get_type()) {
-	        case type_null :    return "null";
-	        case type_int :     return "int";
-	        case type_double :  return "double";
-	        case type_string :  return "string";
-	        case type_wstring : return "wstring";
-	        case type_list :    return "list";
-	        case type_array :   return "array";
-	        case type_set :     return "set";
-	        case type_dict :    return "dict";
+            case type_null :    return "null";
+            case type_int :     return "int";
+            case type_double :  return "double";
+            case type_string :  return "string";
+            case type_wstring : return "wstring";
+            case type_list :    return "list";
+            case type_array :   return "array";
+            case type_set :     return "set";
+            case type_dict :    return "dict";
             default :           throw exception("var::type() unhandled type");
         }
     }

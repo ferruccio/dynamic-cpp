@@ -26,35 +26,35 @@
 #include "dynamic.h"
 
 namespace dynamic {
-	
+    
     var::iterator var::begin() {
-		switch (get_type()) {
-			case type_null :    throw exception("invalid .begin() operation on $");
-			case type_int :     throw exception("invalid .begin() operation on int");
-			case type_double :  throw exception("invalid .begin() operation on double");
-			case type_string :  throw exception("invalid .begin() operation on string");
-			case type_wstring : throw exception("invalid .begin() operation on wstring");
-			case type_list :    return get<list_ptr>(_var)->begin();
-			case type_array :   return get<array_ptr>(_var)->begin();
-			case type_set :     return get<set_ptr>(_var)->begin();
-			case type_dict :    return get<dict_ptr>(_var)->begin();
-			default :           throw exception("unhandled .begin() operation");
-		}
+        switch (get_type()) {
+            case type_null :    throw exception("invalid .begin() operation on $");
+            case type_int :     throw exception("invalid .begin() operation on int");
+            case type_double :  throw exception("invalid .begin() operation on double");
+            case type_string :  throw exception("invalid .begin() operation on string");
+            case type_wstring : throw exception("invalid .begin() operation on wstring");
+            case type_list :    return get<list_ptr>(_var)->begin();
+            case type_array :   return get<array_ptr>(_var)->begin();
+            case type_set :     return get<set_ptr>(_var)->begin();
+            case type_dict :    return get<dict_ptr>(_var)->begin();
+            default :           throw exception("unhandled .begin() operation");
+        }
     }
 
     var::iterator var::end() {
-		switch (get_type()) {
-			case type_null :    throw exception("invalid .end() operation on $");
-			case type_int :     throw exception("invalid .end() operation on int");
-			case type_double :  throw exception("invalid .end() operation on double");
-			case type_string :  throw exception("invalid .end() operation on string");
-			case type_wstring : throw exception("invalid .end() operation on wstring");
-			case type_list :    return get<list_ptr>(_var)->end();
-			case type_array :   return get<array_ptr>(_var)->end();
-			case type_set :     return get<set_ptr>(_var)->end();
-			case type_dict :    return get<dict_ptr>(_var)->end();
-			default :           throw exception("unhandled .end() operation");
-		}
+        switch (get_type()) {
+            case type_null :    throw exception("invalid .end() operation on $");
+            case type_int :     throw exception("invalid .end() operation on int");
+            case type_double :  throw exception("invalid .end() operation on double");
+            case type_string :  throw exception("invalid .end() operation on string");
+            case type_wstring : throw exception("invalid .end() operation on wstring");
+            case type_list :    return get<list_ptr>(_var)->end();
+            case type_array :   return get<array_ptr>(_var)->end();
+            case type_set :     return get<set_ptr>(_var)->end();
+            case type_dict :    return get<dict_ptr>(_var)->end();
+            default :           throw exception("unhandled .end() operation");
+        }
     }
 
     var::iterator var::iterator::operator++() {
@@ -120,33 +120,33 @@ namespace dynamic {
     }
 
     var::reverse_iterator var::rbegin() {
-		switch (get_type()) {
-			case type_null :    throw exception("invalid .rbegin() operation on $");
-			case type_int :     throw exception("invalid .rbegin() operation on int");
-			case type_double :  throw exception("invalid .rbegin() operation on double");
-			case type_string :  throw exception("invalid .rbegin() operation on string");
-			case type_wstring : throw exception("invalid .rbegin() operation on wstring");
-			case type_list :    return get<list_ptr>(_var)->rbegin();
-			case type_array :   return get<array_ptr>(_var)->rbegin();
-			case type_set :     return get<set_ptr>(_var)->rbegin();
-			case type_dict :    return get<dict_ptr>(_var)->rbegin();
-			default :           throw exception("unhandled .rbegin() operation");
-		}
+        switch (get_type()) {
+            case type_null :    throw exception("invalid .rbegin() operation on $");
+            case type_int :     throw exception("invalid .rbegin() operation on int");
+            case type_double :  throw exception("invalid .rbegin() operation on double");
+            case type_string :  throw exception("invalid .rbegin() operation on string");
+            case type_wstring : throw exception("invalid .rbegin() operation on wstring");
+            case type_list :    return get<list_ptr>(_var)->rbegin();
+            case type_array :   return get<array_ptr>(_var)->rbegin();
+            case type_set :     return get<set_ptr>(_var)->rbegin();
+            case type_dict :    return get<dict_ptr>(_var)->rbegin();
+            default :           throw exception("unhandled .rbegin() operation");
+        }
     }
 
     var::reverse_iterator var::rend() {
-		switch (get_type()) {
-			case type_null :    throw exception("invalid .rend() operation on $");
-			case type_int :     throw exception("invalid .rend() operation on int");
-			case type_double :  throw exception("invalid .rend() operation on double");
-			case type_string :  throw exception("invalid .rend() operation on string");
-			case type_wstring : throw exception("invalid .rend() operation on wstring");
-			case type_list :    return get<list_ptr>(_var)->rend();
-			case type_array :   return get<array_ptr>(_var)->rend();
-			case type_set :     return get<set_ptr>(_var)->rend();
-			case type_dict :    return get<dict_ptr>(_var)->rend();
-			default :           throw exception("unhandled .rend() operation");
-		}
+        switch (get_type()) {
+            case type_null :    throw exception("invalid .rend() operation on $");
+            case type_int :     throw exception("invalid .rend() operation on int");
+            case type_double :  throw exception("invalid .rend() operation on double");
+            case type_string :  throw exception("invalid .rend() operation on string");
+            case type_wstring : throw exception("invalid .rend() operation on wstring");
+            case type_list :    return get<list_ptr>(_var)->rend();
+            case type_array :   return get<array_ptr>(_var)->rend();
+            case type_set :     return get<set_ptr>(_var)->rend();
+            case type_dict :    return get<dict_ptr>(_var)->rend();
+            default :           throw exception("unhandled .rend() operation");
+        }
     }
 
     var::reverse_iterator var::reverse_iterator::operator++() {

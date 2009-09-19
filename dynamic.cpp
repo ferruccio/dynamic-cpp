@@ -25,7 +25,8 @@
 
 #include "dynamic.h"
 #include <cassert>
-#include <boost/format.hpp>
+#include <iostream>
+#include <iomanip>
 
 namespace dynamic {
 
@@ -212,7 +213,7 @@ namespace dynamic {
                 case '\\' : os << "\\\\"; break;
                 case '\'' : os << "\\'"; break;
                 default :
-                    if (*s < ' ') os << format("\\%03o") % int(*s);
+                    if (*s < ' ') os << "0" << oct << setw(3) << setfill('0') << int(*s);
                     else os << *s;
             }
         os << '\'';
@@ -232,7 +233,7 @@ namespace dynamic {
                 case '\\' : os << L"\\\\"; break;
                 case '\'' : os << L"\\'"; break;
                 default :
-                    if (*s < ' ') os << format("\\%03o") % int(*s);
+                    if (*s < ' ') os << L"0" << oct << setw(3) << setfill('0') << int(*s);
                     else os << *s;
             }
         os << '\'';
@@ -296,8 +297,7 @@ namespace dynamic {
                 case '\\' : os << "\\\\"; break;
                 case '\'' : os << "\\'"; break;
                 default :
-                    // I'm not sure why this bit of uglyness is necessary (see _write_string(ostream))
-                    if (*s < ' ') os << (wformat(L"\\%03o") % int(*s)).str().c_str();
+                    if (*s < ' ') os << "0" << oct << setw(3) << setfill(L'0') << int(*s);
                     else os << *s;
             }
         os << '\'';
@@ -317,8 +317,7 @@ namespace dynamic {
                 case '\\' : os << L"\\\\"; break;
                 case '\'' : os << L"\\'"; break;
                 default :
-                    // see above
-                    if (*s < ' ') os << (wformat(L"\\%03o") % int(*s)).str().c_str();
+                    if (*s < ' ') os << "0" << oct << setw(3) << setfill(L'0') << int(*s);
                     else os << *s;
             }
         os << '\'';

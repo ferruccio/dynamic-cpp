@@ -191,11 +191,11 @@ namespace dynamic {
 	        case type_double :  os << get<double>(_var); return os;
 	        case type_string :  return _write_string(os);
 	        case type_wstring : return _write_wstring(os);
-	        case type_list :    return _write_list(os);
-	        case type_array :   return _write_array(os);
-	        case type_set :     return _write_set(os);
-	        case type_dict :    return _write_dict(os);
-            default :           throw exception("var::_write_var() unhandled type");
+	        case type_list :
+	        case type_array :
+	        case type_set :
+	        case type_dict :    return _write_collection(os);
+            default :           throw exception("var::_write_var(ostream) unhandled type");
         }
     }
 
@@ -238,50 +238,119 @@ namespace dynamic {
         os << '\'';
         return os;
     }
+
+    ostream& var::_write_collection(ostream& os) {
+        assert(is_collection());
+        switch (get_type())
+        {
+            case type_list : os << "("; break;
+            case type_array : os << "["; break;
+            case type_set : os << "{"; break;
+            case type_dict : os << "<"; break;
+            default : assert(false);
+        }
+        for (var::iterator vi = begin(); vi != end(); ++vi) {
+            if (vi != begin()) os << " ";
+            (*vi)._write_var(os);
+            if (get_type() == type_dict) {
+                os << ":";
+                (*this)[*vi]._write_var(os);
+            }
+        }
+        switch (get_type())
+        {
+            case type_list : os << ")"; break;
+            case type_array : os << "]"; break;
+            case type_set : os << "}"; break;
+            case type_dict : os << ">"; break;
+            default : assert(false);
+        }
+        return os;
+    }
+
+    wostream& var::_write_var(wostream& os) {
+        switch (get_type()) {
+	        case type_null :    os << "$"; return os;
+	        case type_int :     os << get<int>(_var); return os;
+	        case type_double :  os << get<double>(_var); return os;
+	        case type_string :  return _write_string(os);
+	        case type_wstring : return _write_wstring(os);
+	        case type_list :
+	        case type_array :
+	        case type_set :
+	        case type_dict :    return _write_collection(os);
+            default :           throw exception("var::_write_var(wostream) unhandled type");
+        }
+    }
+
+    wostream& var::_write_string(wostream& os) {
+        assert(is_string());
+        os << '\'';
+        for (const char* s = (*get<string_t>(_var).ps).c_str(); *s; ++s)
+            switch (*s) {
+                case '\b' : os << "\\b"; break;
+                case '\r' : os << "\\r"; break;
+                case '\n' : os << "\\n"; break;
+                case '\f' : os << "\\f"; break;
+                case '\t' : os << "\\t"; break;
+                case '\\' : os << "\\\\"; break;
+                case '\'' : os << "\\'"; break;
+                default :
+                    // I'm not sure why this bit of uglyness is necessary (see _write_string(ostream))
+                    if (*s < ' ') os << (wformat(L"\\%03o") % int(*s)).str().c_str();
+                    else os << *s;
+            }
+        os << '\'';
+        return os;
+    }
+
+    wostream& var::_write_wstring(wostream& os) {
+        assert(is_wstring());
+        os << '\'';
+        for (const wchar_t* s = (*get<wstring_t>(_var).ps).c_str(); *s; ++s)
+            switch (*s) {
+                case '\b' : os << L"\\b"; break;
+                case '\r' : os << L"\\r"; break;
+                case '\n' : os << L"\\n"; break;
+                case '\f' : os << L"\\f"; break;
+                case '\t' : os << L"\\t"; break;
+                case '\\' : os << L"\\\\"; break;
+                case '\'' : os << L"\\'"; break;
+                default :
+                    // see above
+                    if (*s < ' ') os << (wformat(L"\\%03o") % int(*s)).str().c_str();
+                    else os << *s;
+            }
+        os << '\'';
+        return os;
+    }
     
-    ostream& var::_write_list(ostream& os) {
-        assert(is_list());
-        os << '(';
-        for (var::iterator vi = begin(); vi != end(); ++vi) {
-            if (vi != begin()) os << ' ';
-            (*vi)._write_var(os);
+    wostream& var::_write_collection(wostream& os) {
+        assert(is_collection());
+        switch (get_type())
+        {
+            case type_list : os << L"("; break;
+            case type_array : os << L"["; break;
+            case type_set : os << L"{"; break;
+            case type_dict : os << L"<"; break;
+            default : assert(false);
         }
-        os << ')';
-        return os;
-    }
-
-    ostream& var::_write_array(ostream& os) {
-        assert(is_array());
-        os << '[';
         for (var::iterator vi = begin(); vi != end(); ++vi) {
-            if (vi != begin()) os << ' ';
+            if (vi != begin()) os << L" ";
             (*vi)._write_var(os);
-        }         
-        os << ']';
-        return os;
-    }
-
-    ostream& var::_write_set(ostream& os) {
-        assert(is_set());
-        os << '{';
-        for (var::iterator vi = begin(); vi != end(); ++vi) {
-            if (vi != begin()) os << ' ';
-            (*vi)._write_var(os);
-        }          
-        os << '}';
-        return os;
-    }
-
-    ostream& var::_write_dict(ostream& os) {
-        assert(is_dict());
-        os << '<';
-        for (var::iterator vi = begin(); vi != end(); ++vi) {
-            if (vi != begin()) os << ' ';
-            (*vi)._write_var(os);
-            os << ':';
-            (*this)[*vi]._write_var(os);
+            if (get_type() == type_dict) {
+                os << L":";
+                (*this)[*vi]._write_var(os);
+            }
         }
-        os << '>';
+        switch (get_type())
+        {
+            case type_list : os << L")"; break;
+            case type_array : os << L"]"; break;
+            case type_set : os << L"}"; break;
+            case type_dict : os << L">"; break;
+            default : assert(false);
+        }
         return os;
     }
 

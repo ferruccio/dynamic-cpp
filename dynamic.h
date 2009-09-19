@@ -153,11 +153,13 @@ namespace dynamic {
         ostream& _write_var(ostream& os);
         ostream& _write_string(ostream& os);
         ostream& _write_wstring(ostream& os);
-        ostream& _write_list(ostream& os);
-        ostream& _write_array(ostream& os);
-        ostream& _write_set(ostream& os);
-        ostream& _write_dict(ostream& os);
+        ostream& _write_collection(ostream& os);
 
+        wostream& _write_var(wostream& os);
+        wostream& _write_string(wostream& os);
+        wostream& _write_wstring(wostream& os);
+        wostream& _write_collection(wostream& os);
+        
         static var new_list();
         static var new_array();
         static var new_set();
@@ -288,6 +290,7 @@ namespace dynamic {
     };
 
     inline ostream& operator << (ostream& os, var& v) { return v._write_var(os); }
+    inline wostream& operator << (wostream& os, var& v) { return v._write_var(os); }
 
     inline var new_list() { return var::new_list(); }
     inline var new_array() { return var::new_array(); }

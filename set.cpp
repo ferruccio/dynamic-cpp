@@ -27,6 +27,9 @@
 
 namespace dynamic {
 
+    ///
+    /// create empty set
+    ///
     var var::new_set() { return var(set_ptr(new set_t)); }
 
 }

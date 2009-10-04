@@ -27,32 +27,51 @@
 
 namespace dynamic {
 
-    /*  ==
-    */
+    ///
+    /// var == int
+    ///
     bool var::operator == (int n) const {
         return is_int() && get<int_t>(_var) == n;
     }
 
+    ///
+    /// var == double
+    ///
     bool var::operator == (double n) const {
         return is_double() && get<double_t>(_var) == n;
     }
 
+    ///
+    /// var == string
+    ///
     bool var::operator == (const string& s) const {
         return is_string() && *get<string_t>(_var).ps == s;
     }
 
+    ///
+    /// var == string constant
+    ///
     bool var::operator == (const char* s) const {
         return is_string() && *get<string_t>(_var).ps == s;
     }
 
+    ///
+    /// var == wide string
+    ///
     bool var::operator == (const wstring& s) const {
         return is_wstring() && *get<wstring_t>(_var).ps == s;
     }
 
+    ///
+    /// var == wide string constant
+    ///
     bool var::operator == (const wchar_t* s) const {
         return is_wstring() && *get<wstring_t>(_var).ps == s;
     }
 
+    ///
+    /// var == var
+    ///
     bool var::operator == (const var& v) const {
         switch (get_type()) {
             case type_null :    return v.is_null();
@@ -68,32 +87,51 @@ namespace dynamic {
         }
     }
 
-    /*  !=
-    */
+    ///
+    /// var != int
+    ///
     bool var::operator != (int n) const {
         return !is_int() || get<int_t>(_var) != n;
     }
 
+    ///
+    /// var != double
+    ///
     bool var::operator != (double n) const {
         return !is_double() || get<double_t>(_var) != n;
     }
 
+    ///
+    /// var != string
+    ///
     bool var::operator != (const string& s) const {
         return !is_string() || *get<string_t>(_var).ps != s;
     }
 
+    ///
+    /// var != string constant
+    ///
     bool var::operator != (const char* s) const {
         return !is_string() || *get<string_t>(_var).ps != s;
     }
 
+    ///
+    /// var != wide string
+    ///
     bool var::operator != (const wstring& s) const {
         return !is_wstring() || *get<wstring_t>(_var).ps != s;
     }
 
+    ///
+    /// var != wide string constant
+    ///
     bool var::operator != (const wchar_t* s) const {
         return !is_wstring() || *get<wstring_t>(_var).ps != s;
     }
 
+    ///
+    /// var != var
+    ///
     bool var::operator != (const var& v) const {
         switch (get_type()) {
             case type_null :    return !v.is_null();
@@ -109,38 +147,57 @@ namespace dynamic {
         }
     }
 
-    /*  <
-    */
+    ///
+    /// var < int
+    ///
     bool var::operator < (int n) const {
         if (is_int()) return get<int_t>(_var) < n;
         throw exception("invalid < comparison to int");
     }
 
+    ///
+    /// var < double
+    ///
     bool var::operator < (double n) const {
         if (is_double()) return get<double_t>(_var) < n;
         throw exception("invalid < comparison to double");
     }
 
+    ///
+    /// var < string
+    ///
     bool var::operator < (const string& s) const {
         if (is_string()) return *get<string_t>(_var).ps < s;
         throw exception("invalid < comparison to string");
     }
 
+    ///
+    /// var < string constant
+    ///
     bool var::operator < (const char* s) const {
         if (is_string()) return *get<string_t>(_var).ps < s;
         throw exception("invalid < comparison to char*");
     }
 
+    ///
+    /// var < wide string
+    ///
     bool var::operator < (const wstring& s) const {
         if (is_wstring()) return *get<wstring_t>(_var).ps < s;
         throw exception("invalid < comparison to wstring");
     }
 
+    ///
+    /// var < wide string constant
+    ///
     bool var::operator < (const wchar_t* s) const {
         if (is_wstring()) return *get<wstring_t>(_var).ps < s;
         throw exception("invalid < comparison to wchar_t*");
     }
 
+    ///
+    /// var < var
+    ///
     bool var::operator < (const var& v) const {
         switch (get_type()) {
             case type_null :    throw exception("invalid < comparison to $");
@@ -156,38 +213,57 @@ namespace dynamic {
         }
     }
 
-    /*  <=
-    */
+    ///
+    /// var <= int
+    ///
     bool var::operator <= (int n) const {
         if (is_int()) return get<int_t>(_var) <= n;
         throw exception("invalid <= comparison to int");
     }
 
+    ///
+    /// var <= double
+    ///
     bool var::operator <= (double n) const {
         if (is_double()) return get<double_t>(_var) <= n;
         throw exception("invalid <= comparison to double");
     }
 
+    ///
+    /// var <= string
+    ///
     bool var::operator <= (const string& s) const {
         if (is_string()) return *get<string_t>(_var).ps <= s;
         throw exception("invalid <= comparison to string");
     }
 
+    ///
+    /// var <= string constant
+    ///
     bool var::operator <= (const char* s) const {
         if (is_string()) return *get<string_t>(_var).ps <= s;
         throw exception("invalid <= comparison to char*");
     }
     
+    ///
+    /// var <= wide string
+    ///
     bool var::operator <= (const wstring& s) const {
         if (is_wstring()) return *get<wstring_t>(_var).ps <= s;
         throw exception("invalid <= comparison to wstring");
     }
 
+    ///
+    /// var <= wide string constant
+    ///
     bool var::operator <= (const wchar_t* s) const {
         if (is_wstring()) return *get<wstring_t>(_var).ps <= s;
         throw exception("invalid <= comparison to wchar_t*");
     }
 
+    ///
+    /// var <= var
+    ///
     bool var::operator <= (const var& v) const {
         switch (get_type()) {
             case type_null :    throw exception("invalid <= comparison to $");
@@ -203,38 +279,56 @@ namespace dynamic {
         }
     }
 
-    /*  >
-    */
+    ///
+    /// var > int
+    ///
     bool var::operator > (int n) const {
         if (is_int()) return get<int_t>(_var) > n;
         throw exception("invalid > comparison to int");
     }
 
+    ///
+    /// var > double
+    ///
     bool var::operator > (double n) const {
         if (is_double()) return get<double_t>(_var) > n;
         throw exception("invalid > comparison to double");
     }
 
+    ///
+    /// var > string
+    ///
     bool var::operator > (const string& s) const {
         if (is_string()) return *get<string_t>(_var).ps > s;
         throw exception("invalid > comparison to string");
     }
 
+    ///
+    /// var > string constant
     bool var::operator > (const char* s) const {
         if (is_string()) return *get<string_t>(_var).ps > s;
         throw exception("invalid > comparison to char*");
     }
 
+    ///
+    /// var > wide string
+    ///
     bool var::operator > (const wstring& s) const {
         if (is_wstring()) return *get<wstring_t>(_var).ps > s;
         throw exception("invalid > comparison to wstring");
     }
 
+    ///
+    /// var > wide string constant
+    ///
     bool var::operator > (const wchar_t* s) const {
         if (is_wstring()) return *get<wstring_t>(_var).ps > s;
         throw exception("invalid > comparison to wchar_t*");
     }
 
+    ///
+    /// var > var
+    ///
     bool var::operator > (const var& v) const {
         switch (get_type()) {
             case type_null :    throw exception("invalid > comparison to $");
@@ -250,38 +344,57 @@ namespace dynamic {
         }
     }
 
-    /*  >=
-    */
+    ///
+    /// var >= int
+    ///
     bool var::operator >= (int n) const {
         if (is_int()) return get<int_t>(_var) >= n;
         throw exception("invalid >= comparison to int");
     }
 
+    ///
+    /// var >= double
+    ///
     bool var::operator >= (double n) const {
         if (is_double()) return get<double_t>(_var) >= n;
         throw exception("invalid >= comparison to double");
     }
 
+    ///
+    /// var >= string
+    ///
     bool var::operator >= (const string& s) const {
         if (is_string()) return *get<string_t>(_var).ps >= s;
         throw exception("invalid >= comparison to string");
     }
 
+    ///
+    /// var >= string constant
+    ///
     bool var::operator >= (const char* s) const {
         if (is_string()) return *get<string_t>(_var).ps >= s;
         throw exception("invalid >= comparison to char*");
     }
     
+    ///
+    /// var >= wide string
+    ///
     bool var::operator >= (const wstring& s) const {
         if (is_wstring()) return *get<wstring_t>(_var).ps >= s;
         throw exception("invalid >= comparison to wstring");
     }
 
+    ///
+    /// var >= wide string constant
+    ///
     bool var::operator >= (const wchar_t* s) const {
         if (is_wstring()) return *get<wstring_t>(_var).ps >= s;
         throw exception("invalid >= comparison to wchar_t*");
     }
 
+    ///
+    /// var >= var
+    ///
     bool var::operator >= (const var& v) const {
         switch (get_type()) {
             case type_null :    throw exception("invalid >= comparison to $");

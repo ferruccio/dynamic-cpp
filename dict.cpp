@@ -27,6 +27,9 @@
 
 namespace dynamic {
 
+    ///
+    /// create empty dict
+    ///
     var var::new_dict() { return var(dict_ptr(new dict_t)); }
 
 }

@@ -27,6 +27,9 @@
 
 namespace dynamic {
 
+    ///
+    /// cast to int
+    ///
     var::operator int() const {
         try {
             return get<int_t>(_var);
@@ -35,6 +38,9 @@ namespace dynamic {
         }
     }
 
+    ///
+    /// cast to double
+    ///
     var::operator double() const {
         try {
             return get<double_t>(_var);
@@ -43,6 +49,9 @@ namespace dynamic {
         }
     }
 
+    ///
+    /// cast to string
+    ///
     var::operator string() const {
         try {
             return *get<string_t>(_var).ps;
@@ -51,6 +60,9 @@ namespace dynamic {
         }
     }
 
+    ///
+    /// cast to wide string
+    ///
     var::operator wstring() const {
         try {
             return *get<wstring_t>(_var).ps;
@@ -59,6 +71,9 @@ namespace dynamic {
         }
     }
 
+    ///
+    /// @return type name
+    ///
     string var::type() const {
         switch (get_type()) {
             case type_null :    return "null";
@@ -74,6 +89,9 @@ namespace dynamic {
         }
     }
 
+    ///
+    /// @return type identifier
+    ///
     var::type_t var::get_type() const {
         return boost::apply_visitor(type_visitor(), _var);
     }

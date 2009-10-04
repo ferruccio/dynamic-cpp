@@ -33,17 +33,29 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/utility.hpp>
 
+///
+/// Dynamic C++ namespace
+///
 namespace dynamic {
 
     using namespace std;
     using namespace boost;
 
+    ///
+    /// exception class thrown by Dynamic C++
+    ///
     class exception : public std::exception
     {
     public :
+        ///
+        /// construct exception with message
+        ///
         exception(const char* message) : std::exception() { _message = message; }
         ~exception() throw() {}
         
+        ///
+        /// @return exception message
+        ///
         const char* what() const throw() { return _message; }
         
     private :
@@ -52,8 +64,14 @@ namespace dynamic {
     
     class var;
     
+    ///
+    /// predefined null object
+    ///
     extern const var $;
 
+    ///
+    /// the var class is the heart of Dynamic C++
+    ///
     class var {
     public :
         var();
@@ -127,18 +145,30 @@ namespace dynamic {
         bool operator >= (const wstring& s) const;
         bool operator >= (const wchar_t* s) const;
         bool operator >= (const var& v) const;
-
+        
+        /// is var a null?
         bool is_null() const { return get_type() == type_null; }
+        /// is var an int?
         bool is_int() const { return get_type() == type_int; }
+        /// is var a double?
         bool is_double() const { return get_type() == type_double; }
+        /// is var a numeric type?
         bool is_numeric() const { return is_int() || is_double(); }
+        /// is var a string?
         bool is_string() const { return get_type() == type_string; }
+        /// is var a wide string?
         bool is_wstring() const { return get_type() == type_string; }
+        /// is var a string type?
         bool is_string_type() const { return is_string() || is_wstring(); }
+        /// is var a list?
         bool is_list() const { return get_type() == type_list; }
+        /// is var an array?
         bool is_array() const { return get_type() == type_array; }
+        /// is var a set?
         bool is_set() const { return get_type() == type_set; }
+        /// is var a dict?
         bool is_dict() const { return get_type() == type_dict; }
+        /// is var a collection type?
         bool is_collection() const { return is_list() || is_array() || is_set() || is_dict(); }
 
         var& operator () (int n);
@@ -174,18 +204,33 @@ namespace dynamic {
         var& operator [] (const wchar_t* s);
         var& operator [] (const var& v);
 
-        struct less_var { bool operator () (const var& lhs, const var& rhs); };
+        /// var comparison functor
+        struct less_var {
+            /// var comparison function
+            bool operator () (const var& lhs, const var& rhs);
+        };
 
+        /// list type
         typedef std::list<var> list_t;
+        /// array type
         typedef std::vector<var> array_t;
+        /// set type
         typedef std::set<var, less_var> set_t;
+        /// dict type
         typedef std::map<var, var, less_var> dict_t;
 
+        ///
+        /// collection iterator class
+        ///
         class iterator {
         public :
+            /// initialize from list iterator
             iterator(list_t::iterator iter) : _iter(iter) {}
+            /// initialize from array iterator
             iterator(array_t::iterator iter) : _iter(iter) {}
+            /// initialize from set iterator
             iterator(set_t::iterator iter) : _iter(iter) {}
+            /// initialize from dictr iterator
             iterator(dict_t::iterator iter) : _iter(iter) {}
 
             iterator operator++();
@@ -194,6 +239,7 @@ namespace dynamic {
             iterator operator--(int);
 
             bool operator==(iterator rhs);
+            /// iterator inequality
             bool operator!=(iterator rhs) { return !(*this == rhs); }
 
             var& operator*();
@@ -209,11 +255,18 @@ namespace dynamic {
         iterator begin();
         iterator end();
 
+        ///
+        /// collection reverse_iterator class
+        ///
         class reverse_iterator {
         public :
+            /// initialize from list reverse iterator
             reverse_iterator(list_t::reverse_iterator riter) : _riter(riter) {}
+            /// initialize from array reverse iterator
             reverse_iterator(array_t::reverse_iterator riter) : _riter(riter) {}
+            /// initialize from set reverse iterator
             reverse_iterator(set_t::reverse_iterator riter) : _riter(riter) {}
+            /// initialize from dict reverse iterator
             reverse_iterator(dict_t::reverse_iterator riter) : _riter(riter) {}
 
             reverse_iterator operator++();
@@ -222,6 +275,7 @@ namespace dynamic {
             reverse_iterator operator--(int);
 
             bool operator==(reverse_iterator rhs);
+            /// reverse iterator inequality
             bool operator!=(reverse_iterator rhs) { return !(*this == rhs); }
 
         private :
@@ -275,6 +329,7 @@ namespace dynamic {
 
         var_t _var;
 
+        /// used to retrieve type from var
         struct type_visitor : public boost::static_visitor<type_t> {
             type_t operator () (null_t) const { return type_null; }
             type_t operator () (int_t) const { return type_int; }
@@ -289,18 +344,29 @@ namespace dynamic {
 
     };
 
+    /// ostream << var
     inline ostream& operator << (ostream& os, var& v) { return v._write_var(os); }
+    /// wostream << var
     inline wostream& operator << (wostream& os, var& v) { return v._write_var(os); }
 
+    /// create empty list
     inline var new_list() { return var::new_list(); }
+    /// create empty array
     inline var new_array() { return var::new_array(); }
+    /// create empty set
     inline var new_set() { return var::new_set(); }
+    /// create empty dict
     inline var new_dict() { return var::new_dict(); }
 
+    /// create list with one item
     inline var new_list(const var& v) { return var::new_list()(v); }
+    /// create array with one item
     inline var new_array(const var& v) { return var::new_array()(v); }
+    /// create set with one item
     inline var new_set(const var& v) { return var::new_set()(v); }
+    /// create dict with one item (a key) and null value
     inline var new_dict(const var& k) { return var::new_dict()(k); }
+    /// create dict with one item (a key,value pair)
     inline var new_dict(const var& k, const var& v) { return var::new_dict()(k, v); }
 
 }

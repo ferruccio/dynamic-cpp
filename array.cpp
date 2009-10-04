@@ -27,6 +27,9 @@
 
 namespace dynamic {
 
+    ///
+    /// create an empty array
+    ///
     var var::new_array() { return var(array_ptr(new array_t)); }
 
 }

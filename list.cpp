@@ -27,6 +27,9 @@
 
 namespace dynamic {
 
+    ///
+    /// create empty list
+    ///
     var var::new_list() { return var(list_ptr(new list_t)); }
 
 }

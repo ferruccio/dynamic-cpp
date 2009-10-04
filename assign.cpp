@@ -27,36 +27,56 @@
 
 namespace dynamic {
 
+    ///
+    /// assign int to var
+    ///
     var& var::operator = (int n) {
         _var = n;
         return *this;
     }
 
+    ///
+    /// assign double to var
+    ///
     var& var::operator = (double n) {
         _var = n;
         return *this;
     }
 
+    ///
+    /// assign string to var
+    ///
     var& var::operator = (const string& s) {
         _var = string_t(s);
         return *this;
     }
 
+    ///
+    /// assign string constant to var
+    ///
     var& var::operator = (const char* s) {
         _var = string_t(s);
         return *this;
     }
     
+    ///
+    /// assign wide string to var
+    ///
     var& var::operator = (const wstring& s) {
         _var = wstring_t(s);
         return *this;
     }
 
+    ///
+    /// assign wide string constant to var
     var& var::operator = (const wchar_t* s) {
         _var = wstring_t(s);
         return *this;
     }
 
+    ///
+    /// assign var to var
+    ///
     var& var::operator = (const var& v) {
         _var = v._var;
         return *this;

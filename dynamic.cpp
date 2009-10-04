@@ -53,20 +53,39 @@ namespace dynamic {
         }
     }
 
+    ///
+    /// append an int to a collection
+    ///
     var& var::operator () (int n) { return operator() (var(n)); }
 
+    ///
+    /// append a double to a collection
+    ///
     var& var::operator () (double n) { return operator() (var(n)); }
 
+    ///
+    /// append a string to a collection
+    ///
     var& var::operator () (const string& s) { return operator() (var(s)); }
 
+    ///
+    /// append a string constant to a collection
+    ///
     var& var::operator () (const char* s) { return operator() (var(s)); }
 
+    ///
+    /// append a wide string to a collection
+    ///
     var& var::operator () (const wstring& s) { return operator() (var(s)); }
 
+    ///
+    /// append a wide string constant to a collection
+    ///
     var& var::operator () (const wchar_t* s) { return operator() (var(s)); }
 
-    /*  append single value
-    */
+    ///
+    /// append a single value to a collection
+    ///
     var& var::operator () (const var& v) {    
         switch (get_type()) {
             case type_null :    throw exception("invalid () operation on $");
@@ -83,8 +102,9 @@ namespace dynamic {
         return *this;
     }
 
-    /*  append value pair
-    */
+    ///
+    /// add a key,value to a dict
+    ///
     var& var::operator () (const var& k, const var& v) {
         switch (get_type()) {
             case type_null :    throw exception("invalid (,) operation on $");
@@ -101,6 +121,9 @@ namespace dynamic {
         return *this;
     }
 
+    ///
+    /// count of objects in a collection or characters in a string
+    ///
     unsigned int var::count() const {
         switch (get_type()) {
             case type_null :    throw exception("invalid .count() operation on $");
@@ -116,6 +139,9 @@ namespace dynamic {
         }
     }
 
+    ///
+    /// index[] operator for collections
+    ///
     var& var::operator [] (int n) {
         switch (get_type()) {
             case type_null :    throw exception("cannot apply [] to $");
@@ -153,16 +179,34 @@ namespace dynamic {
         }
     }
 
+    ///
+    /// index a collection with a double
+    ///
     var& var::operator [] (double n) { return operator[] (var(n)); }
 
+    ///
+    /// index a collection with a string
+    ///
     var& var::operator [] (const string& s) { return operator[] (var(s)); }
 
+    ///
+    /// index a collection with a string constant
+    ///
     var& var::operator [] (const char* s) { return operator[] (var(s)); }
 
+    ///
+    /// index a collection with a wide string
+    ///
     var& var::operator [] (const wstring& s) { return operator[] (var(s)); }
 
+    ///
+    /// index a collection with a wide string constant
+    ///
     var& var::operator [] (const wchar_t* s) { return operator[] (var(s)); }
     
+    ///
+    /// index a collection
+    ///
     var& var::operator [] (const var& v) {    
         switch (get_type()) {
             case type_null :    throw exception("cannot apply [var] to $");
@@ -185,6 +229,9 @@ namespace dynamic {
         }
     }
 
+    ///
+    /// write a var to an ostream
+    ///
     ostream& var::_write_var(ostream& os) {
         switch (get_type()) {
             case type_null :    os << "$"; return os;
@@ -200,6 +247,9 @@ namespace dynamic {
         }
     }
 
+    ///
+    /// write a string to an ostream
+    ///
     ostream& var::_write_string(ostream& os) {
         assert(is_string());
         os << '\'';
@@ -220,6 +270,9 @@ namespace dynamic {
         return os;
     }
 
+    ///
+    /// write a wide string to an ostream
+    ///
     ostream& var::_write_wstring(ostream& os) {
         assert(is_wstring());
         os << '\'';
@@ -240,6 +293,9 @@ namespace dynamic {
         return os;
     }
 
+    ///
+    /// write a collection to an ostream
+    ///
     ostream& var::_write_collection(ostream& os) {
         assert(is_collection());
         switch (get_type())
@@ -269,6 +325,9 @@ namespace dynamic {
         return os;
     }
 
+    ///
+    /// write a var to a wostream
+    ///
     wostream& var::_write_var(wostream& os) {
         switch (get_type()) {
             case type_null :    os << "$"; return os;
@@ -284,6 +343,9 @@ namespace dynamic {
         }
     }
 
+    ///
+    /// write a string to a wostream
+    ///
     wostream& var::_write_string(wostream& os) {
         assert(is_string());
         os << '\'';
@@ -304,6 +366,9 @@ namespace dynamic {
         return os;
     }
 
+    ///
+    /// write a wide string to a wostream
+    ///
     wostream& var::_write_wstring(wostream& os) {
         assert(is_wstring());
         os << '\'';
@@ -324,6 +389,9 @@ namespace dynamic {
         return os;
     }
     
+    ///
+    /// write a collection to a wostream
+    ///
     wostream& var::_write_collection(wostream& os) {
         assert(is_collection());
         switch (get_type())

@@ -27,28 +27,64 @@
 
 namespace dynamic {
 
+    ///
+    /// ctor: init with null ($)
+    ///
     var::var() : _var() {}
 
+    ///
+    /// ctor: init with int
+    ///
     var::var(int n) : _var(n) {}
 
+    ///
+    /// ctor: init with double
+    ///
     var::var(double n) : _var(n) {}
 
+    ///
+    /// ctor: init with string
+    ///
     var::var(const string& s) : _var(string_t(s)) {}
 
+    ///
+    /// ctor: init with string constant
+    ///
     var::var(const char* s) : _var(string_t(s)) {}
-    
+
+    ///
+    /// ctor: init with wide string
+    ///
     var::var(const wstring& s) : _var(wstring_t(s)) {}
 
+    ///
+    /// ctor: init with wide string
+    ///
     var::var(const wchar_t* s) : _var(wstring_t(s)) {}
 
+    ///
+    /// ctor: init with var
+    ///
     var::var(const var& v) : _var(v._var) {}
 
+    ///
+    /// ctor: init with list
+    ///
     var::var(list_ptr _list) : _var(_list) {}
 
+    ///
+    /// ctor: init with array
+    ///
     var::var(array_ptr _array) : _var(_array) {}
 
+    ///
+    /// ctor: init with set
+    ///
     var::var(set_ptr _set) : _var(_set) {}
 
+    ///
+    /// ctor: init with dict
+    ///
     var::var(dict_ptr _dict) : _var(_dict) {}
 
 }

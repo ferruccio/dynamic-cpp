@@ -27,6 +27,9 @@
 
 namespace dynamic {
     
+    ///
+    /// @return iterator to the first item in a collection
+    ///
     var::iterator var::begin() {
         switch (get_type()) {
             case type_null :    throw exception("invalid .begin() operation on $");
@@ -42,6 +45,9 @@ namespace dynamic {
         }
     }
 
+    ///
+    /// @return iterator past the last item in a collection
+    ///
     var::iterator var::end() {
         switch (get_type()) {
             case type_null :    throw exception("invalid .end() operation on $");
@@ -57,6 +63,9 @@ namespace dynamic {
         }
     }
 
+    ///
+    /// pre-increment interator
+    ///
     var::iterator var::iterator::operator++() {
         switch (_iter.which()) {
             case list_type :    return ++get<list_t::iterator&>(_iter);
@@ -67,6 +76,9 @@ namespace dynamic {
         }
     }
 
+    ///
+    /// post-increment iterator
+    ///
     var::iterator var::iterator::operator++(int) {
         switch (_iter.which()) {
             case list_type :    return get<list_t::iterator&>(_iter)++;
@@ -77,6 +89,9 @@ namespace dynamic {
         }
     }
 
+    ///
+    /// pre-decrement iterator
+    ///
     var::iterator var::iterator::operator--() {
         switch (_iter.which()) {
             case list_type :    return --get<list_t::iterator&>(_iter);
@@ -87,6 +102,9 @@ namespace dynamic {
         }
     }
 
+    ///
+    /// post-decement iterator
+    ///
     var::iterator var::iterator::operator--(int) {
         switch (_iter.which()) {
             case list_type :    return get<list_t::iterator&>(_iter)--;
@@ -98,17 +116,25 @@ namespace dynamic {
     }
 
     struct are_strict_equals : public boost::static_visitor<bool> {
+        /// different types are never equal
         template <typename T, typename U>
         bool operator()(const T&, const U&) const { return false; }
 
+        /// same type, apply == operator
         template <typename T>
         bool operator()(const T& lhs, const T& rhs) const { return lhs == rhs; }
     };
 
+    ///
+    /// test two vars for equality
+    ///
     bool var::iterator::operator==(var::iterator rhs) {
         return boost::apply_visitor(are_strict_equals(), _iter, rhs._iter);
     }
 
+    ///
+    /// dereference iterator
+    ///
     var& var::iterator::operator*() {
         switch (_iter.which()) {
             case list_type :    return *get<list_t::iterator>(_iter);
@@ -119,6 +145,9 @@ namespace dynamic {
         }
     }
 
+    ///
+    /// @return reverse_iterator to last item in collection
+    ///
     var::reverse_iterator var::rbegin() {
         switch (get_type()) {
             case type_null :    throw exception("invalid .rbegin() operation on $");
@@ -134,6 +163,9 @@ namespace dynamic {
         }
     }
 
+    ///
+    /// @return reverse_iterator preceding first item in collection
+    ///
     var::reverse_iterator var::rend() {
         switch (get_type()) {
             case type_null :    throw exception("invalid .rend() operation on $");
@@ -149,6 +181,9 @@ namespace dynamic {
         }
     }
 
+    ///
+    /// pre-increment reverse_iterator
+    ///
     var::reverse_iterator var::reverse_iterator::operator++() {
         switch (_riter.which()) {
             case list_type :    return ++get<list_t::reverse_iterator&>(_riter);
@@ -159,6 +194,9 @@ namespace dynamic {
         }
     }
 
+    ///
+    /// post-increment reverse_iterator
+    ///
     var::reverse_iterator var::reverse_iterator::operator++(int) {
         switch (_riter.which()) {
             case list_type :    return get<list_t::reverse_iterator&>(_riter)++;
@@ -169,6 +207,9 @@ namespace dynamic {
         }
     }
 
+    ///
+    /// pre-decrement reverse_iterator
+    ///
     var::reverse_iterator var::reverse_iterator::operator--() {
         switch (_riter.which()) {
             case list_type :    return --get<list_t::reverse_iterator&>(_riter);
@@ -179,6 +220,9 @@ namespace dynamic {
         }
     }
 
+    ///
+    /// post-decrement reverse_iterator
+    ///
     var::reverse_iterator var::reverse_iterator::operator--(int) {
         switch (_riter.which()) {
             case list_type :    return get<list_t::reverse_iterator&>(_riter)--;
@@ -189,6 +233,9 @@ namespace dynamic {
         }
     }
 
+    ///
+    /// test two vars for equality, different types are never equal
+    ///
     bool var::reverse_iterator::operator==(var::reverse_iterator rhs) {
         return boost::apply_visitor(are_strict_equals(), _riter, rhs._riter);
     }

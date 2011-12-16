@@ -24,6 +24,8 @@
 */
 
 #include <sstream>
+#include <iostream>
+
 using namespace std;
 
 #define BOOST_TEST_MODULE dynamic_tests
@@ -154,4 +156,38 @@ BOOST_AUTO_TEST_CASE (simple_assign) {
     ss.str(string());
     ss << vn;
     BOOST_CHECK_EQUAL(ss.str(), "100.5");
+}
+
+BOOST_AUTO_TEST_CASE(Examples) {
+
+    var a = $;  // a is initially null
+    cout << a << endl;
+
+    a = 1;      // a is an now integer
+    cout << a << endl;
+
+    a = 2.5;    // a is now a double
+    cout << a << endl;
+
+    a = "hello, world!"; // a is now a string
+    cout << a << endl;
+
+    a = L"hello, wide world!"; // a is now a wide string
+    cout << a << endl;
+
+    a = new_list(1)(2)(3); // a is now a list of integers
+    cout << a << endl;
+
+    a = new_list(1)(2)(3.5)("hello")(new_array(1)(2.0)("three"));
+    // a is now a list containing 2 ints, a double, a string and an array of three items
+
+    cout << "c: " << a << endl;
+    // some iterator support
+    for (var::iterator i = a.begin(); i != a.end(); ++i)
+        cout << *i << endl;
+
+    a = new_dict("name", "fred")("age", 35)("city", "bedrock")(12, new_array(1)(2)(3)); // keys and values can be any type
+    // a is now a dictionary
+    cout << a << endl;
+
 }

@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2009, Ferruccio Barletta (ferruccio.barletta@gmail.com)
+    Copyright (C) 2009, 2011 Ferruccio Barletta (ferruccio.barletta@gmail.com)
 
     Permission is hereby granted, free of charge, to any person
     obtaining a copy of this software and associated documentation

@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2009, Ferruccio Barletta (ferruccio.barletta@gmail.com)
+    Copyright (C) 2009, 2011 Ferruccio Barletta (ferruccio.barletta@gmail.com)
 
     Permission is hereby granted, free of charge, to any person
     obtaining a copy of this software and associated documentation
@@ -129,12 +129,12 @@ namespace dynamic {
             case type_null :    throw exception("invalid .count() operation on $");
             case type_int :     throw exception("invalid .count() operation on int");
             case type_double :  throw exception("invalid .count() operation on double");
-            case type_string :  return get<string_t>(_var).ps->length();
-            case type_wstring : return get<wstring_t>(_var).ps->length();
-            case type_list :    return get<list_ptr>(_var)->size();
-            case type_array :   return get<array_ptr>(_var)->size();
-            case type_set :     return get<set_ptr>(_var)->size();
-            case type_dict :    return get<dict_ptr>(_var)->size();
+            case type_string :  return static_cast<unsigned int>(get<string_t>(_var).ps->length());
+            case type_wstring : return static_cast<unsigned int>(get<wstring_t>(_var).ps->length());
+            case type_list :    return static_cast<unsigned int>(get<list_ptr>(_var)->size());
+            case type_array :   return static_cast<unsigned int>(get<array_ptr>(_var)->size());
+            case type_set :     return static_cast<unsigned int>(get<set_ptr>(_var)->size());
+            case type_dict :    return static_cast<unsigned int>(get<dict_ptr>(_var)->size());
             default :           throw exception("unhandled .count() operation");
         }
     }

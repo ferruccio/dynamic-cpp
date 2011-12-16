@@ -41,6 +41,8 @@ namespace dynamic {
     using namespace std;
     using namespace boost;
 
+    using boost::shared_ptr;
+
     ///
     /// exception class thrown by Dynamic C++
     ///

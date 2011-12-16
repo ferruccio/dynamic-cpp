@@ -2,7 +2,7 @@ project( dynamic CXX )
 
 cmake_minimum_required( VERSION 2.6 FATAL_ERROR )
 
-find_package( Boost 1.35 REQUIRED )
+find_package( Boost 1.48 REQUIRED )
 
 link_directories ( ${Boost_LIBRARY_DIRS} )
 

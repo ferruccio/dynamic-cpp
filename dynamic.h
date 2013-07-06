@@ -31,6 +31,7 @@
 
 #include <boost/variant.hpp>
 #include <boost/shared_ptr.hpp>
+#include <boost/make_shared.hpp>
 #include <boost/utility.hpp>
 
 ///
@@ -297,17 +298,17 @@ namespace dynamic {
         struct null_t { null_t() {} };
 
         struct string_t {
-            string_t() : ps(new string) {}
-            string_t(const string& s) : ps(new string(s)) {}
-            string_t(const char* s) : ps(new string(s)) {}
+            string_t() : ps(boost::make_shared<string>()) {}
+            string_t(const string& s) : ps(boost::make_shared<string>(s)) {}
+            string_t(const char* s) : ps(boost::make_shared<string>(s)) {}
 
             shared_ptr<string>  ps;
         };
         
         struct wstring_t {
-            wstring_t() : ps(new wstring) {}
-            wstring_t(const wstring& s) : ps(new wstring(s)) {}
-            wstring_t(const wchar_t* s) : ps(new wstring(s)) {}
+            wstring_t() : ps(boost::make_shared<wstring>()) {}
+            wstring_t(const wstring& s) : ps(boost::make_shared<wstring>(s)) {}
+            wstring_t(const wchar_t* s) : ps(boost::make_shared<wstring>(s)) {}
 
             shared_ptr<wstring>  ps;
         };

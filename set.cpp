@@ -23,6 +23,7 @@
     OTHER DEALINGS IN THE SOFTWARE.
 */
 
+#include <boost/make_shared.hpp>
 #include "dynamic.h"
 
 namespace dynamic {
@@ -30,6 +31,6 @@ namespace dynamic {
     ///
     /// create empty set
     ///
-    var var::new_set() { return var(set_ptr(new set_t)); }
+    var var::new_set() { return var(boost::make_shared<set_t>()); }
 
 }

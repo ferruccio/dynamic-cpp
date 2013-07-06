@@ -23,6 +23,7 @@
     OTHER DEALINGS IN THE SOFTWARE.
 */
 
+#include <boost/make_shared.hpp>
 #include "dynamic.h"
 
 namespace dynamic {
@@ -30,6 +31,6 @@ namespace dynamic {
     ///
     /// create empty dict
     ///
-    var var::new_dict() { return var(dict_ptr(new dict_t)); }
+    var var::new_dict() { return var(boost::make_shared<dict_t>()); }
 
 }

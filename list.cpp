@@ -23,6 +23,7 @@
     OTHER DEALINGS IN THE SOFTWARE.
 */
 
+#include <boost/make_shared.hpp>
 #include "dynamic.h"
 
 namespace dynamic {
@@ -30,6 +31,6 @@ namespace dynamic {
     ///
     /// create empty list
     ///
-    var var::new_list() { return var(list_ptr(new list_t)); }
+    var var::new_list() { return var(boost::make_shared<list_t>()); }
 
 }

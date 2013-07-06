@@ -158,9 +158,9 @@ namespace dynamic {
         bool is_numeric() const { return is_int() || is_double(); }
         /// is var a string?
         bool is_string() const { return get_type() == type_string; }
-        /// is var a wide string?
-        bool is_wstring() const { return get_type() == type_string; }
-        /// is var a string type?
+         /// is var a wide string?
+        bool is_wstring() const { return get_type() == type_wstring; }
+         /// is var a string type?
         bool is_string_type() const { return is_string() || is_wstring(); }
         /// is var a list?
         bool is_list() const { return get_type() == type_list; }

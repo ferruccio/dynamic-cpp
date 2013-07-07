@@ -45,7 +45,7 @@ namespace dynamic {
     ///
     /// ctor: init with string
     ///
-    var::var(const string& s) : _var(string_t(s)) {}
+    var::var(const std::string& s) : _var(string_t(s)) {}
 
     ///
     /// ctor: init with string constant
@@ -55,7 +55,7 @@ namespace dynamic {
     ///
     /// ctor: init with wide string
     ///
-    var::var(const wstring& s) : _var(wstring_t(s)) {}
+    var::var(const std::wstring& s) : _var(wstring_t(s)) {}
 
     ///
     /// ctor: init with wide string

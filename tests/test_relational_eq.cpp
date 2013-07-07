@@ -32,7 +32,7 @@ using namespace dynamic;
 static const int _via = 10, _vib = 50;
 static const double _vda = 10.0, _vdb  = 50.0;
 static const char *_vca = "hello", *_vcb = "world";
-static const string _vsa = "hello", _vsb = "world";
+static const std::string _vsa = "hello", _vsb = "world";
 
 struct eq_fixture {
     eq_fixture()

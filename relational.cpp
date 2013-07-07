@@ -44,7 +44,7 @@ namespace dynamic {
     ///
     /// var == string
     ///
-    bool var::operator == (const string& s) const {
+    bool var::operator == (const std::string& s) const {
         return is_string() && *boost::get<string_t>(_var).ps == s;
     }
 
@@ -58,7 +58,7 @@ namespace dynamic {
     ///
     /// var == wide string
     ///
-    bool var::operator == (const wstring& s) const {
+    bool var::operator == (const std::wstring& s) const {
         return is_wstring() && *boost::get<wstring_t>(_var).ps == s;
     }
 
@@ -104,7 +104,7 @@ namespace dynamic {
     ///
     /// var != string
     ///
-    bool var::operator != (const string& s) const {
+    bool var::operator != (const std::string& s) const {
         return !is_string() || *boost::get<string_t>(_var).ps != s;
     }
 
@@ -118,7 +118,7 @@ namespace dynamic {
     ///
     /// var != wide string
     ///
-    bool var::operator != (const wstring& s) const {
+    bool var::operator != (const std::wstring& s) const {
         return !is_wstring() || *boost::get<wstring_t>(_var).ps != s;
     }
 
@@ -166,7 +166,7 @@ namespace dynamic {
     ///
     /// var < string
     ///
-    bool var::operator < (const string& s) const {
+    bool var::operator < (const std::string& s) const {
         if (is_string()) return *boost::get<string_t>(_var).ps < s;
         throw exception("invalid < comparison to string");
     }
@@ -182,7 +182,7 @@ namespace dynamic {
     ///
     /// var < wide string
     ///
-    bool var::operator < (const wstring& s) const {
+    bool var::operator < (const std::wstring& s) const {
         if (is_wstring()) return *boost::get<wstring_t>(_var).ps < s;
         throw exception("invalid < comparison to wstring");
     }
@@ -232,7 +232,7 @@ namespace dynamic {
     ///
     /// var <= string
     ///
-    bool var::operator <= (const string& s) const {
+    bool var::operator <= (const std::string& s) const {
         if (is_string()) return *boost::get<string_t>(_var).ps <= s;
         throw exception("invalid <= comparison to string");
     }
@@ -248,7 +248,7 @@ namespace dynamic {
     ///
     /// var <= wide string
     ///
-    bool var::operator <= (const wstring& s) const {
+    bool var::operator <= (const std::wstring& s) const {
         if (is_wstring()) return *boost::get<wstring_t>(_var).ps <= s;
         throw exception("invalid <= comparison to wstring");
     }
@@ -298,7 +298,7 @@ namespace dynamic {
     ///
     /// var > string
     ///
-    bool var::operator > (const string& s) const {
+    bool var::operator > (const std::string& s) const {
         if (is_string()) return *boost::get<string_t>(_var).ps > s;
         throw exception("invalid > comparison to string");
     }
@@ -313,7 +313,7 @@ namespace dynamic {
     ///
     /// var > wide string
     ///
-    bool var::operator > (const wstring& s) const {
+    bool var::operator > (const std::wstring& s) const {
         if (is_wstring()) return *boost::get<wstring_t>(_var).ps > s;
         throw exception("invalid > comparison to wstring");
     }
@@ -363,7 +363,7 @@ namespace dynamic {
     ///
     /// var >= string
     ///
-    bool var::operator >= (const string& s) const {
+    bool var::operator >= (const std::string& s) const {
         if (is_string()) return *boost::get<string_t>(_var).ps >= s;
         throw exception("invalid >= comparison to string");
     }
@@ -379,7 +379,7 @@ namespace dynamic {
     ///
     /// var >= wide string
     ///
-    bool var::operator >= (const wstring& s) const {
+    bool var::operator >= (const std::wstring& s) const {
         if (is_wstring()) return *boost::get<wstring_t>(_var).ps >= s;
         throw exception("invalid >= comparison to wstring");
     }

@@ -39,8 +39,6 @@
 ///
 namespace dynamic {
 
-    using namespace std;
-
     ///
     /// exception class thrown by Dynamic C++
     ///
@@ -77,72 +75,72 @@ namespace dynamic {
         var();
         var(int n);
         var(double n);
-        var(const string& s);
+        var(const std::string& s);
         var(const char* s);
-        var(const wstring& s);
+        var(const std::wstring& s);
         var(const wchar_t* s);
         var(const var& v);
 
         var& operator = (int n);
         var& operator = (double n);
-        var& operator = (const string& s);
+        var& operator = (const std::string& s);
         var& operator = (const char* s);
-        var& operator = (const wstring& s);
+        var& operator = (const std::wstring& s);
         var& operator = (const wchar_t* s);
         var& operator = (const var& v);
 
         operator int() const;
         operator double() const;
-        operator string() const;
-        operator wstring() const;
+        operator std::string() const;
+        operator std::wstring() const;
 
-        string type() const;
+        std::string type() const;
 
         bool operator == (int n) const;
         bool operator == (double n) const;
-        bool operator == (const string& s) const;
+        bool operator == (const std::string& s) const;
         bool operator == (const char* s) const;
-        bool operator == (const wstring& s) const;
+        bool operator == (const std::wstring& s) const;
         bool operator == (const wchar_t* s) const;
         bool operator == (const var& v) const;
 
         bool operator != (int n) const;
         bool operator != (double n) const;
-        bool operator != (const string& s) const;
+        bool operator != (const std::string& s) const;
         bool operator != (const char* s) const;
-        bool operator != (const wstring& s) const;
+        bool operator != (const std::wstring& s) const;
         bool operator != (const wchar_t* s) const;
         bool operator != (const var& v) const;
 
         bool operator < (int n) const;
         bool operator < (double n) const;
-        bool operator < (const string& s) const;
+        bool operator < (const std::string& s) const;
         bool operator < (const char* s) const;
-        bool operator < (const wstring& s) const;
+        bool operator < (const std::wstring& s) const;
         bool operator < (const wchar_t* s) const;
         bool operator < (const var& v) const;
 
         bool operator <= (int n) const;
         bool operator <= (double n) const;
-        bool operator <= (const string& s) const;
+        bool operator <= (const std::string& s) const;
         bool operator <= (const char* s) const;
-        bool operator <= (const wstring& s) const;
+        bool operator <= (const std::wstring& s) const;
         bool operator <= (const wchar_t* s) const;
         bool operator <= (const var& v) const;
 
         bool operator > (int n) const;
         bool operator > (double n) const;
-        bool operator > (const string& s) const;
+        bool operator > (const std::string& s) const;
         bool operator > (const char* s) const;
-        bool operator > (const wstring& s) const;
+        bool operator > (const std::wstring& s) const;
         bool operator > (const wchar_t* s) const;
         bool operator > (const var& v) const;
 
         bool operator >= (int n) const;
         bool operator >= (double n) const;
-        bool operator >= (const string& s) const;
+        bool operator >= (const std::string& s) const;
         bool operator >= (const char* s) const;
-        bool operator >= (const wstring& s) const;
+        bool operator >= (const std::wstring& s) const;
         bool operator >= (const wchar_t* s) const;
         bool operator >= (const var& v) const;
         
@@ -173,22 +171,22 @@ namespace dynamic {
 
         var& operator () (int n);
         var& operator () (double n);
-        var& operator () (const string& s);
+        var& operator () (const std::string& s);
         var& operator () (const char* s);
-        var& operator () (const wstring& s);
+        var& operator () (const std::wstring& s);
         var& operator () (const wchar_t* s);
         var& operator () (const var& v);
         var& operator () (const var& k, const var& v);
         
-        ostream& _write_var(ostream& os);
-        ostream& _write_string(ostream& os);
-        ostream& _write_wstring(ostream& os);
-        ostream& _write_collection(ostream& os);
+        std::ostream& _write_var(std::ostream& os);
+        std::ostream& _write_string(std::ostream& os);
+        std::ostream& _write_wstring(std::ostream& os);
+        std::ostream& _write_collection(std::ostream& os);
 
-        wostream& _write_var(wostream& os);
-        wostream& _write_string(wostream& os);
-        wostream& _write_wstring(wostream& os);
-        wostream& _write_collection(wostream& os);
+        std::wostream& _write_var(std::wostream& os);
+        std::wostream& _write_string(std::wostream& os);
+        std::wostream& _write_wstring(std::wostream& os);
+        std::wostream& _write_collection(std::wostream& os);
         
         static var new_list();
         static var new_array();
@@ -198,9 +196,9 @@ namespace dynamic {
         unsigned int count() const;
         var& operator [] (int n);
         var& operator [] (double n);
-        var& operator [] (const string& s);
+        var& operator [] (const std::string& s);
         var& operator [] (const char* s);
-        var& operator [] (const wstring& s);
+        var& operator [] (const std::wstring& s);
         var& operator [] (const wchar_t* s);
         var& operator [] (const var& v);
 
@@ -295,19 +293,19 @@ namespace dynamic {
         struct null_t { null_t() {} };
 
         struct string_t {
-            string_t() : ps(boost::make_shared<string>()) {}
-            string_t(const string& s) : ps(boost::make_shared<string>(s)) {}
-            string_t(const char* s) : ps(boost::make_shared<string>(s)) {}
+            string_t() : ps(boost::make_shared<std::string>()) {}
+            string_t(const std::string& s) : ps(boost::make_shared<std::string>(s)) {}
+            string_t(const char* s) : ps(boost::make_shared<std::string>(s)) {}
 
-            boost::shared_ptr<string>  ps;
+            boost::shared_ptr<std::string>  ps;
         };
         
         struct wstring_t {
-            wstring_t() : ps(boost::make_shared<wstring>()) {}
-            wstring_t(const wstring& s) : ps(boost::make_shared<wstring>(s)) {}
-            wstring_t(const wchar_t* s) : ps(boost::make_shared<wstring>(s)) {}
+            wstring_t() : ps(boost::make_shared<std::wstring>()) {}
+            wstring_t(const std::wstring& s) : ps(boost::make_shared<std::wstring>(s)) {}
+            wstring_t(const wchar_t* s) : ps(boost::make_shared<std::wstring>(s)) {}
 
-            boost::shared_ptr<wstring>  ps;
+            boost::shared_ptr<std::wstring>  ps;
         };
 
         typedef int int_t;
@@ -345,9 +343,9 @@ namespace dynamic {
     };
 
     /// ostream << var
-    inline ostream& operator << (ostream& os, var& v) { return v._write_var(os); }
+    inline std::ostream& operator << (std::ostream& os, var& v) { return v._write_var(os); }
     /// wostream << var
-    inline wostream& operator << (wostream& os, var& v) { return v._write_var(os); }
+    inline std::wostream& operator << (std::wostream& os, var& v) { return v._write_var(os); }
 
     /// create empty list
     inline var new_list() { return var::new_list(); }

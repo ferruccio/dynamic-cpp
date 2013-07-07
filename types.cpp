@@ -52,7 +52,7 @@ namespace dynamic {
     ///
     /// cast to string
     ///
-    var::operator string() const {
+    var::operator std::string() const {
         try {
             return *boost::get<string_t>(_var).ps;
         } catch (const boost::bad_get&) {
@@ -63,7 +63,7 @@ namespace dynamic {
     ///
     /// cast to wide string
     ///
-    var::operator wstring() const {
+    var::operator std::wstring() const {
         try {
             return *boost::get<wstring_t>(_var).ps;
         } catch (const boost::bad_get&) {
@@ -74,7 +74,7 @@ namespace dynamic {
     ///
     /// @return type name
     ///
-    string var::type() const {
+    std::string var::type() const {
         switch (get_type()) {
             case type_null :    return "null";
             case type_int :     return "int";

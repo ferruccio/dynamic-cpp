@@ -66,7 +66,7 @@ namespace dynamic {
     ///
     /// append a string to a collection
     ///
-    var& var::operator () (const string& s) { return operator() (var(s)); }
+    var& var::operator () (const std::string& s) { return operator() (var(s)); }
 
     ///
     /// append a string constant to a collection
@@ -76,7 +76,7 @@ namespace dynamic {
     ///
     /// append a wide string to a collection
     ///
-    var& var::operator () (const wstring& s) { return operator() (var(s)); }
+    var& var::operator () (const std::wstring& s) { return operator() (var(s)); }
 
     ///
     /// append a wide string constant to a collection
@@ -96,7 +96,7 @@ namespace dynamic {
             case type_list :    boost::get<list_ptr>(_var)->push_back(v); break;
             case type_array :   boost::get<array_ptr>(_var)->push_back(v); break;
             case type_set :     boost::get<set_ptr>(_var)->insert(v); break;
-            case type_dict :    boost::get<dict_ptr>(_var)->insert(make_pair<var,var>(v, $)); break;
+            case type_dict :    boost::get<dict_ptr>(_var)->insert(std::make_pair<var,var>(v, $)); break;
             default :           throw exception("unhandled () operation");
         }
         return *this;
@@ -115,7 +115,7 @@ namespace dynamic {
             case type_list :    throw exception("invalid (,) operation on list");
             case type_array :   throw exception("invalid (,) operation on array");
             case type_set :     throw exception("invalid (,) operation on set");
-            case type_dict :    boost::get<dict_ptr>(_var)->insert(make_pair<var,var>(k, v)); break;
+            case type_dict :    boost::get<dict_ptr>(_var)->insert(std::make_pair<var,var>(k, v)); break;
             default :           throw exception("unhandled (,) operation");
         }
         return *this;
@@ -187,7 +187,7 @@ namespace dynamic {
     ///
     /// index a collection with a string
     ///
-    var& var::operator [] (const string& s) { return operator[] (var(s)); }
+    var& var::operator [] (const std::string& s) { return operator[] (var(s)); }
 
     ///
     /// index a collection with a string constant
@@ -197,7 +197,7 @@ namespace dynamic {
     ///
     /// index a collection with a wide string
     ///
-    var& var::operator [] (const wstring& s) { return operator[] (var(s)); }
+    var& var::operator [] (const std::wstring& s) { return operator[] (var(s)); }
 
     ///
     /// index a collection with a wide string constant
@@ -232,7 +232,7 @@ namespace dynamic {
     ///
     /// write a var to an ostream
     ///
-    ostream& var::_write_var(ostream& os) {
+    std::ostream& var::_write_var(std::ostream& os) {
         switch (get_type()) {
             case type_null :    os << "$"; return os;
             case type_int :     os << boost::get<int>(_var); return os;
@@ -250,7 +250,7 @@ namespace dynamic {
     ///
     /// write a string to an ostream
     ///
-    ostream& var::_write_string(ostream& os) {
+    std::ostream& var::_write_string(std::ostream& os) {
         assert(is_string());
         os << '\'';
         for (const char* s = (*boost::get<string_t>(_var).ps).c_str(); *s; ++s)
@@ -263,7 +263,7 @@ namespace dynamic {
                 case '\\' : os << "\\\\"; break;
                 case '\'' : os << "\\'"; break;
                 default :
-                    if (*s < ' ') os << "0" << oct << setw(3) << setfill('0') << int(*s);
+                    if (*s < ' ') os << "0" << std::oct << std::setw(3) << std::setfill('0') << int(*s);
                     else os << *s;
             }
         os << '\'';
@@ -273,7 +273,7 @@ namespace dynamic {
     ///
     /// write a wide string to an ostream
     ///
-    ostream& var::_write_wstring(ostream& os) {
+    std::ostream& var::_write_wstring(std::ostream& os) {
         assert(is_wstring());
         os << '\'';
         for (const wchar_t* s = (*boost::get<wstring_t>(_var).ps).c_str(); *s; ++s)
@@ -286,7 +286,7 @@ namespace dynamic {
                 case '\\' : os << L"\\\\"; break;
                 case '\'' : os << L"\\'"; break;
                 default :
-                    if (*s < ' ') os << L"0" << oct << setw(3) << setfill('0') << int(*s);
+                    if (*s < ' ') os << L"0" << std::oct << std::setw(3) << std::setfill('0') << int(*s);
                     else os << *s;
             }
         os << '\'';
@@ -296,7 +296,7 @@ namespace dynamic {
     ///
     /// write a collection to an ostream
     ///
-    ostream& var::_write_collection(ostream& os) {
+    std::ostream& var::_write_collection(std::ostream& os) {
         assert(is_collection());
         switch (get_type())
         {
@@ -328,7 +328,7 @@ namespace dynamic {
     ///
     /// write a var to a wostream
     ///
-    wostream& var::_write_var(wostream& os) {
+    std::wostream& var::_write_var(std::wostream& os) {
         switch (get_type()) {
             case type_null :    os << "$"; return os;
             case type_int :     os << boost::get<int>(_var); return os;
@@ -346,7 +346,7 @@ namespace dynamic {
     ///
     /// write a string to a wostream
     ///
-    wostream& var::_write_string(wostream& os) {
+    std::wostream& var::_write_string(std::wostream& os) {
         assert(is_string());
         os << '\'';
         for (const char* s = (*boost::get<string_t>(_var).ps).c_str(); *s; ++s)
@@ -359,7 +359,7 @@ namespace dynamic {
                 case '\\' : os << "\\\\"; break;
                 case '\'' : os << "\\'"; break;
                 default :
-                    if (*s < ' ') os << "0" << oct << setw(3) << setfill(L'0') << int(*s);
+                    if (*s < ' ') os << "0" << std::oct << std::setw(3) << std::setfill(L'0') << int(*s);
                     else os << *s;
             }
         os << '\'';
@@ -369,7 +369,7 @@ namespace dynamic {
     ///
     /// write a wide string to a wostream
     ///
-    wostream& var::_write_wstring(wostream& os) {
+    std::wostream& var::_write_wstring(std::wostream& os) {
         assert(is_wstring());
         os << '\'';
         for (const wchar_t* s = (*boost::get<wstring_t>(_var).ps).c_str(); *s; ++s)
@@ -382,7 +382,7 @@ namespace dynamic {
                 case '\\' : os << L"\\\\"; break;
                 case '\'' : os << L"\\'"; break;
                 default :
-                    if (*s < ' ') os << "0" << oct << setw(3) << setfill(L'0') << int(*s);
+                    if (*s < ' ') os << "0" << std::oct << std::setw(3) << std::setfill(L'0') << int(*s);
                     else os << *s;
             }
         os << '\'';
@@ -392,7 +392,7 @@ namespace dynamic {
     ///
     /// write a collection to a wostream
     ///
-    wostream& var::_write_collection(wostream& os) {
+    std::wostream& var::_write_collection(std::wostream& os) {
         assert(is_collection());
         switch (get_type())
         {

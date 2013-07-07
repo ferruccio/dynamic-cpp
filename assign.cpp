@@ -46,7 +46,7 @@ namespace dynamic {
     ///
     /// assign string to var
     ///
-    var& var::operator = (const string& s) {
+    var& var::operator = (const std::string& s) {
         _var = string_t(s);
         return *this;
     }
@@ -62,7 +62,7 @@ namespace dynamic {
     ///
     /// assign wide string to var
     ///
-    var& var::operator = (const wstring& s) {
+    var& var::operator = (const std::wstring& s) {
         _var = wstring_t(s);
         return *this;
     }

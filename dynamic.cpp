@@ -40,10 +40,10 @@ namespace dynamic {
         // they are of the same type, order by value
         switch (lht) {
             case type_null : return false;
-            case type_int : return get<int_t>(lhs._var) < get<int_t>(rhs._var);
-            case type_double : return get<double_t>(lhs._var) < get<double_t>(rhs._var);
-            case type_string : return *(get<string_t>(lhs._var).ps) < *(get<string_t>(rhs._var).ps);
-            case type_wstring : return *(get<wstring_t>(lhs._var).ps) < *(get<wstring_t>(rhs._var).ps);
+            case type_int : return boost::get<int_t>(lhs._var) < boost::get<int_t>(rhs._var);
+            case type_double : return boost::get<double_t>(lhs._var) < boost::get<double_t>(rhs._var);
+            case type_string : return *(boost::get<string_t>(lhs._var).ps) < *(boost::get<string_t>(rhs._var).ps);
+            case type_wstring : return *(boost::get<wstring_t>(lhs._var).ps) < *(boost::get<wstring_t>(rhs._var).ps);
             case type_list :
             case type_array :
             case type_set :
@@ -93,10 +93,10 @@ namespace dynamic {
             case type_double :  throw exception("invalid () operation on double");
             case type_string :  throw exception("invalid () operation on string");
             case type_wstring : throw exception("invalid () operation on wstring");
-            case type_list :    get<list_ptr>(_var)->push_back(v); break;
-            case type_array :   get<array_ptr>(_var)->push_back(v); break;
-            case type_set :     get<set_ptr>(_var)->insert(v); break;
-            case type_dict :    get<dict_ptr>(_var)->insert(make_pair<var,var>(v, $)); break;
+            case type_list :    boost::get<list_ptr>(_var)->push_back(v); break;
+            case type_array :   boost::get<array_ptr>(_var)->push_back(v); break;
+            case type_set :     boost::get<set_ptr>(_var)->insert(v); break;
+            case type_dict :    boost::get<dict_ptr>(_var)->insert(make_pair<var,var>(v, $)); break;
             default :           throw exception("unhandled () operation");
         }
         return *this;
@@ -115,7 +115,7 @@ namespace dynamic {
             case type_list :    throw exception("invalid (,) operation on list");
             case type_array :   throw exception("invalid (,) operation on array");
             case type_set :     throw exception("invalid (,) operation on set");
-            case type_dict :    get<dict_ptr>(_var)->insert(make_pair<var,var>(k, v)); break;
+            case type_dict :    boost::get<dict_ptr>(_var)->insert(make_pair<var,var>(k, v)); break;
             default :           throw exception("unhandled (,) operation");
         }
         return *this;
@@ -129,12 +129,12 @@ namespace dynamic {
             case type_null :    throw exception("invalid .count() operation on $");
             case type_int :     throw exception("invalid .count() operation on int");
             case type_double :  throw exception("invalid .count() operation on double");
-            case type_string :  return static_cast<unsigned int>(get<string_t>(_var).ps->length());
-            case type_wstring : return static_cast<unsigned int>(get<wstring_t>(_var).ps->length());
-            case type_list :    return static_cast<unsigned int>(get<list_ptr>(_var)->size());
-            case type_array :   return static_cast<unsigned int>(get<array_ptr>(_var)->size());
-            case type_set :     return static_cast<unsigned int>(get<set_ptr>(_var)->size());
-            case type_dict :    return static_cast<unsigned int>(get<dict_ptr>(_var)->size());
+            case type_string :  return static_cast<unsigned int>(boost::get<string_t>(_var).ps->length());
+            case type_wstring : return static_cast<unsigned int>(boost::get<wstring_t>(_var).ps->length());
+            case type_list :    return static_cast<unsigned int>(boost::get<list_ptr>(_var)->size());
+            case type_array :   return static_cast<unsigned int>(boost::get<array_ptr>(_var)->size());
+            case type_set :     return static_cast<unsigned int>(boost::get<set_ptr>(_var)->size());
+            case type_dict :    return static_cast<unsigned int>(boost::get<dict_ptr>(_var)->size());
             default :           throw exception("unhandled .count() operation");
         }
     }
@@ -150,26 +150,26 @@ namespace dynamic {
             case type_string :  throw exception("cannot apply [] to string");
             case type_wstring : throw exception("cannot apply [] to wstring");
             case type_list :    {
-                                    list_ptr& l = get<list_ptr>(_var);
+                                    list_ptr& l = boost::get<list_ptr>(_var);
                                     if (n < 0 || n >= int(l->size())) throw exception("[] out of range in list");
                                     list_t::iterator li = l->begin();
                                     advance(li, n);
                                     return *li;
                                 }
             case type_array :   {
-                                    array_ptr& a = get<array_ptr>(_var);
+                                    array_ptr& a = boost::get<array_ptr>(_var);
                                     if (n < 0 || n >= int(a->size())) throw exception("[] out of range in array");
                                     return (*a)[n];
                                 }
             case type_set :     {
-                                    set_ptr& s = get<set_ptr>(_var);
+                                    set_ptr& s = boost::get<set_ptr>(_var);
                                     if (n < 0 || n >= int(s->size())) throw exception("[] out of range in set");
                                     set_t::iterator si = s->begin();
                                     advance(si, n);
                                     return const_cast<var&>(*si);
                                 }
             case type_dict :    {
-                                    dict_ptr& d = get<dict_ptr>(_var);
+                                    dict_ptr& d = boost::get<dict_ptr>(_var);
                                     var key(n);
                                     dict_t::iterator di = d->find(key);
                                     if (di == d->end()) throw exception("[] not found in dict");
@@ -219,7 +219,7 @@ namespace dynamic {
             case type_set :     throw exception("set[] requires int");
             case type_dict :    {
                                     var key(v);
-                                    dict_ptr& d = get<dict_ptr>(_var);
+                                    dict_ptr& d = boost::get<dict_ptr>(_var);
                                     dict_t::iterator di = d->find(key);
                                     if (di != d->end()) return di->second;
                                     (*d)[key] = $;
@@ -235,8 +235,8 @@ namespace dynamic {
     ostream& var::_write_var(ostream& os) {
         switch (get_type()) {
             case type_null :    os << "$"; return os;
-            case type_int :     os << get<int>(_var); return os;
-            case type_double :  os << get<double>(_var); return os;
+            case type_int :     os << boost::get<int>(_var); return os;
+            case type_double :  os << boost::get<double>(_var); return os;
             case type_string :  return _write_string(os);
             case type_wstring : return _write_wstring(os);
             case type_list :
@@ -253,7 +253,7 @@ namespace dynamic {
     ostream& var::_write_string(ostream& os) {
         assert(is_string());
         os << '\'';
-        for (const char* s = (*get<string_t>(_var).ps).c_str(); *s; ++s)
+        for (const char* s = (*boost::get<string_t>(_var).ps).c_str(); *s; ++s)
             switch (*s) {
                 case '\b' : os << "\\b"; break;
                 case '\r' : os << "\\r"; break;
@@ -276,7 +276,7 @@ namespace dynamic {
     ostream& var::_write_wstring(ostream& os) {
         assert(is_wstring());
         os << '\'';
-        for (const wchar_t* s = (*get<wstring_t>(_var).ps).c_str(); *s; ++s)
+        for (const wchar_t* s = (*boost::get<wstring_t>(_var).ps).c_str(); *s; ++s)
             switch (*s) {
                 case '\b' : os << L"\\b"; break;
                 case '\r' : os << L"\\r"; break;
@@ -331,8 +331,8 @@ namespace dynamic {
     wostream& var::_write_var(wostream& os) {
         switch (get_type()) {
             case type_null :    os << "$"; return os;
-            case type_int :     os << get<int>(_var); return os;
-            case type_double :  os << get<double>(_var); return os;
+            case type_int :     os << boost::get<int>(_var); return os;
+            case type_double :  os << boost::get<double>(_var); return os;
             case type_string :  return _write_string(os);
             case type_wstring : return _write_wstring(os);
             case type_list :
@@ -349,7 +349,7 @@ namespace dynamic {
     wostream& var::_write_string(wostream& os) {
         assert(is_string());
         os << '\'';
-        for (const char* s = (*get<string_t>(_var).ps).c_str(); *s; ++s)
+        for (const char* s = (*boost::get<string_t>(_var).ps).c_str(); *s; ++s)
             switch (*s) {
                 case '\b' : os << "\\b"; break;
                 case '\r' : os << "\\r"; break;
@@ -372,7 +372,7 @@ namespace dynamic {
     wostream& var::_write_wstring(wostream& os) {
         assert(is_wstring());
         os << '\'';
-        for (const wchar_t* s = (*get<wstring_t>(_var).ps).c_str(); *s; ++s)
+        for (const wchar_t* s = (*boost::get<wstring_t>(_var).ps).c_str(); *s; ++s)
             switch (*s) {
                 case '\b' : os << L"\\b"; break;
                 case '\r' : os << L"\\r"; break;

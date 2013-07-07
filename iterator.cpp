@@ -37,10 +37,10 @@ namespace dynamic {
             case type_double :  throw exception("invalid .begin() operation on double");
             case type_string :  throw exception("invalid .begin() operation on string");
             case type_wstring : throw exception("invalid .begin() operation on wstring");
-            case type_list :    return get<list_ptr>(_var)->begin();
-            case type_array :   return get<array_ptr>(_var)->begin();
-            case type_set :     return get<set_ptr>(_var)->begin();
-            case type_dict :    return get<dict_ptr>(_var)->begin();
+            case type_list :    return boost::get<list_ptr>(_var)->begin();
+            case type_array :   return boost::get<array_ptr>(_var)->begin();
+            case type_set :     return boost::get<set_ptr>(_var)->begin();
+            case type_dict :    return boost::get<dict_ptr>(_var)->begin();
             default :           throw exception("unhandled .begin() operation");
         }
     }
@@ -55,10 +55,10 @@ namespace dynamic {
             case type_double :  throw exception("invalid .end() operation on double");
             case type_string :  throw exception("invalid .end() operation on string");
             case type_wstring : throw exception("invalid .end() operation on wstring");
-            case type_list :    return get<list_ptr>(_var)->end();
-            case type_array :   return get<array_ptr>(_var)->end();
-            case type_set :     return get<set_ptr>(_var)->end();
-            case type_dict :    return get<dict_ptr>(_var)->end();
+            case type_list :    return boost::get<list_ptr>(_var)->end();
+            case type_array :   return boost::get<array_ptr>(_var)->end();
+            case type_set :     return boost::get<set_ptr>(_var)->end();
+            case type_dict :    return boost::get<dict_ptr>(_var)->end();
             default :           throw exception("unhandled .end() operation");
         }
     }
@@ -68,10 +68,10 @@ namespace dynamic {
     ///
     var::iterator var::iterator::operator++() {
         switch (_iter.which()) {
-            case list_type :    return ++get<list_t::iterator&>(_iter);
-            case array_type :   return ++get<array_t::iterator&>(_iter);
-            case set_type :     return ++get<set_t::iterator&>(_iter);
-            case dict_type :    return ++get<dict_t::iterator&>(_iter);
+            case list_type :    return ++boost::get<list_t::iterator&>(_iter);
+            case array_type :   return ++boost::get<array_t::iterator&>(_iter);
+            case set_type :     return ++boost::get<set_t::iterator&>(_iter);
+            case dict_type :    return ++boost::get<dict_t::iterator&>(_iter);
             default :           throw exception("unhandled ++iter");
         }
     }
@@ -81,10 +81,10 @@ namespace dynamic {
     ///
     var::iterator var::iterator::operator++(int) {
         switch (_iter.which()) {
-            case list_type :    return get<list_t::iterator&>(_iter)++;
-            case array_type :   return get<array_t::iterator&>(_iter)++;
-            case set_type :     return get<set_t::iterator&>(_iter)++;
-            case dict_type :    return get<dict_t::iterator&>(_iter)++;
+            case list_type :    return boost::get<list_t::iterator&>(_iter)++;
+            case array_type :   return boost::get<array_t::iterator&>(_iter)++;
+            case set_type :     return boost::get<set_t::iterator&>(_iter)++;
+            case dict_type :    return boost::get<dict_t::iterator&>(_iter)++;
             default :           throw exception("unhandled iter++");
         }
     }
@@ -94,10 +94,10 @@ namespace dynamic {
     ///
     var::iterator var::iterator::operator--() {
         switch (_iter.which()) {
-            case list_type :    return --get<list_t::iterator&>(_iter);
-            case array_type :   return --get<array_t::iterator&>(_iter);
-            case set_type :     return --get<set_t::iterator&>(_iter);
-            case dict_type :    return --get<dict_t::iterator&>(_iter);
+            case list_type :    return --boost::get<list_t::iterator&>(_iter);
+            case array_type :   return --boost::get<array_t::iterator&>(_iter);
+            case set_type :     return --boost::get<set_t::iterator&>(_iter);
+            case dict_type :    return --boost::get<dict_t::iterator&>(_iter);
             default :           throw exception("unhandled --iter");
         }
     }
@@ -107,10 +107,10 @@ namespace dynamic {
     ///
     var::iterator var::iterator::operator--(int) {
         switch (_iter.which()) {
-            case list_type :    return get<list_t::iterator&>(_iter)--;
-            case array_type :   return get<array_t::iterator&>(_iter)--;
-            case set_type :     return get<set_t::iterator&>(_iter)--;
-            case dict_type :    return get<dict_t::iterator&>(_iter)++;
+            case list_type :    return boost::get<list_t::iterator&>(_iter)--;
+            case array_type :   return boost::get<array_t::iterator&>(_iter)--;
+            case set_type :     return boost::get<set_t::iterator&>(_iter)--;
+            case dict_type :    return boost::get<dict_t::iterator&>(_iter)++;
             default :           throw exception("unhandled iter--");
         }
     }
@@ -137,10 +137,10 @@ namespace dynamic {
     ///
     var& var::iterator::operator*() {
         switch (_iter.which()) {
-            case list_type :    return *get<list_t::iterator>(_iter);
-            case array_type :   return *get<array_t::iterator>(_iter);
-            case set_type :     return const_cast<var&>(*get<set_t::iterator>(_iter));
-            case dict_type :    return const_cast<var&>(get<dict_t::iterator>(_iter)->first);
+            case list_type :    return *boost::get<list_t::iterator>(_iter);
+            case array_type :   return *boost::get<array_t::iterator>(_iter);
+            case set_type :     return const_cast<var&>(*boost::get<set_t::iterator>(_iter));
+            case dict_type :    return const_cast<var&>(boost::get<dict_t::iterator>(_iter)->first);
             default :           throw exception("unhandled *iter");
         }
     }
@@ -155,10 +155,10 @@ namespace dynamic {
             case type_double :  throw exception("invalid .rbegin() operation on double");
             case type_string :  throw exception("invalid .rbegin() operation on string");
             case type_wstring : throw exception("invalid .rbegin() operation on wstring");
-            case type_list :    return get<list_ptr>(_var)->rbegin();
-            case type_array :   return get<array_ptr>(_var)->rbegin();
-            case type_set :     return get<set_ptr>(_var)->rbegin();
-            case type_dict :    return get<dict_ptr>(_var)->rbegin();
+            case type_list :    return boost::get<list_ptr>(_var)->rbegin();
+            case type_array :   return boost::get<array_ptr>(_var)->rbegin();
+            case type_set :     return boost::get<set_ptr>(_var)->rbegin();
+            case type_dict :    return boost::get<dict_ptr>(_var)->rbegin();
             default :           throw exception("unhandled .rbegin() operation");
         }
     }
@@ -173,10 +173,10 @@ namespace dynamic {
             case type_double :  throw exception("invalid .rend() operation on double");
             case type_string :  throw exception("invalid .rend() operation on string");
             case type_wstring : throw exception("invalid .rend() operation on wstring");
-            case type_list :    return get<list_ptr>(_var)->rend();
-            case type_array :   return get<array_ptr>(_var)->rend();
-            case type_set :     return get<set_ptr>(_var)->rend();
-            case type_dict :    return get<dict_ptr>(_var)->rend();
+            case type_list :    return boost::get<list_ptr>(_var)->rend();
+            case type_array :   return boost::get<array_ptr>(_var)->rend();
+            case type_set :     return boost::get<set_ptr>(_var)->rend();
+            case type_dict :    return boost::get<dict_ptr>(_var)->rend();
             default :           throw exception("unhandled .rend() operation");
         }
     }
@@ -186,10 +186,10 @@ namespace dynamic {
     ///
     var::reverse_iterator var::reverse_iterator::operator++() {
         switch (_riter.which()) {
-            case list_type :    return ++get<list_t::reverse_iterator&>(_riter);
-            case array_type :   return ++get<array_t::reverse_iterator&>(_riter);
-            case set_type :     return ++get<set_t::reverse_iterator&>(_riter);
-            case dict_type :    return ++get<dict_t::reverse_iterator&>(_riter);
+            case list_type :    return ++boost::get<list_t::reverse_iterator&>(_riter);
+            case array_type :   return ++boost::get<array_t::reverse_iterator&>(_riter);
+            case set_type :     return ++boost::get<set_t::reverse_iterator&>(_riter);
+            case dict_type :    return ++boost::get<dict_t::reverse_iterator&>(_riter);
             default :           throw exception("unhandled ++riter");
         }
     }
@@ -199,10 +199,10 @@ namespace dynamic {
     ///
     var::reverse_iterator var::reverse_iterator::operator++(int) {
         switch (_riter.which()) {
-            case list_type :    return get<list_t::reverse_iterator&>(_riter)++;
-            case array_type :   return get<array_t::reverse_iterator&>(_riter)++;
-            case set_type :     return get<set_t::reverse_iterator&>(_riter)++;
-            case dict_type :    return get<dict_t::reverse_iterator&>(_riter)++;
+            case list_type :    return boost::get<list_t::reverse_iterator&>(_riter)++;
+            case array_type :   return boost::get<array_t::reverse_iterator&>(_riter)++;
+            case set_type :     return boost::get<set_t::reverse_iterator&>(_riter)++;
+            case dict_type :    return boost::get<dict_t::reverse_iterator&>(_riter)++;
             default :           throw exception("unhandled riter++");
         }
     }
@@ -212,10 +212,10 @@ namespace dynamic {
     ///
     var::reverse_iterator var::reverse_iterator::operator--() {
         switch (_riter.which()) {
-            case list_type :    return --get<list_t::reverse_iterator&>(_riter);
-            case array_type :   return --get<array_t::reverse_iterator&>(_riter);
-            case set_type :     return --get<set_t::reverse_iterator&>(_riter);
-            case dict_type :    return --get<dict_t::reverse_iterator&>(_riter);
+            case list_type :    return --boost::get<list_t::reverse_iterator&>(_riter);
+            case array_type :   return --boost::get<array_t::reverse_iterator&>(_riter);
+            case set_type :     return --boost::get<set_t::reverse_iterator&>(_riter);
+            case dict_type :    return --boost::get<dict_t::reverse_iterator&>(_riter);
             default :           throw exception("unhandled --riter");
         }
     }
@@ -225,10 +225,10 @@ namespace dynamic {
     ///
     var::reverse_iterator var::reverse_iterator::operator--(int) {
         switch (_riter.which()) {
-            case list_type :    return get<list_t::reverse_iterator&>(_riter)--;
-            case array_type :   return get<array_t::reverse_iterator&>(_riter)--;
-            case set_type :     return get<set_t::reverse_iterator&>(_riter)--;
-            case dict_type :    return get<dict_t::reverse_iterator&>(_riter)++;
+            case list_type :    return boost::get<list_t::reverse_iterator&>(_riter)--;
+            case array_type :   return boost::get<array_t::reverse_iterator&>(_riter)--;
+            case set_type :     return boost::get<set_t::reverse_iterator&>(_riter)--;
+            case dict_type :    return boost::get<dict_t::reverse_iterator&>(_riter)++;
             default :           throw exception("unhandled iter--");
         }
     }

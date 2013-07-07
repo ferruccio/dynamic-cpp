@@ -40,9 +40,6 @@
 namespace dynamic {
 
     using namespace std;
-    using namespace boost;
-
-    using boost::shared_ptr;
 
     ///
     /// exception class thrown by Dynamic C++
@@ -250,7 +247,7 @@ namespace dynamic {
         private :
             // make sure base_type and the variant list for iter_t always match
             enum base_type { list_type = 0, array_type, set_type, dict_type };
-            typedef variant<list_t::iterator, array_t::iterator, set_t::iterator, dict_t::iterator> iter_t;
+            typedef boost::variant<list_t::iterator, array_t::iterator, set_t::iterator, dict_t::iterator> iter_t;
 
             iter_t _iter;
         };
@@ -284,7 +281,7 @@ namespace dynamic {
         private :
             // make sure base_type and the variant list for riter_t always match
             enum base_type { list_type = 0, array_type, set_type, dict_type };
-            typedef variant<list_t::reverse_iterator, array_t::reverse_iterator, set_t::reverse_iterator, dict_t::reverse_iterator> riter_t;
+            typedef boost::variant<list_t::reverse_iterator, array_t::reverse_iterator, set_t::reverse_iterator, dict_t::reverse_iterator> riter_t;
 
             riter_t _riter;
         };
@@ -302,7 +299,7 @@ namespace dynamic {
             string_t(const string& s) : ps(boost::make_shared<string>(s)) {}
             string_t(const char* s) : ps(boost::make_shared<string>(s)) {}
 
-            shared_ptr<string>  ps;
+            boost::shared_ptr<string>  ps;
         };
         
         struct wstring_t {
@@ -310,23 +307,23 @@ namespace dynamic {
             wstring_t(const wstring& s) : ps(boost::make_shared<wstring>(s)) {}
             wstring_t(const wchar_t* s) : ps(boost::make_shared<wstring>(s)) {}
 
-            shared_ptr<wstring>  ps;
+            boost::shared_ptr<wstring>  ps;
         };
 
         typedef int int_t;
         typedef double double_t;
 
-        typedef shared_ptr<list_t> list_ptr;
-        typedef shared_ptr<array_t> array_ptr;
-        typedef shared_ptr<set_t> set_ptr;
-        typedef shared_ptr<dict_t> dict_ptr;
+        typedef boost::shared_ptr<list_t> list_ptr;
+        typedef boost::shared_ptr<array_t> array_ptr;
+        typedef boost::shared_ptr<set_t> set_ptr;
+        typedef boost::shared_ptr<dict_t> dict_ptr;
 
         var(list_ptr _list);
         var(array_ptr _array);
         var(set_ptr _set);
         var(dict_ptr _dict);
 
-        typedef variant<null_t, int_t, double_t, string_t, wstring_t, list_ptr, array_ptr, set_ptr, dict_ptr> var_t;
+        typedef boost::variant<null_t, int_t, double_t, string_t, wstring_t, list_ptr, array_ptr, set_ptr, dict_ptr> var_t;
 
         type_t get_type() const;
 

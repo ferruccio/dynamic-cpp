@@ -32,8 +32,8 @@ namespace dynamic {
     ///
     var::operator int() const {
         try {
-            return get<int_t>(_var);
-        } catch (const bad_get&) {
+            return boost::get<int_t>(_var);
+        } catch (const boost::bad_get&) {
             throw exception("cannot convert to int");
         }
     }
@@ -43,8 +43,8 @@ namespace dynamic {
     ///
     var::operator double() const {
         try {
-            return get<double_t>(_var);
-        } catch (const bad_get&) {
+            return boost::get<double_t>(_var);
+        } catch (const boost::bad_get&) {
             throw exception("cannot convert to double");
         }
     }
@@ -54,8 +54,8 @@ namespace dynamic {
     ///
     var::operator string() const {
         try {
-            return *get<string_t>(_var).ps;
-        } catch (const bad_get&) {
+            return *boost::get<string_t>(_var).ps;
+        } catch (const boost::bad_get&) {
             throw exception("cannot convert to string");
         }
     }
@@ -65,8 +65,8 @@ namespace dynamic {
     ///
     var::operator wstring() const {
         try {
-            return *get<wstring_t>(_var).ps;
-        } catch (const bad_get&) {
+            return *boost::get<wstring_t>(_var).ps;
+        } catch (const boost::bad_get&) {
             throw exception("cannot convert to wstring");
         }
     }

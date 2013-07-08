@@ -78,9 +78,9 @@ namespace dynamic {
     var::var(list_ptr _list) : _var(_list) {}
 
     ///
-    /// ctor: init with array
+    /// ctor: init with vector
     ///
-    var::var(array_ptr _array) : _var(_array) {}
+    var::var(vector_ptr _vector) : _var(_vector) {}
 
     ///
     /// ctor: init with set

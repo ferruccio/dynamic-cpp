@@ -46,7 +46,7 @@ namespace dynamic {
             case type_string : return *(boost::get<string_t>(lhs._var).ps) < *(boost::get<string_t>(rhs._var).ps);
             case type_wstring : return *(boost::get<wstring_t>(lhs._var).ps) < *(boost::get<wstring_t>(rhs._var).ps);
             case type_list :
-            case type_array :
+            case type_vector :
             case type_set :
             case type_map :
                 return false;
@@ -100,7 +100,7 @@ namespace dynamic {
             case type_string :  throw exception("invalid () operation on string");
             case type_wstring : throw exception("invalid () operation on wstring");
             case type_list :    boost::get<list_ptr>(_var)->push_back(v); break;
-            case type_array :   boost::get<array_ptr>(_var)->push_back(v); break;
+            case type_vector :  boost::get<vector_ptr>(_var)->push_back(v); break;
             case type_set :     boost::get<set_ptr>(_var)->insert(v); break;
             case type_map :     boost::get<map_ptr>(_var)->insert(std::make_pair<var,var>(v, none)); break;
             default :           throw exception("unhandled () operation");
@@ -119,7 +119,7 @@ namespace dynamic {
             case type_string :  throw exception("invalid (,) operation on string");
             case type_wstring : throw exception("invalid (,) operation on wstring");
             case type_list :    throw exception("invalid (,) operation on list");
-            case type_array :   throw exception("invalid (,) operation on array");
+            case type_vector :  throw exception("invalid (,) operation on vector");
             case type_set :     throw exception("invalid (,) operation on set");
             case type_map :     boost::get<map_ptr>(_var)->insert(std::make_pair<var,var>(k, v)); break;
             default :           throw exception("unhandled (,) operation");
@@ -139,7 +139,7 @@ namespace dynamic {
             case type_string :  return static_cast<unsigned int>(boost::get<string_t>(_var).ps->length());
             case type_wstring : return static_cast<unsigned int>(boost::get<wstring_t>(_var).ps->length());
             case type_list :    return static_cast<unsigned int>(boost::get<list_ptr>(_var)->size());
-            case type_array :   return static_cast<unsigned int>(boost::get<array_ptr>(_var)->size());
+            case type_vector :  return static_cast<unsigned int>(boost::get<vector_ptr>(_var)->size());
             case type_set :     return static_cast<unsigned int>(boost::get<set_ptr>(_var)->size());
             case type_map :     return static_cast<unsigned int>(boost::get<map_ptr>(_var)->size());
             default :           throw exception("unhandled .count() operation");
@@ -164,9 +164,9 @@ namespace dynamic {
                                     advance(li, n);
                                     return *li;
                                 }
-            case type_array :   {
-                                    array_ptr& a = boost::get<array_ptr>(_var);
-                                    if (n < 0 || n >= int(a->size())) throw exception("[] out of range in array");
+            case type_vector :  {
+                                    vector_ptr& a = boost::get<vector_ptr>(_var);
+                                    if (n < 0 || n >= int(a->size())) throw exception("[] out of range in vector");
                                     return (*a)[n];
                                 }
             case type_set :     {
@@ -224,7 +224,7 @@ namespace dynamic {
             case type_string :  throw exception("cannot apply [var] to string");
             case type_wstring : throw exception("cannot apply [var] to wstring");
             case type_list :    throw exception("list[] requires int");
-            case type_array :   throw exception("array[] requires int");
+            case type_vector :  throw exception("vector[] requires int");
             case type_set :     throw exception("set[] requires int");
             case type_map :     {
                                     var key(v);
@@ -250,7 +250,7 @@ namespace dynamic {
             case type_string :  return _write_string(os);
             case type_wstring : return _write_wstring(os);
             case type_list :
-            case type_array :
+            case type_vector :
             case type_set :
             case type_map :     return _write_collection(os);
             default :           throw exception("var::_write_var(ostream) unhandled type");
@@ -311,7 +311,7 @@ namespace dynamic {
         switch (get_type())
         {
             case type_list : os << "("; break;
-            case type_array : os << "["; break;
+            case type_vector : os << "["; break;
             case type_set : os << "{"; break;
             case type_map : os << "<"; break;
             default : assert(false);
@@ -327,7 +327,7 @@ namespace dynamic {
         switch (get_type())
         {
             case type_list : os << ")"; break;
-            case type_array : os << "]"; break;
+            case type_vector : os << "]"; break;
             case type_set : os << "}"; break;
             case type_map : os << ">"; break;
             default : assert(false);
@@ -347,7 +347,7 @@ namespace dynamic {
             case type_string :  return _write_string(os);
             case type_wstring : return _write_wstring(os);
             case type_list :
-            case type_array :
+            case type_vector :
             case type_set :
             case type_map :     return _write_collection(os);
             default :           throw exception("var::_write_var(wostream) unhandled type");
@@ -408,7 +408,7 @@ namespace dynamic {
         switch (get_type())
         {
             case type_list : os << L"("; break;
-            case type_array : os << L"["; break;
+            case type_vector : os << L"["; break;
             case type_set : os << L"{"; break;
             case type_map : os << L"<"; break;
             default : assert(false);
@@ -424,7 +424,7 @@ namespace dynamic {
         switch (get_type())
         {
             case type_list : os << L")"; break;
-            case type_array : os << L"]"; break;
+            case type_vector : os << L"]"; break;
             case type_set : os << L"}"; break;
             case type_map : os << L">"; break;
             default : assert(false);

@@ -171,14 +171,14 @@ namespace dynamic {
         bool is_string_type() const { return is_string() || is_wstring(); }
         /// is var a list?
         bool is_list() const { return get_type() == type_list; }
-        /// is var an array?
-        bool is_array() const { return get_type() == type_array; }
+        /// is var a vector?
+        bool is_vector() const { return get_type() == type_vector; }
         /// is var a set?
         bool is_set() const { return get_type() == type_set; }
         /// is var a map?
         bool is_map() const { return get_type() == type_map; }
         /// is var a collection type?
-        bool is_collection() const { return is_list() || is_array() || is_set() || is_map(); }
+        bool is_collection() const { return is_list() || is_vector() || is_set() || is_map(); }
 
         var& operator () (bool);
         var& operator () (int n);
@@ -217,8 +217,8 @@ namespace dynamic {
 
         /// list type
         typedef std::list<var> list_t;
-        /// array type
-        typedef std::vector<var> array_t;
+        /// vector type
+        typedef std::vector<var> vector_t;
         /// set type
         typedef std::set<var, less_var> set_t;
         /// map type
@@ -231,8 +231,8 @@ namespace dynamic {
         public :
             /// initialize from list iterator
             iterator(list_t::iterator iter) : _iter(iter) {}
-            /// initialize from array iterator
-            iterator(array_t::iterator iter) : _iter(iter) {}
+            /// initialize from vector iterator
+            iterator(vector_t::iterator iter) : _iter(iter) {}
             /// initialize from set iterator
             iterator(set_t::iterator iter) : _iter(iter) {}
             /// initialize from map iterator
@@ -251,8 +251,8 @@ namespace dynamic {
 
         private :
             // make sure base_type and the variant list for iter_t always match
-            enum base_type { list_type = 0, array_type, set_type, map_type };
-            typedef boost::variant<list_t::iterator, array_t::iterator, set_t::iterator, map_t::iterator> iter_t;
+            enum base_type { list_type = 0, vector_type, set_type, map_type };
+            typedef boost::variant<list_t::iterator, vector_t::iterator, set_t::iterator, map_t::iterator> iter_t;
 
             iter_t _iter;
         };
@@ -267,8 +267,8 @@ namespace dynamic {
         public :
             /// initialize from list reverse iterator
             reverse_iterator(list_t::reverse_iterator riter) : _riter(riter) {}
-            /// initialize from array reverse iterator
-            reverse_iterator(array_t::reverse_iterator riter) : _riter(riter) {}
+            /// initialize from vector reverse iterator
+            reverse_iterator(vector_t::reverse_iterator riter) : _riter(riter) {}
             /// initialize from set reverse iterator
             reverse_iterator(set_t::reverse_iterator riter) : _riter(riter) {}
             /// initialize from map reverse iterator
@@ -285,8 +285,8 @@ namespace dynamic {
 
         private :
             // make sure base_type and the variant list for riter_t always match
-            enum base_type { list_type = 0, array_type, set_type, map_type };
-            typedef boost::variant<list_t::reverse_iterator, array_t::reverse_iterator, set_t::reverse_iterator, map_t::reverse_iterator> riter_t;
+            enum base_type { list_type = 0, vector_type, set_type, map_type };
+            typedef boost::variant<list_t::reverse_iterator, vector_t::reverse_iterator, set_t::reverse_iterator, map_t::reverse_iterator> riter_t;
 
             riter_t _riter;
         };
@@ -296,11 +296,11 @@ namespace dynamic {
 
     private :
         friend var make_list();
-        friend var make_array();
+        friend var make_vector();
         friend var make_set();
         friend var make_map();
 
-        enum type_t { type_null, type_bool, type_int, type_double, type_string, type_wstring, type_list, type_array, type_set, type_map };
+        enum type_t { type_null, type_bool, type_int, type_double, type_string, type_wstring, type_list, type_vector, type_set, type_map };
 
         struct null_t { null_t() {} };
 
@@ -325,16 +325,16 @@ namespace dynamic {
         typedef double double_t;
 
         typedef boost::shared_ptr<list_t> list_ptr;
-        typedef boost::shared_ptr<array_t> array_ptr;
+        typedef boost::shared_ptr<vector_t> vector_ptr;
         typedef boost::shared_ptr<set_t> set_ptr;
         typedef boost::shared_ptr<map_t> map_ptr;
 
         var(list_ptr _list);
-        var(array_ptr _array);
+        var(vector_ptr _vector);
         var(set_ptr _set);
         var(map_ptr _map);
 
-        typedef boost::variant<null_t, bool_t, int_t, double_t, string_t, wstring_t, list_ptr, array_ptr, set_ptr, map_ptr> var_t;
+        typedef boost::variant<null_t, bool_t, int_t, double_t, string_t, wstring_t, list_ptr, vector_ptr, set_ptr, map_ptr> var_t;
 
         type_t get_type() const;
 
@@ -349,7 +349,7 @@ namespace dynamic {
             type_t operator () (string_t s) const { return type_string; }
             type_t operator () (wstring_t s) const { return type_wstring; }
             type_t operator () (list_ptr) const { return type_list; }
-            type_t operator () (array_ptr) const { return type_array; }
+            type_t operator () (vector_ptr) const { return type_vector; }
             type_t operator () (set_ptr) const { return type_set; }
             type_t operator () (map_ptr) const { return type_map; }
         };
@@ -363,8 +363,8 @@ namespace dynamic {
 
     /// create empty list
     inline var make_list() { return var(boost::make_shared<var::list_t>()); }
-    /// create empty array
-    inline var make_array() { return var(boost::make_shared<var::array_t>()); }
+    /// create empty vector
+    inline var make_vector() { return var(boost::make_shared<var::vector_t>()); }
     /// create empty set
     inline var make_set() { return var(boost::make_shared<var::set_t>()); }
     /// create empty map
@@ -372,8 +372,8 @@ namespace dynamic {
 
     /// create list with one item
     inline var make_list(const var& v) { return dynamic::make_list()(v); }
-    /// create array with one item
-    inline var make_array(const var& v) { return dynamic::make_array()(v); }
+    /// create vector with one item
+    inline var make_vector(const var& v) { return dynamic::make_vector()(v); }
     /// create set with one item
     inline var make_set(const var& v) { return dynamic::make_set()(v); }
     /// create map with one item (a key) and null value

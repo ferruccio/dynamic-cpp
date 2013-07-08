@@ -191,15 +191,15 @@ BOOST_AUTO_TEST_CASE(Examples) {
     a = make_list(1)(2)(3); // a is now a list of integers
     cout << a << endl;
 
-    a = make_list(1)(2)(3.5)("hello")(make_array(1)(2.0)("three"));
-    // a is now a list containing 2 ints, a double, a string and an array of three items
+    a = make_list(1)(2)(3.5)("hello")(make_vector(1)(2.0)("three"));
+    // a is now a list containing 2 ints, a double, a string and a vector of three items
 
     cout << "c: " << a << endl;
     // some iterator support
     for (var::iterator i = a.begin(); i != a.end(); ++i)
         cout << *i << endl;
 
-    a = make_map("name", "fred")("age", 35)("city", "bedrock")(12, make_array(1)(2)(3)); // keys and values can be any type
+    a = make_map("name", "fred")("age", 35)("city", "bedrock")(12, make_vector(1)(2)(3)); // keys and values can be any type
     // a is now a dictionary
     cout << a << endl;
 

@@ -48,15 +48,15 @@ BOOST_AUTO_TEST_CASE (test_lists) {
     BOOST_CHECK(l2[2] == 10.5);
 }
 
-BOOST_AUTO_TEST_CASE (test_arrays) {
-    var a1 = make_array();
+BOOST_AUTO_TEST_CASE (test_vectors) {
+    var a1 = make_vector();
     BOOST_CHECK_EQUAL(a1.count(), 0);
-    BOOST_CHECK(a1.is_array());
+    BOOST_CHECK(a1.is_vector());
     BOOST_CHECK(a1.is_collection());
 
-    var a2 = make_array(1)("hello")(10.5);
+    var a2 = make_vector(1)("hello")(10.5);
     BOOST_CHECK_EQUAL(a2.count(), 3);
-    BOOST_CHECK(a2.is_array());
+    BOOST_CHECK(a2.is_vector());
     BOOST_CHECK(a2.is_collection());
     BOOST_CHECK(a2[0] == 1);
     BOOST_CHECK(a2[1] == "hello");
@@ -109,18 +109,18 @@ BOOST_AUTO_TEST_CASE (test_maps) {
 
 BOOST_AUTO_TEST_CASE (test_complex) {
     var d = make_map
-        ("array", make_array(1)(1.5)("hello"))
+        ("vector", make_vector(1)(1.5)("hello"))
         ("list", make_list(2)(3.5)("world"))
         ("set", make_set(3)("xyzzy")(4.5))
         ("map", make_map("a", 4)("b", 5.5)("c", "plover"));
 
     BOOST_CHECK(d.count() == 4);
     BOOST_CHECK(d.is_map());
-    BOOST_CHECK(d["array"].count() == 3);
-    BOOST_CHECK(d["array"].is_array());
-    BOOST_CHECK(d["array"][0] == 1);
-    BOOST_CHECK(d["array"][1] == 1.5);
-    BOOST_CHECK(d["array"][2] == "hello");
+    BOOST_CHECK(d["vector"].count() == 3);
+    BOOST_CHECK(d["vector"].is_vector());
+    BOOST_CHECK(d["vector"][0] == 1);
+    BOOST_CHECK(d["vector"][1] == 1.5);
+    BOOST_CHECK(d["vector"][2] == "hello");
 
     BOOST_CHECK(d["list"].count() == 3);
     BOOST_CHECK(d["list"].is_list());
@@ -142,21 +142,21 @@ BOOST_AUTO_TEST_CASE (test_complex) {
 
     stringstream ss;
     ss << d;
-    BOOST_CHECK_EQUAL(ss.str(), "<'array':[1 1.5 'hello'] 'list':(2 3.5 'world') 'map':<'a':4 'b':5.5 'c':'plover'> 'set':{3 4.5 'xyzzy'}>");
+    BOOST_CHECK_EQUAL(ss.str(), "<'list':(2 3.5 'world') 'map':<'a':4 'b':5.5 'c':'plover'> 'set':{3 4.5 'xyzzy'} 'vector':[1 1.5 'hello']>");
 
     d["list"][1] = "hello";
     ss.str(string());
     ss << d;
-    BOOST_CHECK_EQUAL(ss.str(), "<'array':[1 1.5 'hello'] 'list':(2 'hello' 'world') 'map':<'a':4 'b':5.5 'c':'plover'> 'set':{3 4.5 'xyzzy'}>");
+    BOOST_CHECK_EQUAL(ss.str(), "<'list':(2 'hello' 'world') 'map':<'a':4 'b':5.5 'c':'plover'> 'set':{3 4.5 'xyzzy'} 'vector':[1 1.5 'hello']>");
 
-    d["array"][0] = d["array"][1] = d["array"][2] = dynamic::none;
+    d["vector"][0] = d["vector"][1] = d["vector"][2] = dynamic::none;
     ss.str(string());
     ss << d;
-    BOOST_CHECK_EQUAL(ss.str(), "<'array':[none none none] 'list':(2 'hello' 'world') 'map':<'a':4 'b':5.5 'c':'plover'> 'set':{3 4.5 'xyzzy'}>");
+    BOOST_CHECK_EQUAL(ss.str(), "<'list':(2 'hello' 'world') 'map':<'a':4 'b':5.5 'c':'plover'> 'set':{3 4.5 'xyzzy'} 'vector':[none none none]>");
 
-    d["map"]["b"] = make_array(1)(2.1)(3)(make_list(1)("b"));
+    d["map"]["b"] = make_vector(1)(2.1)(3)(make_list(1)("b"));
     ss.str(string());
     ss << d;
-    BOOST_CHECK_EQUAL(ss.str(), "<'array':[none none none] 'list':(2 'hello' 'world') 'map':<'a':4 'b':[1 2.1 3 (1 'b')] 'c':'plover'> 'set':{3 4.5 'xyzzy'}>");
+    BOOST_CHECK_EQUAL(ss.str(), "<'list':(2 'hello' 'world') 'map':<'a':4 'b':[1 2.1 3 (1 'b')] 'c':'plover'> 'set':{3 4.5 'xyzzy'} 'vector':[none none none]>");
 }
 

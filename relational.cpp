@@ -88,7 +88,7 @@ namespace dynamic {
             case type_string :  return v.is_string() && *boost::get<string_t>(_var).ps == *boost::get<string_t>(v._var).ps;
             case type_wstring : return v.is_wstring() && *boost::get<wstring_t>(_var).ps == *boost::get<wstring_t>(v._var).ps;
             case type_list :    throw exception("list == not implemented");
-            case type_array :   throw exception("array == not implemented");
+            case type_vector :  throw exception("vector == not implemented");
             case type_set :     throw exception("set == not implemented");
             case type_map :     throw exception("map == not implemented");
             default :           throw exception("(unhandled type) == not implemented");
@@ -156,7 +156,7 @@ namespace dynamic {
             case type_string :  return !v.is_string() || *boost::get<string_t>(_var).ps != *boost::get<string_t>(v._var).ps;
             case type_wstring : return !v.is_wstring() || *boost::get<wstring_t>(_var).ps != *boost::get<wstring_t>(v._var).ps;
             case type_list :    throw exception("list != not implemented");
-            case type_array :   throw exception("array != not implemented");
+            case type_vector :  throw exception("vector != not implemented");
             case type_set :     throw exception("set != not implemented");
             case type_map :     throw exception("map != not implemented");
             default :           throw exception("(unhandled type) != not implemented");
@@ -231,7 +231,7 @@ namespace dynamic {
             case type_string :  return v.is_string() && *boost::get<string_t>(_var).ps < *boost::get<string_t>(v._var).ps;
             case type_wstring : return v.is_wstring() && *boost::get<wstring_t>(_var).ps < *boost::get<wstring_t>(v._var).ps;
             case type_list :    throw exception("list < not implemented");
-            case type_array :   throw exception("array < not implemented");
+            case type_vector :  throw exception("vector < not implemented");
             case type_set :     throw exception("set < not implemented");
             case type_map :     throw exception("map < not implemented");
             default :           throw exception("(unhandled type) < not implemented");
@@ -306,7 +306,7 @@ namespace dynamic {
             case type_string :  return v.is_string() && *boost::get<string_t>(_var).ps <= *boost::get<string_t>(v._var).ps;
             case type_wstring : return v.is_wstring() && *boost::get<wstring_t>(_var).ps <= *boost::get<wstring_t>(v._var).ps;
             case type_list :    throw exception("list <= not implemented");
-            case type_array :   throw exception("array <= not implemented");
+            case type_vector :  throw exception("vector <= not implemented");
             case type_set :     throw exception("set <= not implemented");
             case type_map :     throw exception("map <= not implemented");
             default :           throw exception("(unhandled type) <= not implemented");
@@ -380,7 +380,7 @@ namespace dynamic {
             case type_string :  return v.is_string() && *boost::get<string_t>(_var).ps > *boost::get<string_t>(v._var).ps;
             case type_wstring : return v.is_wstring() && *boost::get<wstring_t>(_var).ps > *boost::get<wstring_t>(v._var).ps;
             case type_list :    throw exception("list > not implemented");
-            case type_array :   throw exception("array > not implemented");
+            case type_vector :  throw exception("vector > not implemented");
             case type_set :     throw exception("set > not implemented");
             case type_map :     throw exception("map > not implemented");
             default :           throw exception("(unhandled type) > not implemented");
@@ -455,7 +455,7 @@ namespace dynamic {
             case type_string :  return v.is_string() && *boost::get<string_t>(_var).ps >= *boost::get<string_t>(v._var).ps;
             case type_wstring : return v.is_wstring() && *boost::get<wstring_t>(_var).ps >= *boost::get<wstring_t>(v._var).ps;
             case type_list :    throw exception("list >= not implemented");
-            case type_array :   throw exception("array >= not implemented");
+            case type_vector :  throw exception("vector >= not implemented");
             case type_set :     throw exception("set >= not implemented");
             case type_map :     throw exception("map >= not implemented");
             default :           throw exception("(unhandled type) >= not implemented");

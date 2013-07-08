@@ -38,7 +38,7 @@ namespace dynamic {
             case type_string :  throw exception("invalid .begin() operation on string");
             case type_wstring : throw exception("invalid .begin() operation on wstring");
             case type_list :    return boost::get<list_ptr>(_var)->begin();
-            case type_array :   return boost::get<array_ptr>(_var)->begin();
+            case type_vector :  return boost::get<vector_ptr>(_var)->begin();
             case type_set :     return boost::get<set_ptr>(_var)->begin();
             case type_map :     return boost::get<map_ptr>(_var)->begin();
             default :           throw exception("unhandled .begin() operation");
@@ -56,7 +56,7 @@ namespace dynamic {
             case type_string :  throw exception("invalid .end() operation on string");
             case type_wstring : throw exception("invalid .end() operation on wstring");
             case type_list :    return boost::get<list_ptr>(_var)->end();
-            case type_array :   return boost::get<array_ptr>(_var)->end();
+            case type_vector :  return boost::get<vector_ptr>(_var)->end();
             case type_set :     return boost::get<set_ptr>(_var)->end();
             case type_map :     return boost::get<map_ptr>(_var)->end();
             default :           throw exception("unhandled .end() operation");
@@ -69,7 +69,7 @@ namespace dynamic {
     var::iterator var::iterator::operator++() {
         switch (_iter.which()) {
             case list_type :    return ++boost::get<list_t::iterator&>(_iter);
-            case array_type :   return ++boost::get<array_t::iterator&>(_iter);
+            case vector_type :  return ++boost::get<vector_t::iterator&>(_iter);
             case set_type :     return ++boost::get<set_t::iterator&>(_iter);
             case map_type :     return ++boost::get<map_t::iterator&>(_iter);
             default :           throw exception("unhandled ++iter");
@@ -82,7 +82,7 @@ namespace dynamic {
     var::iterator var::iterator::operator++(int) {
         switch (_iter.which()) {
             case list_type :    return boost::get<list_t::iterator&>(_iter)++;
-            case array_type :   return boost::get<array_t::iterator&>(_iter)++;
+            case vector_type :  return boost::get<vector_t::iterator&>(_iter)++;
             case set_type :     return boost::get<set_t::iterator&>(_iter)++;
             case map_type :     return boost::get<map_t::iterator&>(_iter)++;
             default :           throw exception("unhandled iter++");
@@ -95,7 +95,7 @@ namespace dynamic {
     var::iterator var::iterator::operator--() {
         switch (_iter.which()) {
             case list_type :    return --boost::get<list_t::iterator&>(_iter);
-            case array_type :   return --boost::get<array_t::iterator&>(_iter);
+            case vector_type :  return --boost::get<vector_t::iterator&>(_iter);
             case set_type :     return --boost::get<set_t::iterator&>(_iter);
             case map_type :     return --boost::get<map_t::iterator&>(_iter);
             default :           throw exception("unhandled --iter");
@@ -108,7 +108,7 @@ namespace dynamic {
     var::iterator var::iterator::operator--(int) {
         switch (_iter.which()) {
             case list_type :    return boost::get<list_t::iterator&>(_iter)--;
-            case array_type :   return boost::get<array_t::iterator&>(_iter)--;
+            case vector_type :  return boost::get<vector_t::iterator&>(_iter)--;
             case set_type :     return boost::get<set_t::iterator&>(_iter)--;
             case map_type :     return boost::get<map_t::iterator&>(_iter)++;
             default :           throw exception("unhandled iter--");
@@ -138,7 +138,7 @@ namespace dynamic {
     var& var::iterator::operator*() {
         switch (_iter.which()) {
             case list_type :    return *boost::get<list_t::iterator>(_iter);
-            case array_type :   return *boost::get<array_t::iterator>(_iter);
+            case vector_type :  return *boost::get<vector_t::iterator>(_iter);
             case set_type :     return const_cast<var&>(*boost::get<set_t::iterator>(_iter));
             case map_type :     return const_cast<var&>(boost::get<map_t::iterator>(_iter)->first);
             default :           throw exception("unhandled *iter");
@@ -156,7 +156,7 @@ namespace dynamic {
             case type_string :  throw exception("invalid .rbegin() operation on string");
             case type_wstring : throw exception("invalid .rbegin() operation on wstring");
             case type_list :    return boost::get<list_ptr>(_var)->rbegin();
-            case type_array :   return boost::get<array_ptr>(_var)->rbegin();
+            case type_vector :  return boost::get<vector_ptr>(_var)->rbegin();
             case type_set :     return boost::get<set_ptr>(_var)->rbegin();
             case type_map :     return boost::get<map_ptr>(_var)->rbegin();
             default :           throw exception("unhandled .rbegin() operation");
@@ -174,7 +174,7 @@ namespace dynamic {
             case type_string :  throw exception("invalid .rend() operation on string");
             case type_wstring : throw exception("invalid .rend() operation on wstring");
             case type_list :    return boost::get<list_ptr>(_var)->rend();
-            case type_array :   return boost::get<array_ptr>(_var)->rend();
+            case type_vector :  return boost::get<vector_ptr>(_var)->rend();
             case type_set :     return boost::get<set_ptr>(_var)->rend();
             case type_map :     return boost::get<map_ptr>(_var)->rend();
             default :           throw exception("unhandled .rend() operation");
@@ -187,7 +187,7 @@ namespace dynamic {
     var::reverse_iterator var::reverse_iterator::operator++() {
         switch (_riter.which()) {
             case list_type :    return ++boost::get<list_t::reverse_iterator&>(_riter);
-            case array_type :   return ++boost::get<array_t::reverse_iterator&>(_riter);
+            case vector_type :  return ++boost::get<vector_t::reverse_iterator&>(_riter);
             case set_type :     return ++boost::get<set_t::reverse_iterator&>(_riter);
             case map_type :     return ++boost::get<map_t::reverse_iterator&>(_riter);
             default :           throw exception("unhandled ++riter");
@@ -200,7 +200,7 @@ namespace dynamic {
     var::reverse_iterator var::reverse_iterator::operator++(int) {
         switch (_riter.which()) {
             case list_type :    return boost::get<list_t::reverse_iterator&>(_riter)++;
-            case array_type :   return boost::get<array_t::reverse_iterator&>(_riter)++;
+            case vector_type :  return boost::get<vector_t::reverse_iterator&>(_riter)++;
             case set_type :     return boost::get<set_t::reverse_iterator&>(_riter)++;
             case map_type :     return boost::get<map_t::reverse_iterator&>(_riter)++;
             default :           throw exception("unhandled riter++");
@@ -213,7 +213,7 @@ namespace dynamic {
     var::reverse_iterator var::reverse_iterator::operator--() {
         switch (_riter.which()) {
             case list_type :    return --boost::get<list_t::reverse_iterator&>(_riter);
-            case array_type :   return --boost::get<array_t::reverse_iterator&>(_riter);
+            case vector_type :  return --boost::get<vector_t::reverse_iterator&>(_riter);
             case set_type :     return --boost::get<set_t::reverse_iterator&>(_riter);
             case map_type :     return --boost::get<map_t::reverse_iterator&>(_riter);
             default :           throw exception("unhandled --riter");
@@ -226,7 +226,7 @@ namespace dynamic {
     var::reverse_iterator var::reverse_iterator::operator--(int) {
         switch (_riter.which()) {
             case list_type :    return boost::get<list_t::reverse_iterator&>(_riter)--;
-            case array_type :   return boost::get<array_t::reverse_iterator&>(_riter)--;
+            case vector_type :  return boost::get<vector_t::reverse_iterator&>(_riter)--;
             case set_type :     return boost::get<set_t::reverse_iterator&>(_riter)--;
             case map_type :     return boost::get<map_t::reverse_iterator&>(_riter)++;
             default :           throw exception("unhandled iter--");

@@ -94,7 +94,7 @@ namespace dynamic {
             case type_string :  return "string";
             case type_wstring : return "wstring";
             case type_list :    return "list";
-            case type_array :   return "array";
+            case type_vector :  return "vector";
             case type_set :     return "set";
             case type_map :     return "map";
             default :           throw exception("var::type() unhandled type");

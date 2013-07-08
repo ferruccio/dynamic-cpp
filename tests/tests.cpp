@@ -43,6 +43,19 @@ BOOST_AUTO_TEST_CASE (ctor) {
     BOOST_TEST_MESSAGE("sizeof(var) = " << sizeof(v));
 }
 
+BOOST_AUTO_TEST_CASE (ctor_bool)
+{
+    stringstream ss;
+
+    var vb(true);
+    BOOST_REQUIRE(vb.is_bool());
+    BOOST_REQUIRE(!vb.is_collection());
+    BOOST_REQUIRE_EQUAL(vb.type(), "bool");
+    BOOST_REQUIRE_EQUAL(bool(vb), true);
+    BOOST_REQUIRE_NO_THROW(ss << vb);
+    BOOST_REQUIRE_EQUAL(ss.str(), "true");
+}
+
 BOOST_AUTO_TEST_CASE (simple_ctor) {
     stringstream ss;
 
@@ -51,7 +64,7 @@ BOOST_AUTO_TEST_CASE (simple_ctor) {
     BOOST_CHECK(!v.is_collection());
     BOOST_CHECK_EQUAL(v.type(), "null");
     ss << v;
-    BOOST_CHECK_EQUAL(ss.str(), "$");
+    BOOST_CHECK_EQUAL(ss.str(), "none");
 
     var vi(12);
     BOOST_CHECK(vi.is_int());
@@ -102,7 +115,7 @@ BOOST_AUTO_TEST_CASE (simple_assign) {
     BOOST_CHECK(!v.is_collection());
     BOOST_CHECK_EQUAL(v.type(), "null");
     ss << v;
-    BOOST_CHECK_EQUAL(ss.str(), "$");
+    BOOST_CHECK_EQUAL(ss.str(), "none");
 
     var vi;
     vi = 12;

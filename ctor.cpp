@@ -33,6 +33,11 @@ namespace dynamic {
     var::var() : _var() {}
 
     ///
+    /// ctor: init with bool
+    ///
+    var::var(bool n) : _var(n) {}
+
+    ///
     /// ctor: init with int
     ///
     var::var(int n) : _var(n) {}

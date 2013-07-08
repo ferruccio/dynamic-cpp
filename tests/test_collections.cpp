@@ -152,11 +152,11 @@ BOOST_AUTO_TEST_CASE (test_complex) {
     d["array"][0] = d["array"][1] = d["array"][2] = dynamic::none;
     ss.str(string());
     ss << d;
-    BOOST_CHECK_EQUAL(ss.str(), "<'array':[$ $ $] 'dict':<'a':4 'b':5.5 'c':'plover'> 'list':(2 'hello' 'world') 'set':{3 4.5 'xyzzy'}>");
+    BOOST_CHECK_EQUAL(ss.str(), "<'array':[none none none] 'dict':<'a':4 'b':5.5 'c':'plover'> 'list':(2 'hello' 'world') 'set':{3 4.5 'xyzzy'}>");
 
     d["dict"]["b"] = make_array(1)(2.1)(3)(make_list(1)("b"));
     ss.str(string());
     ss << d;
-    BOOST_CHECK_EQUAL(ss.str(), "<'array':[$ $ $] 'dict':<'a':4 'b':[1 2.1 3 (1 'b')] 'c':'plover'> 'list':(2 'hello' 'world') 'set':{3 4.5 'xyzzy'}>");
+    BOOST_CHECK_EQUAL(ss.str(), "<'array':[none none none] 'dict':<'a':4 'b':[1 2.1 3 (1 'b')] 'c':'plover'> 'list':(2 'hello' 'world') 'set':{3 4.5 'xyzzy'}>");
 }
 

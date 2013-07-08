@@ -28,6 +28,17 @@
 namespace dynamic {
 
     ///
+    /// cast to bool
+    ///
+    var::operator bool() const {
+        try {
+            return boost::get<bool_t>(_var);
+        } catch (const boost::bad_get&) {
+            throw exception("cannot convert to int");
+        }
+    }
+
+    ///
     /// cast to int
     ///
     var::operator int() const {
@@ -77,6 +88,7 @@ namespace dynamic {
     std::string var::type() const {
         switch (get_type()) {
             case type_null :    return "null";
+            case type_bool :    return "bool";
             case type_int :     return "int";
             case type_double :  return "double";
             case type_string :  return "string";

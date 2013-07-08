@@ -28,6 +28,14 @@
 namespace dynamic {
 
     ///
+    /// assign bool to var
+    ///
+    var& var::operator = (bool n) {
+        _var = n;
+        return *this;
+    }
+
+    ///
     /// assign int to var
     ///
     var& var::operator = (int n) {

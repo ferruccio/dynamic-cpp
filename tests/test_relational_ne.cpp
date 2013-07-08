@@ -29,6 +29,7 @@
 
 using namespace dynamic;
 
+static const bool _vba = false, _vbb = true;
 static const int _via = 10, _vib = 50;
 static const double _vda = 10.0, _vdb  = 50.0;
 static const char *_vca = "hello", *_vcb = "world";
@@ -37,6 +38,7 @@ static const std::string _vsa = "hello", _vsb = "world";
 struct ne_fixture {
     ne_fixture()
         :   vn(),
+            vba(_vba), vbb(_vbb),
             via(_via), vib(_vib),
             vda(_vda), vdb(_vdb),
             vca(_vca), vcb(_vcb),
@@ -45,6 +47,7 @@ struct ne_fixture {
 
 
     var vn;
+    var vba, vbb;
     var via, vib;
     var vda, vdb;
     var vca, vcb;
@@ -52,11 +55,13 @@ struct ne_fixture {
 };
 
 BOOST_FIXTURE_TEST_CASE (relational_ne_null, ne_fixture) {
+    BOOST_CHECK(none != _vba);
     BOOST_CHECK(none != _via);
     BOOST_CHECK(none != _vda);
     BOOST_CHECK(none != _vca);
     BOOST_CHECK(none != _vsa);
 
+    BOOST_CHECK(none != vba);
     BOOST_CHECK(none != via);
     BOOST_CHECK(none != vda);
     BOOST_CHECK(none != vca);
@@ -65,10 +70,29 @@ BOOST_FIXTURE_TEST_CASE (relational_ne_null, ne_fixture) {
     BOOST_CHECK(!(none != none));
 }
 
+BOOST_FIXTURE_TEST_CASE (relational_ne_bool, ne_fixture) {
+    BOOST_CHECK(vba != vbb);
+    BOOST_CHECK(vba != _vbb);
+
+    BOOST_CHECK(vba != via);
+    BOOST_CHECK(vba != _via);
+    BOOST_CHECK(vba != vda);
+    BOOST_CHECK(vba != _vda);
+    BOOST_CHECK(vba != vca);
+    BOOST_CHECK(vba != _vca);
+    BOOST_CHECK(vba != vsa);
+    BOOST_CHECK(vba != _vsa);
+
+    BOOST_CHECK(!(vba != _vba));
+    BOOST_CHECK(!(vba != vba));
+}
+
 BOOST_FIXTURE_TEST_CASE (relational_ne_int, ne_fixture) {
     BOOST_CHECK(via != vib);
     BOOST_CHECK(via != _vib);
 
+    BOOST_CHECK(via != vba);
+    BOOST_CHECK(via != _vba);
     BOOST_CHECK(via != vda);
     BOOST_CHECK(via != _vda);
     BOOST_CHECK(via != vca);
@@ -84,6 +108,8 @@ BOOST_FIXTURE_TEST_CASE (relational_ne_double, ne_fixture) {
     BOOST_CHECK(vda != vdb);
     BOOST_CHECK(vda != _vdb);
 
+    BOOST_CHECK(vda != vba);
+    BOOST_CHECK(vda != _vba);
     BOOST_CHECK(vda != via);
     BOOST_CHECK(vda != _via);
     BOOST_CHECK(vda != vca);
@@ -101,6 +127,8 @@ BOOST_FIXTURE_TEST_CASE (relational_ne_string_charp, ne_fixture) {
     BOOST_CHECK(vca != vsb);
     BOOST_CHECK(vca != _vsb);
 
+    BOOST_CHECK(vca != vba);
+    BOOST_CHECK(vca != _vba);
     BOOST_CHECK(vca != vda);
     BOOST_CHECK(vca != _vda);
     BOOST_CHECK(vca != via);
@@ -118,6 +146,8 @@ BOOST_FIXTURE_TEST_CASE (relational_ne_string, ne_fixture) {
     BOOST_CHECK(vsa != vsb);
     BOOST_CHECK(vsa != _vsb);
 
+    BOOST_CHECK(vsa != vba);
+    BOOST_CHECK(vsa != _vba);
     BOOST_CHECK(vsa != vda);
     BOOST_CHECK(vsa != _vda);
     BOOST_CHECK(vsa != via);

@@ -73,6 +73,7 @@ namespace dynamic {
     class var {
     public :
         var();
+        var(bool);
         var(int n);
         var(double n);
         var(const std::string& s);
@@ -81,6 +82,7 @@ namespace dynamic {
         var(const wchar_t* s);
         var(const var& v);
 
+        var& operator = (bool);
         var& operator = (int n);
         var& operator = (double n);
         var& operator = (const std::string& s);
@@ -89,6 +91,7 @@ namespace dynamic {
         var& operator = (const wchar_t* s);
         var& operator = (const var& v);
 
+        operator bool() const;
         operator int() const;
         operator double() const;
         operator std::string() const;
@@ -96,6 +99,7 @@ namespace dynamic {
 
         std::string type() const;
 
+        bool operator == (bool) const;
         bool operator == (int n) const;
         bool operator == (double n) const;
         bool operator == (const std::string& s) const;
@@ -104,6 +108,7 @@ namespace dynamic {
         bool operator == (const wchar_t* s) const;
         bool operator == (const var& v) const;
 
+        bool operator != (bool) const;
         bool operator != (int n) const;
         bool operator != (double n) const;
         bool operator != (const std::string& s) const;
@@ -112,6 +117,7 @@ namespace dynamic {
         bool operator != (const wchar_t* s) const;
         bool operator != (const var& v) const;
 
+        bool operator < (bool) const;
         bool operator < (int n) const;
         bool operator < (double n) const;
         bool operator < (const std::string& s) const;
@@ -120,6 +126,7 @@ namespace dynamic {
         bool operator < (const wchar_t* s) const;
         bool operator < (const var& v) const;
 
+        bool operator <= (bool) const;
         bool operator <= (int n) const;
         bool operator <= (double n) const;
         bool operator <= (const std::string& s) const;
@@ -128,6 +135,7 @@ namespace dynamic {
         bool operator <= (const wchar_t* s) const;
         bool operator <= (const var& v) const;
 
+        bool operator > (bool) const;
         bool operator > (int n) const;
         bool operator > (double n) const;
         bool operator > (const std::string& s) const;
@@ -136,6 +144,7 @@ namespace dynamic {
         bool operator > (const wchar_t* s) const;
         bool operator > (const var& v) const;
 
+        bool operator >= (bool) const;
         bool operator >= (int n) const;
         bool operator >= (double n) const;
         bool operator >= (const std::string& s) const;
@@ -146,6 +155,8 @@ namespace dynamic {
         
         /// is var a null?
         bool is_null() const { return get_type() == type_null; }
+        /// is var a bool?
+        bool is_bool() const { return get_type() == type_bool; }
         /// is var an int?
         bool is_int() const { return get_type() == type_int; }
         /// is var a double?
@@ -169,6 +180,7 @@ namespace dynamic {
         /// is var a collection type?
         bool is_collection() const { return is_list() || is_array() || is_set() || is_dict(); }
 
+        var& operator () (bool);
         var& operator () (int n);
         var& operator () (double n);
         var& operator () (const std::string& s);
@@ -288,7 +300,7 @@ namespace dynamic {
         friend var make_set();
         friend var make_dict();
 
-        enum type_t { type_null, type_int, type_double, type_string, type_wstring, type_list, type_array, type_set, type_dict };
+        enum type_t { type_null, type_bool, type_int, type_double, type_string, type_wstring, type_list, type_array, type_set, type_dict };
 
         struct null_t { null_t() {} };
 
@@ -308,6 +320,7 @@ namespace dynamic {
             boost::shared_ptr<std::wstring>  ps;
         };
 
+        typedef bool bool_t;
         typedef int int_t;
         typedef double double_t;
 
@@ -321,7 +334,7 @@ namespace dynamic {
         var(set_ptr _set);
         var(dict_ptr _dict);
 
-        typedef boost::variant<null_t, int_t, double_t, string_t, wstring_t, list_ptr, array_ptr, set_ptr, dict_ptr> var_t;
+        typedef boost::variant<null_t, bool_t, int_t, double_t, string_t, wstring_t, list_ptr, array_ptr, set_ptr, dict_ptr> var_t;
 
         type_t get_type() const;
 
@@ -330,6 +343,7 @@ namespace dynamic {
         /// used to retrieve type from var
         struct type_visitor : public boost::static_visitor<type_t> {
             type_t operator () (null_t) const { return type_null; }
+            type_t operator () (bool_t) const { return type_bool; }
             type_t operator () (int_t) const { return type_int; }
             type_t operator () (double_t) const { return type_double; }
             type_t operator () (string_t s) const { return type_string; }

@@ -40,6 +40,7 @@ namespace dynamic {
         // they are of the same type, order by value
         switch (lht) {
             case type_null : return false;
+            case type_bool : return boost::get<bool_t>(lhs._var) < boost::get<bool_t>(rhs._var);
             case type_int : return boost::get<int_t>(lhs._var) < boost::get<int_t>(rhs._var);
             case type_double : return boost::get<double_t>(lhs._var) < boost::get<double_t>(rhs._var);
             case type_string : return *(boost::get<string_t>(lhs._var).ps) < *(boost::get<string_t>(rhs._var).ps);
@@ -52,6 +53,11 @@ namespace dynamic {
             default : throw exception("unhandled type");
         }
     }
+
+    ///
+    /// append a bool to a collection
+    ///
+    var& var::operator () (bool n) { return operator() (var(n)); }
 
     ///
     /// append an int to a collection
@@ -127,6 +133,7 @@ namespace dynamic {
     unsigned int var::count() const {
         switch (get_type()) {
             case type_null :    throw exception("invalid .count() operation on none");
+            case type_bool :     throw exception("invalid .count() operation on bool");
             case type_int :     throw exception("invalid .count() operation on int");
             case type_double :  throw exception("invalid .count() operation on double");
             case type_string :  return static_cast<unsigned int>(boost::get<string_t>(_var).ps->length());
@@ -145,6 +152,7 @@ namespace dynamic {
     var& var::operator [] (int n) {
         switch (get_type()) {
             case type_null :    throw exception("cannot apply [] to none");
+            case type_bool :    throw exception("cannot apply [] to bool");
             case type_int :     throw exception("cannot apply [] to int");
             case type_double :  throw exception("cannot apply [] to double");
             case type_string :  throw exception("cannot apply [] to string");
@@ -210,6 +218,7 @@ namespace dynamic {
     var& var::operator [] (const var& v) {    
         switch (get_type()) {
             case type_null :    throw exception("cannot apply [var] to none");
+            case type_bool :    throw exception("cannot apply [var] to bool");
             case type_int :     throw exception("cannot apply [var] to int");
             case type_double :  throw exception("cannot apply [var] to double");
             case type_string :  throw exception("cannot apply [var] to string");
@@ -235,6 +244,7 @@ namespace dynamic {
     std::ostream& var::_write_var(std::ostream& os) {
         switch (get_type()) {
             case type_null :    os << "none"; return os;
+            case type_bool:     os << (boost::get<bool>(_var) ? "true" : "false"); return os;
             case type_int :     os << boost::get<int>(_var); return os;
             case type_double :  os << boost::get<double>(_var); return os;
             case type_string :  return _write_string(os);
@@ -331,6 +341,7 @@ namespace dynamic {
     std::wostream& var::_write_var(std::wostream& os) {
         switch (get_type()) {
             case type_null :    os << "none"; return os;
+            case type_bool:     os << (boost::get<bool>(_var) ? "true" : "false"); return os;
             case type_int :     os << boost::get<int>(_var); return os;
             case type_double :  os << boost::get<double>(_var); return os;
             case type_string :  return _write_string(os);

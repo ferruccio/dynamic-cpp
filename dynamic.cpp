@@ -30,8 +30,8 @@
 
 namespace dynamic {
 
-    const var $;
-    
+    const var none;
+
     bool var::less_var::operator () (const var& lhs, const var& rhs) {
         // if the two vars are of different types, order by type
         type_t lht = lhs.get_type(), rht = rhs.get_type();
@@ -96,7 +96,7 @@ namespace dynamic {
             case type_list :    boost::get<list_ptr>(_var)->push_back(v); break;
             case type_array :   boost::get<array_ptr>(_var)->push_back(v); break;
             case type_set :     boost::get<set_ptr>(_var)->insert(v); break;
-            case type_dict :    boost::get<dict_ptr>(_var)->insert(std::make_pair<var,var>(v, $)); break;
+            case type_dict :    boost::get<dict_ptr>(_var)->insert(std::make_pair<var,var>(v, none)); break;
             default :           throw exception("unhandled () operation");
         }
         return *this;
@@ -222,7 +222,7 @@ namespace dynamic {
                                     dict_ptr& d = boost::get<dict_ptr>(_var);
                                     dict_t::iterator di = d->find(key);
                                     if (di != d->end()) return di->second;
-                                    (*d)[key] = $;
+                                    (*d)[key] = none;
                                     return (*d)[key];
                                 }
             default :           throw exception("unhandled [var] operation");

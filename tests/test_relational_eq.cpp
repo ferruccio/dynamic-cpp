@@ -52,9 +52,9 @@ struct eq_fixture {
 };
 
 BOOST_FIXTURE_TEST_CASE (relational_eq_const, eq_fixture) {
-    BOOST_CHECK($ == $);
+    BOOST_CHECK(none == none);
 
-    BOOST_CHECK(vn == $);
+    BOOST_CHECK(vn == none);
     BOOST_CHECK(via == _via);
     BOOST_CHECK(vib == _vib);
     BOOST_CHECK(vda == _vda);
@@ -97,7 +97,7 @@ BOOST_FIXTURE_TEST_CASE (relational_eq_null, eq_fixture) {
 }
 
 BOOST_FIXTURE_TEST_CASE (relational_eq_int, eq_fixture) {
-    BOOST_CHECK(!(via == $));
+    BOOST_CHECK(!(via == none));
     BOOST_CHECK(!(via == _vda));
     BOOST_CHECK(!(via == _vca));
     BOOST_CHECK(!(via == _vsa));
@@ -112,7 +112,7 @@ BOOST_FIXTURE_TEST_CASE (relational_eq_int, eq_fixture) {
 }
 
 BOOST_FIXTURE_TEST_CASE (relational_eq_double, eq_fixture) {
-    BOOST_CHECK(!(vda == $));
+    BOOST_CHECK(!(vda == none));
     BOOST_CHECK(!(vda == _via));
     BOOST_CHECK(!(vda == _vca));
     BOOST_CHECK(!(vda == _vsa));
@@ -127,7 +127,7 @@ BOOST_FIXTURE_TEST_CASE (relational_eq_double, eq_fixture) {
 }
 
 BOOST_FIXTURE_TEST_CASE (relational_eq_string, eq_fixture) {
-    BOOST_CHECK(!(vsa == $));
+    BOOST_CHECK(!(vsa == none));
     BOOST_CHECK(!(vsa == _via));
     BOOST_CHECK(!(vsa == _vda));
 
@@ -142,7 +142,7 @@ BOOST_FIXTURE_TEST_CASE (relational_eq_string, eq_fixture) {
 }
 
 BOOST_FIXTURE_TEST_CASE (relational_eq_string_charp, eq_fixture) {
-    BOOST_CHECK(!(vca == $));
+    BOOST_CHECK(!(vca == none));
     BOOST_CHECK(!(vca == _via));
     BOOST_CHECK(!(vca == _vda));
 

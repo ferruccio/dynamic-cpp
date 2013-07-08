@@ -52,17 +52,17 @@ struct ne_fixture {
 };
 
 BOOST_FIXTURE_TEST_CASE (relational_ne_null, ne_fixture) {
-    BOOST_CHECK($ != _via);
-    BOOST_CHECK($ != _vda);
-    BOOST_CHECK($ != _vca);
-    BOOST_CHECK($ != _vsa);
+    BOOST_CHECK(none != _via);
+    BOOST_CHECK(none != _vda);
+    BOOST_CHECK(none != _vca);
+    BOOST_CHECK(none != _vsa);
 
-    BOOST_CHECK($ != via);
-    BOOST_CHECK($ != vda);
-    BOOST_CHECK($ != vca);
-    BOOST_CHECK($ != vsa);
+    BOOST_CHECK(none != via);
+    BOOST_CHECK(none != vda);
+    BOOST_CHECK(none != vca);
+    BOOST_CHECK(none != vsa);
 
-    BOOST_CHECK(!($ != $));
+    BOOST_CHECK(!(none != none));
 }
 
 BOOST_FIXTURE_TEST_CASE (relational_ne_int, ne_fixture) {

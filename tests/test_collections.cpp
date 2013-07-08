@@ -88,9 +88,9 @@ BOOST_AUTO_TEST_CASE (test_dicts) {
     BOOST_CHECK_EQUAL(d2.count(), 3);
     BOOST_CHECK(d2.is_dict());
     BOOST_CHECK(d2.is_collection());
-    BOOST_CHECK(d2[1] == $);
-    BOOST_CHECK(d2["hello"] == $);
-    BOOST_CHECK(d2[10.5] == $);
+    BOOST_CHECK(d2[1] == dynamic::none);
+    BOOST_CHECK(d2["hello"] == dynamic::none);
+    BOOST_CHECK(d2[10.5] == dynamic::none);
 
     var d3 = new_dict(1, "xxx")("hello", "world")(10.5, 3.14);
     BOOST_CHECK_EQUAL(d3.count(), 3);
@@ -103,7 +103,7 @@ BOOST_AUTO_TEST_CASE (test_dicts) {
     var d4 = new_dict();
     d4["hello"] = "world";
     BOOST_CHECK(d4["hello"] == "world");
-    BOOST_CHECK(d4["test"] == $);
+    BOOST_CHECK(d4["test"] == dynamic::none);
     BOOST_CHECK_EQUAL(d4.count(), 2);
 }
 
@@ -149,7 +149,7 @@ BOOST_AUTO_TEST_CASE (test_complex) {
     ss << d;
     BOOST_CHECK_EQUAL(ss.str(), "<'array':[1 1.5 'hello'] 'dict':<'a':4 'b':5.5 'c':'plover'> 'list':(2 'hello' 'world') 'set':{3 4.5 'xyzzy'}>");
 
-    d["array"][0] = d["array"][1] = d["array"][2] = $;
+    d["array"][0] = d["array"][1] = d["array"][2] = dynamic::none;
     ss.str(string());
     ss << d;
     BOOST_CHECK_EQUAL(ss.str(), "<'array':[$ $ $] 'dict':<'a':4 'b':5.5 'c':'plover'> 'list':(2 'hello' 'world') 'set':{3 4.5 'xyzzy'}>");

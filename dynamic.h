@@ -65,7 +65,7 @@ namespace dynamic {
     ///
     /// predefined null object
     ///
-    extern const var $;
+    extern const var none;
 
     ///
     /// the var class is the heart of Dynamic C++

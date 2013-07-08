@@ -97,7 +97,7 @@ BOOST_AUTO_TEST_CASE (simple_assign) {
 
     var v(10);
     BOOST_CHECK(v.is_int());
-    v = $;
+    v = none;
     BOOST_CHECK(v.is_null());
     BOOST_CHECK(!v.is_collection());
     BOOST_CHECK_EQUAL(v.type(), "null");
@@ -160,7 +160,7 @@ BOOST_AUTO_TEST_CASE (simple_assign) {
 
 BOOST_AUTO_TEST_CASE(Examples) {
 
-    var a = $;  // a is initially null
+    var a = none;  // a is initially null
     cout << a << endl;
 
     a = 1;      // a is an now integer

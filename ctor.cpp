@@ -28,7 +28,7 @@
 namespace dynamic {
 
     ///
-    /// ctor: init with null ($)
+    /// ctor: init with none
     ///
     var::var() : _var() {}
 

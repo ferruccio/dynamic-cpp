@@ -88,7 +88,7 @@ namespace dynamic {
     ///
     var& var::operator () (const var& v) {    
         switch (get_type()) {
-            case type_null :    throw exception("invalid () operation on $");
+            case type_null :    throw exception("invalid () operation on none");
             case type_int :     throw exception("invalid () operation on int");
             case type_double :  throw exception("invalid () operation on double");
             case type_string :  throw exception("invalid () operation on string");
@@ -107,7 +107,7 @@ namespace dynamic {
     ///
     var& var::operator () (const var& k, const var& v) {
         switch (get_type()) {
-            case type_null :    throw exception("invalid (,) operation on $");
+            case type_null :    throw exception("invalid (,) operation on none");
             case type_int :     throw exception("invalid (,) operation on int");
             case type_double :  throw exception("invalid (,) operation on double");
             case type_string :  throw exception("invalid (,) operation on string");
@@ -126,7 +126,7 @@ namespace dynamic {
     ///
     unsigned int var::count() const {
         switch (get_type()) {
-            case type_null :    throw exception("invalid .count() operation on $");
+            case type_null :    throw exception("invalid .count() operation on none");
             case type_int :     throw exception("invalid .count() operation on int");
             case type_double :  throw exception("invalid .count() operation on double");
             case type_string :  return static_cast<unsigned int>(boost::get<string_t>(_var).ps->length());
@@ -144,7 +144,7 @@ namespace dynamic {
     ///
     var& var::operator [] (int n) {
         switch (get_type()) {
-            case type_null :    throw exception("cannot apply [] to $");
+            case type_null :    throw exception("cannot apply [] to none");
             case type_int :     throw exception("cannot apply [] to int");
             case type_double :  throw exception("cannot apply [] to double");
             case type_string :  throw exception("cannot apply [] to string");
@@ -209,7 +209,7 @@ namespace dynamic {
     ///
     var& var::operator [] (const var& v) {    
         switch (get_type()) {
-            case type_null :    throw exception("cannot apply [var] to $");
+            case type_null :    throw exception("cannot apply [var] to none");
             case type_int :     throw exception("cannot apply [var] to int");
             case type_double :  throw exception("cannot apply [var] to double");
             case type_string :  throw exception("cannot apply [var] to string");
@@ -234,7 +234,7 @@ namespace dynamic {
     ///
     std::ostream& var::_write_var(std::ostream& os) {
         switch (get_type()) {
-            case type_null :    os << "$"; return os;
+            case type_null :    os << "none"; return os;
             case type_int :     os << boost::get<int>(_var); return os;
             case type_double :  os << boost::get<double>(_var); return os;
             case type_string :  return _write_string(os);
@@ -330,7 +330,7 @@ namespace dynamic {
     ///
     std::wostream& var::_write_var(std::wostream& os) {
         switch (get_type()) {
-            case type_null :    os << "$"; return os;
+            case type_null :    os << "none"; return os;
             case type_int :     os << boost::get<int>(_var); return os;
             case type_double :  os << boost::get<double>(_var); return os;
             case type_string :  return _write_string(os);

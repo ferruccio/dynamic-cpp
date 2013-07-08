@@ -200,7 +200,7 @@ namespace dynamic {
     ///
     bool var::operator < (const var& v) const {
         switch (get_type()) {
-            case type_null :    throw exception("invalid < comparison to $");
+            case type_null :    throw exception("invalid < comparison to none");
             case type_int :     return v.is_int() && boost::get<int_t>(_var) < boost::get<int_t>(v._var);
             case type_double :  return v.is_double() && boost::get<double_t>(_var) < boost::get<double_t>(v._var);
             case type_string :  return v.is_string() && *boost::get<string_t>(_var).ps < *boost::get<string_t>(v._var).ps;
@@ -266,7 +266,7 @@ namespace dynamic {
     ///
     bool var::operator <= (const var& v) const {
         switch (get_type()) {
-            case type_null :    throw exception("invalid <= comparison to $");
+            case type_null :    throw exception("invalid <= comparison to none");
             case type_int :     return v.is_int() && boost::get<int_t>(_var) <= boost::get<int_t>(v._var);
             case type_double :  return v.is_double() && boost::get<double_t>(_var) <= boost::get<double_t>(v._var);
             case type_string :  return v.is_string() && *boost::get<string_t>(_var).ps <= *boost::get<string_t>(v._var).ps;
@@ -331,7 +331,7 @@ namespace dynamic {
     ///
     bool var::operator > (const var& v) const {
         switch (get_type()) {
-            case type_null :    throw exception("invalid > comparison to $");
+            case type_null :    throw exception("invalid > comparison to none");
             case type_int :     return v.is_int() && boost::get<int_t>(_var) > boost::get<int_t>(v._var);
             case type_double :  return v.is_double() && boost::get<double_t>(_var) > boost::get<double_t>(v._var);
             case type_string :  return v.is_string() && *boost::get<string_t>(_var).ps > *boost::get<string_t>(v._var).ps;
@@ -397,7 +397,7 @@ namespace dynamic {
     ///
     bool var::operator >= (const var& v) const {
         switch (get_type()) {
-            case type_null :    throw exception("invalid >= comparison to $");
+            case type_null :    throw exception("invalid >= comparison to none");
             case type_int :     return v.is_int() && boost::get<int_t>(_var) >= boost::get<int_t>(v._var);
             case type_double :  return v.is_double() && boost::get<double_t>(_var) >= boost::get<double_t>(v._var);
             case type_string :  return v.is_string() && *boost::get<string_t>(_var).ps >= *boost::get<string_t>(v._var).ps;

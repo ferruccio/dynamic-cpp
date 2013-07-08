@@ -188,11 +188,6 @@ namespace dynamic {
         std::wostream& _write_wstring(std::wostream& os);
         std::wostream& _write_collection(std::wostream& os);
         
-        static var new_list();
-        static var new_array();
-        static var new_set();
-        static var new_dict();
-
         unsigned int count() const;
         var& operator [] (int n);
         var& operator [] (double n);
@@ -288,6 +283,11 @@ namespace dynamic {
         reverse_iterator rend();
 
     private :
+        friend var make_list();
+        friend var make_array();
+        friend var make_set();
+        friend var make_dict();
+
         enum type_t { type_null, type_int, type_double, type_string, type_wstring, type_list, type_array, type_set, type_dict };
 
         struct null_t { null_t() {} };
@@ -348,23 +348,23 @@ namespace dynamic {
     inline std::wostream& operator << (std::wostream& os, var& v) { return v._write_var(os); }
 
     /// create empty list
-    inline var new_list() { return var::new_list(); }
+    inline var make_list() { return var(boost::make_shared<var::list_t>()); }
     /// create empty array
-    inline var new_array() { return var::new_array(); }
+    inline var make_array() { return var(boost::make_shared<var::array_t>()); }
     /// create empty set
-    inline var new_set() { return var::new_set(); }
+    inline var make_set() { return var(boost::make_shared<var::set_t>()); }
     /// create empty dict
-    inline var new_dict() { return var::new_dict(); }
+    inline var make_dict() { return var(boost::make_shared<var::dict_t>()); }
 
     /// create list with one item
-    inline var new_list(const var& v) { return var::new_list()(v); }
+    inline var make_list(const var& v) { return dynamic::make_list()(v); }
     /// create array with one item
-    inline var new_array(const var& v) { return var::new_array()(v); }
+    inline var make_array(const var& v) { return dynamic::make_array()(v); }
     /// create set with one item
-    inline var new_set(const var& v) { return var::new_set()(v); }
+    inline var make_set(const var& v) { return dynamic::make_set()(v); }
     /// create dict with one item (a key) and null value
-    inline var new_dict(const var& k) { return var::new_dict()(k); }
+    inline var make_dict(const var& k) { return dynamic::make_dict()(k); }
     /// create dict with one item (a key,value pair)
-    inline var new_dict(const var& k, const var& v) { return var::new_dict()(k, v); }
+    inline var make_dict(const var& k, const var& v) { return dynamic::make_dict()(k, v); }
 
 }

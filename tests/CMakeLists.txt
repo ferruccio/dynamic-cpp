@@ -16,15 +16,11 @@ add_executable( tests
 	test_relational_eq.cpp
 	test_relational_ne.cpp
 	
-	../array.cpp
 	../assign.cpp
 	../ctor.cpp
-	../dict.cpp
 	../dynamic.cpp
 	../iterator.cpp
-	../list.cpp
 	../relational.cpp
-	../set.cpp
 	../types.cpp
 )
 

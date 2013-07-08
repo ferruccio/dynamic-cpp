@@ -9,14 +9,10 @@ link_directories ( ${Boost_LIBRARY_DIRS} )
 include_directories ( ${Boost_INCLUDE_DIRS} )
 
 add_library( dynamic STATIC
-	array.cpp
 	assign.cpp
 	ctor.cpp
-	dict.cpp
 	dynamic.cpp
 	iterator.cpp
-	list.cpp
 	relational.cpp
-	set.cpp
 	types.cpp
 )

@@ -175,10 +175,10 @@ BOOST_AUTO_TEST_CASE(Examples) {
     a = L"hello, wide world!"; // a is now a wide string
     cout << a << endl;
 
-    a = new_list(1)(2)(3); // a is now a list of integers
+    a = make_list(1)(2)(3); // a is now a list of integers
     cout << a << endl;
 
-    a = new_list(1)(2)(3.5)("hello")(new_array(1)(2.0)("three"));
+    a = make_list(1)(2)(3.5)("hello")(make_array(1)(2.0)("three"));
     // a is now a list containing 2 ints, a double, a string and an array of three items
 
     cout << "c: " << a << endl;
@@ -186,7 +186,7 @@ BOOST_AUTO_TEST_CASE(Examples) {
     for (var::iterator i = a.begin(); i != a.end(); ++i)
         cout << *i << endl;
 
-    a = new_dict("name", "fred")("age", 35)("city", "bedrock")(12, new_array(1)(2)(3)); // keys and values can be any type
+    a = make_dict("name", "fred")("age", 35)("city", "bedrock")(12, make_array(1)(2)(3)); // keys and values can be any type
     // a is now a dictionary
     cout << a << endl;
 

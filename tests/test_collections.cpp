@@ -34,12 +34,12 @@ using namespace std;
 using namespace dynamic;
 
 BOOST_AUTO_TEST_CASE (test_lists) {
-    var l1 = new_list();
+    var l1 = make_list();
     BOOST_CHECK_EQUAL(l1.count(), 0);
     BOOST_CHECK(l1.is_list());
     BOOST_CHECK(l1.is_collection());
 
-    var l2 = new_list(1)("hello")(10.5);
+    var l2 = make_list(1)("hello")(10.5);
     BOOST_CHECK_EQUAL(l2.count(), 3);
     BOOST_CHECK(l2.is_list());
     BOOST_CHECK(l2.is_collection());
@@ -49,12 +49,12 @@ BOOST_AUTO_TEST_CASE (test_lists) {
 }
 
 BOOST_AUTO_TEST_CASE (test_arrays) {
-    var a1 = new_array();
+    var a1 = make_array();
     BOOST_CHECK_EQUAL(a1.count(), 0);
     BOOST_CHECK(a1.is_array());
     BOOST_CHECK(a1.is_collection());
 
-    var a2 = new_array(1)("hello")(10.5);
+    var a2 = make_array(1)("hello")(10.5);
     BOOST_CHECK_EQUAL(a2.count(), 3);
     BOOST_CHECK(a2.is_array());
     BOOST_CHECK(a2.is_collection());
@@ -64,12 +64,12 @@ BOOST_AUTO_TEST_CASE (test_arrays) {
 }
 
 BOOST_AUTO_TEST_CASE (test_sets) {
-    var s1 = new_set();
+    var s1 = make_set();
     BOOST_CHECK_EQUAL(s1.count(), 0);
     BOOST_CHECK(s1.is_set());
     BOOST_CHECK(s1.is_collection());
 
-    var s2 = new_set(1)("hello")(10.5)(1)("hello")(10.5);
+    var s2 = make_set(1)("hello")(10.5)(1)("hello")(10.5);
     BOOST_CHECK_EQUAL(s2.count(), 3);
     BOOST_CHECK(s2.is_set());
     BOOST_CHECK(s2.is_collection());
@@ -79,12 +79,12 @@ BOOST_AUTO_TEST_CASE (test_sets) {
 }
 
 BOOST_AUTO_TEST_CASE (test_dicts) {
-    var d1 = new_dict();
+    var d1 = make_dict();
     BOOST_CHECK_EQUAL(d1.count(), 0);
     BOOST_CHECK(d1.is_dict());
     BOOST_CHECK(d1.is_collection());
 
-    var d2 = new_dict(1)("hello")(10.5);
+    var d2 = make_dict(1)("hello")(10.5);
     BOOST_CHECK_EQUAL(d2.count(), 3);
     BOOST_CHECK(d2.is_dict());
     BOOST_CHECK(d2.is_collection());
@@ -92,7 +92,7 @@ BOOST_AUTO_TEST_CASE (test_dicts) {
     BOOST_CHECK(d2["hello"] == dynamic::none);
     BOOST_CHECK(d2[10.5] == dynamic::none);
 
-    var d3 = new_dict(1, "xxx")("hello", "world")(10.5, 3.14);
+    var d3 = make_dict(1, "xxx")("hello", "world")(10.5, 3.14);
     BOOST_CHECK_EQUAL(d3.count(), 3);
     BOOST_CHECK(d3.is_dict());
     BOOST_CHECK(d3.is_collection());
@@ -100,7 +100,7 @@ BOOST_AUTO_TEST_CASE (test_dicts) {
     BOOST_CHECK(d3["hello"] == "world");
     BOOST_CHECK(d3[10.5] == 3.14);
 
-    var d4 = new_dict();
+    var d4 = make_dict();
     d4["hello"] = "world";
     BOOST_CHECK(d4["hello"] == "world");
     BOOST_CHECK(d4["test"] == dynamic::none);
@@ -108,11 +108,11 @@ BOOST_AUTO_TEST_CASE (test_dicts) {
 }
 
 BOOST_AUTO_TEST_CASE (test_complex) {
-    var d = new_dict
-        ("array", new_array(1)(1.5)("hello"))
-        ("list", new_list(2)(3.5)("world"))
-        ("set", new_set(3)("xyzzy")(4.5))
-        ("dict", new_dict("a", 4)("b", 5.5)("c", "plover"));
+    var d = make_dict
+        ("array", make_array(1)(1.5)("hello"))
+        ("list", make_list(2)(3.5)("world"))
+        ("set", make_set(3)("xyzzy")(4.5))
+        ("dict", make_dict("a", 4)("b", 5.5)("c", "plover"));
 
     BOOST_CHECK(d.count() == 4);
     BOOST_CHECK(d.is_dict());
@@ -154,7 +154,7 @@ BOOST_AUTO_TEST_CASE (test_complex) {
     ss << d;
     BOOST_CHECK_EQUAL(ss.str(), "<'array':[$ $ $] 'dict':<'a':4 'b':5.5 'c':'plover'> 'list':(2 'hello' 'world') 'set':{3 4.5 'xyzzy'}>");
 
-    d["dict"]["b"] = new_array(1)(2.1)(3)(new_list(1)("b"));
+    d["dict"]["b"] = make_array(1)(2.1)(3)(make_list(1)("b"));
     ss.str(string());
     ss << d;
     BOOST_CHECK_EQUAL(ss.str(), "<'array':[$ $ $] 'dict':<'a':4 'b':[1 2.1 3 (1 'b')] 'c':'plover'> 'list':(2 'hello' 'world') 'set':{3 4.5 'xyzzy'}>");

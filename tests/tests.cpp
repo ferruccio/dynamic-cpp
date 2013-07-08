@@ -199,7 +199,7 @@ BOOST_AUTO_TEST_CASE(Examples) {
     for (var::iterator i = a.begin(); i != a.end(); ++i)
         cout << *i << endl;
 
-    a = make_dict("name", "fred")("age", 35)("city", "bedrock")(12, make_array(1)(2)(3)); // keys and values can be any type
+    a = make_map("name", "fred")("age", 35)("city", "bedrock")(12, make_array(1)(2)(3)); // keys and values can be any type
     // a is now a dictionary
     cout << a << endl;
 

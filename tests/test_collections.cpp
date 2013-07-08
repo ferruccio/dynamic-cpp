@@ -78,29 +78,29 @@ BOOST_AUTO_TEST_CASE (test_sets) {
     BOOST_CHECK(s2[2] == "hello");
 }
 
-BOOST_AUTO_TEST_CASE (test_dicts) {
-    var d1 = make_dict();
+BOOST_AUTO_TEST_CASE (test_maps) {
+    var d1 = make_map();
     BOOST_CHECK_EQUAL(d1.count(), 0);
-    BOOST_CHECK(d1.is_dict());
+    BOOST_CHECK(d1.is_map());
     BOOST_CHECK(d1.is_collection());
 
-    var d2 = make_dict(1)("hello")(10.5);
+    var d2 = make_map(1)("hello")(10.5);
     BOOST_CHECK_EQUAL(d2.count(), 3);
-    BOOST_CHECK(d2.is_dict());
+    BOOST_CHECK(d2.is_map());
     BOOST_CHECK(d2.is_collection());
     BOOST_CHECK(d2[1] == dynamic::none);
     BOOST_CHECK(d2["hello"] == dynamic::none);
     BOOST_CHECK(d2[10.5] == dynamic::none);
 
-    var d3 = make_dict(1, "xxx")("hello", "world")(10.5, 3.14);
+    var d3 = make_map(1, "xxx")("hello", "world")(10.5, 3.14);
     BOOST_CHECK_EQUAL(d3.count(), 3);
-    BOOST_CHECK(d3.is_dict());
+    BOOST_CHECK(d3.is_map());
     BOOST_CHECK(d3.is_collection());
     BOOST_CHECK(d3[1] == "xxx");
     BOOST_CHECK(d3["hello"] == "world");
     BOOST_CHECK(d3[10.5] == 3.14);
 
-    var d4 = make_dict();
+    var d4 = make_map();
     d4["hello"] = "world";
     BOOST_CHECK(d4["hello"] == "world");
     BOOST_CHECK(d4["test"] == dynamic::none);
@@ -108,14 +108,14 @@ BOOST_AUTO_TEST_CASE (test_dicts) {
 }
 
 BOOST_AUTO_TEST_CASE (test_complex) {
-    var d = make_dict
+    var d = make_map
         ("array", make_array(1)(1.5)("hello"))
         ("list", make_list(2)(3.5)("world"))
         ("set", make_set(3)("xyzzy")(4.5))
-        ("dict", make_dict("a", 4)("b", 5.5)("c", "plover"));
+        ("map", make_map("a", 4)("b", 5.5)("c", "plover"));
 
     BOOST_CHECK(d.count() == 4);
-    BOOST_CHECK(d.is_dict());
+    BOOST_CHECK(d.is_map());
     BOOST_CHECK(d["array"].count() == 3);
     BOOST_CHECK(d["array"].is_array());
     BOOST_CHECK(d["array"][0] == 1);
@@ -134,29 +134,29 @@ BOOST_AUTO_TEST_CASE (test_complex) {
     BOOST_CHECK(d["set"][1] == 4.5);
     BOOST_CHECK(d["set"][2] == "xyzzy");
 
-    BOOST_CHECK(d["dict"].count() == 3);
-    BOOST_CHECK(d["dict"].is_dict());
-    BOOST_CHECK(d["dict"]["a"] == 4);
-    BOOST_CHECK(d["dict"]["b"] == 5.5);
-    BOOST_CHECK(d["dict"]["c"] == "plover");
+    BOOST_CHECK(d["map"].count() == 3);
+    BOOST_CHECK(d["map"].is_map());
+    BOOST_CHECK(d["map"]["a"] == 4);
+    BOOST_CHECK(d["map"]["b"] == 5.5);
+    BOOST_CHECK(d["map"]["c"] == "plover");
 
     stringstream ss;
     ss << d;
-    BOOST_CHECK_EQUAL(ss.str(), "<'array':[1 1.5 'hello'] 'dict':<'a':4 'b':5.5 'c':'plover'> 'list':(2 3.5 'world') 'set':{3 4.5 'xyzzy'}>");
+    BOOST_CHECK_EQUAL(ss.str(), "<'array':[1 1.5 'hello'] 'list':(2 3.5 'world') 'map':<'a':4 'b':5.5 'c':'plover'> 'set':{3 4.5 'xyzzy'}>");
 
     d["list"][1] = "hello";
     ss.str(string());
     ss << d;
-    BOOST_CHECK_EQUAL(ss.str(), "<'array':[1 1.5 'hello'] 'dict':<'a':4 'b':5.5 'c':'plover'> 'list':(2 'hello' 'world') 'set':{3 4.5 'xyzzy'}>");
+    BOOST_CHECK_EQUAL(ss.str(), "<'array':[1 1.5 'hello'] 'list':(2 'hello' 'world') 'map':<'a':4 'b':5.5 'c':'plover'> 'set':{3 4.5 'xyzzy'}>");
 
     d["array"][0] = d["array"][1] = d["array"][2] = dynamic::none;
     ss.str(string());
     ss << d;
-    BOOST_CHECK_EQUAL(ss.str(), "<'array':[none none none] 'dict':<'a':4 'b':5.5 'c':'plover'> 'list':(2 'hello' 'world') 'set':{3 4.5 'xyzzy'}>");
+    BOOST_CHECK_EQUAL(ss.str(), "<'array':[none none none] 'list':(2 'hello' 'world') 'map':<'a':4 'b':5.5 'c':'plover'> 'set':{3 4.5 'xyzzy'}>");
 
-    d["dict"]["b"] = make_array(1)(2.1)(3)(make_list(1)("b"));
+    d["map"]["b"] = make_array(1)(2.1)(3)(make_list(1)("b"));
     ss.str(string());
     ss << d;
-    BOOST_CHECK_EQUAL(ss.str(), "<'array':[none none none] 'dict':<'a':4 'b':[1 2.1 3 (1 'b')] 'c':'plover'> 'list':(2 'hello' 'world') 'set':{3 4.5 'xyzzy'}>");
+    BOOST_CHECK_EQUAL(ss.str(), "<'array':[none none none] 'list':(2 'hello' 'world') 'map':<'a':4 'b':[1 2.1 3 (1 'b')] 'c':'plover'> 'set':{3 4.5 'xyzzy'}>");
 }
 

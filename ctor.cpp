@@ -88,8 +88,8 @@ namespace dynamic {
     var::var(set_ptr _set) : _var(_set) {}
 
     ///
-    /// ctor: init with dict
+    /// ctor: init with map
     ///
-    var::var(dict_ptr _dict) : _var(_dict) {}
+    var::var(map_ptr _map) : _var(_map) {}
 
 }

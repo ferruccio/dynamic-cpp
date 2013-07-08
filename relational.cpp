@@ -90,7 +90,7 @@ namespace dynamic {
             case type_list :    throw exception("list == not implemented");
             case type_array :   throw exception("array == not implemented");
             case type_set :     throw exception("set == not implemented");
-            case type_dict :    throw exception("dict == not implemented");
+            case type_map :     throw exception("map == not implemented");
             default :           throw exception("(unhandled type) == not implemented");
         }
     }
@@ -158,7 +158,7 @@ namespace dynamic {
             case type_list :    throw exception("list != not implemented");
             case type_array :   throw exception("array != not implemented");
             case type_set :     throw exception("set != not implemented");
-            case type_dict :    throw exception("dict != not implemented");
+            case type_map :     throw exception("map != not implemented");
             default :           throw exception("(unhandled type) != not implemented");
         }
     }
@@ -233,7 +233,7 @@ namespace dynamic {
             case type_list :    throw exception("list < not implemented");
             case type_array :   throw exception("array < not implemented");
             case type_set :     throw exception("set < not implemented");
-            case type_dict :    throw exception("dict < not implemented");
+            case type_map :     throw exception("map < not implemented");
             default :           throw exception("(unhandled type) < not implemented");
         }
     }
@@ -308,7 +308,7 @@ namespace dynamic {
             case type_list :    throw exception("list <= not implemented");
             case type_array :   throw exception("array <= not implemented");
             case type_set :     throw exception("set <= not implemented");
-            case type_dict :    throw exception("dict <= not implemented");
+            case type_map :     throw exception("map <= not implemented");
             default :           throw exception("(unhandled type) <= not implemented");
         }
     }
@@ -382,7 +382,7 @@ namespace dynamic {
             case type_list :    throw exception("list > not implemented");
             case type_array :   throw exception("array > not implemented");
             case type_set :     throw exception("set > not implemented");
-            case type_dict :    throw exception("dict > not implemented");
+            case type_map :     throw exception("map > not implemented");
             default :           throw exception("(unhandled type) > not implemented");
         }
     }
@@ -457,7 +457,7 @@ namespace dynamic {
             case type_list :    throw exception("list >= not implemented");
             case type_array :   throw exception("array >= not implemented");
             case type_set :     throw exception("set >= not implemented");
-            case type_dict :    throw exception("dict >= not implemented");
+            case type_map :     throw exception("map >= not implemented");
             default :           throw exception("(unhandled type) >= not implemented");
         }
     }

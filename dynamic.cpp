@@ -48,7 +48,7 @@ namespace dynamic {
             case type_list :
             case type_array :
             case type_set :
-            case type_dict :
+            case type_map :
                 return false;
             default : throw exception("unhandled type");
         }
@@ -102,14 +102,14 @@ namespace dynamic {
             case type_list :    boost::get<list_ptr>(_var)->push_back(v); break;
             case type_array :   boost::get<array_ptr>(_var)->push_back(v); break;
             case type_set :     boost::get<set_ptr>(_var)->insert(v); break;
-            case type_dict :    boost::get<dict_ptr>(_var)->insert(std::make_pair<var,var>(v, none)); break;
+            case type_map :     boost::get<map_ptr>(_var)->insert(std::make_pair<var,var>(v, none)); break;
             default :           throw exception("unhandled () operation");
         }
         return *this;
     }
 
     ///
-    /// add a key,value to a dict
+    /// add a key,value to a map
     ///
     var& var::operator () (const var& k, const var& v) {
         switch (get_type()) {
@@ -121,7 +121,7 @@ namespace dynamic {
             case type_list :    throw exception("invalid (,) operation on list");
             case type_array :   throw exception("invalid (,) operation on array");
             case type_set :     throw exception("invalid (,) operation on set");
-            case type_dict :    boost::get<dict_ptr>(_var)->insert(std::make_pair<var,var>(k, v)); break;
+            case type_map :     boost::get<map_ptr>(_var)->insert(std::make_pair<var,var>(k, v)); break;
             default :           throw exception("unhandled (,) operation");
         }
         return *this;
@@ -141,7 +141,7 @@ namespace dynamic {
             case type_list :    return static_cast<unsigned int>(boost::get<list_ptr>(_var)->size());
             case type_array :   return static_cast<unsigned int>(boost::get<array_ptr>(_var)->size());
             case type_set :     return static_cast<unsigned int>(boost::get<set_ptr>(_var)->size());
-            case type_dict :    return static_cast<unsigned int>(boost::get<dict_ptr>(_var)->size());
+            case type_map :     return static_cast<unsigned int>(boost::get<map_ptr>(_var)->size());
             default :           throw exception("unhandled .count() operation");
         }
     }
@@ -176,11 +176,11 @@ namespace dynamic {
                                     advance(si, n);
                                     return const_cast<var&>(*si);
                                 }
-            case type_dict :    {
-                                    dict_ptr& d = boost::get<dict_ptr>(_var);
+            case type_map :    {
+                                    map_ptr& d = boost::get<map_ptr>(_var);
                                     var key(n);
-                                    dict_t::iterator di = d->find(key);
-                                    if (di == d->end()) throw exception("[] not found in dict");
+                                    map_t::iterator di = d->find(key);
+                                    if (di == d->end()) throw exception("[] not found in map");
                                     return di->second;
                                 }
             default :           throw exception("unhandled [] operation");
@@ -226,10 +226,10 @@ namespace dynamic {
             case type_list :    throw exception("list[] requires int");
             case type_array :   throw exception("array[] requires int");
             case type_set :     throw exception("set[] requires int");
-            case type_dict :    {
+            case type_map :     {
                                     var key(v);
-                                    dict_ptr& d = boost::get<dict_ptr>(_var);
-                                    dict_t::iterator di = d->find(key);
+                                    map_ptr& d = boost::get<map_ptr>(_var);
+                                    map_t::iterator di = d->find(key);
                                     if (di != d->end()) return di->second;
                                     (*d)[key] = none;
                                     return (*d)[key];
@@ -252,7 +252,7 @@ namespace dynamic {
             case type_list :
             case type_array :
             case type_set :
-            case type_dict :    return _write_collection(os);
+            case type_map :     return _write_collection(os);
             default :           throw exception("var::_write_var(ostream) unhandled type");
         }
     }
@@ -313,13 +313,13 @@ namespace dynamic {
             case type_list : os << "("; break;
             case type_array : os << "["; break;
             case type_set : os << "{"; break;
-            case type_dict : os << "<"; break;
+            case type_map : os << "<"; break;
             default : assert(false);
         }
         for (var::iterator vi = begin(); vi != end(); ++vi) {
             if (vi != begin()) os << " ";
             (*vi)._write_var(os);
-            if (get_type() == type_dict) {
+            if (get_type() == type_map) {
                 os << ":";
                 (*this)[*vi]._write_var(os);
             }
@@ -329,7 +329,7 @@ namespace dynamic {
             case type_list : os << ")"; break;
             case type_array : os << "]"; break;
             case type_set : os << "}"; break;
-            case type_dict : os << ">"; break;
+            case type_map : os << ">"; break;
             default : assert(false);
         }
         return os;
@@ -349,7 +349,7 @@ namespace dynamic {
             case type_list :
             case type_array :
             case type_set :
-            case type_dict :    return _write_collection(os);
+            case type_map :     return _write_collection(os);
             default :           throw exception("var::_write_var(wostream) unhandled type");
         }
     }
@@ -410,13 +410,13 @@ namespace dynamic {
             case type_list : os << L"("; break;
             case type_array : os << L"["; break;
             case type_set : os << L"{"; break;
-            case type_dict : os << L"<"; break;
+            case type_map : os << L"<"; break;
             default : assert(false);
         }
         for (var::iterator vi = begin(); vi != end(); ++vi) {
             if (vi != begin()) os << L" ";
             (*vi)._write_var(os);
-            if (get_type() == type_dict) {
+            if (get_type() == type_map) {
                 os << L":";
                 (*this)[*vi]._write_var(os);
             }
@@ -426,7 +426,7 @@ namespace dynamic {
             case type_list : os << L")"; break;
             case type_array : os << L"]"; break;
             case type_set : os << L"}"; break;
-            case type_dict : os << L">"; break;
+            case type_map : os << L">"; break;
             default : assert(false);
         }
         return os;

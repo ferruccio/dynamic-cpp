@@ -96,7 +96,7 @@ namespace dynamic {
             case type_list :    return "list";
             case type_array :   return "array";
             case type_set :     return "set";
-            case type_dict :    return "dict";
+            case type_map :     return "map";
             default :           throw exception("var::type() unhandled type");
         }
     }

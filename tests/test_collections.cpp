@@ -88,9 +88,9 @@ BOOST_AUTO_TEST_CASE (test_maps) {
     BOOST_CHECK_EQUAL(d2.count(), 3);
     BOOST_CHECK(d2.is_map());
     BOOST_CHECK(d2.is_collection());
-    BOOST_CHECK(d2[1] == dynamic::none);
-    BOOST_CHECK(d2["hello"] == dynamic::none);
-    BOOST_CHECK(d2[10.5] == dynamic::none);
+    BOOST_CHECK(d2[1] == none);
+    BOOST_CHECK(d2["hello"] == none);
+    BOOST_CHECK(d2[10.5] == none);
 
     var d3 = make_map(1, "xxx")("hello", "world")(10.5, 3.14);
     BOOST_CHECK_EQUAL(d3.count(), 3);
@@ -103,7 +103,7 @@ BOOST_AUTO_TEST_CASE (test_maps) {
     var d4 = make_map();
     d4["hello"] = "world";
     BOOST_CHECK(d4["hello"] == "world");
-    BOOST_CHECK(d4["test"] == dynamic::none);
+    BOOST_CHECK(d4["test"] == none);
     BOOST_CHECK_EQUAL(d4.count(), 2);
 }
 
@@ -149,7 +149,7 @@ BOOST_AUTO_TEST_CASE (test_complex) {
     ss << d;
     BOOST_CHECK_EQUAL(ss.str(), "<'list':(2 'hello' 'world') 'map':<'a':4 'b':5.5 'c':'plover'> 'set':{3 4.5 'xyzzy'} 'vector':[1 1.5 'hello']>");
 
-    d["vector"][0] = d["vector"][1] = d["vector"][2] = dynamic::none;
+    d["vector"][0] = d["vector"][1] = d["vector"][2] = none;
     ss.str(string());
     ss << d;
     BOOST_CHECK_EQUAL(ss.str(), "<'list':(2 'hello' 'world') 'map':<'a':4 'b':5.5 'c':'plover'> 'set':{3 4.5 'xyzzy'} 'vector':[none none none]>");

@@ -92,20 +92,24 @@ namespace dynamic {
     ///
     /// append a single value to a collection
     ///
+    struct var::append_value_visitor : public boost::static_visitor<var&>
+    {
+        append_value_visitor(var& self, const var& value) : self(self), value(value) {}
+        var& self;
+        const var& value;
+        result_type operator () (null_t) const { throw exception("invalid () operation on none"); }
+        result_type operator () (bool_t) const { throw exception("invalid () operation on bool"); }
+        result_type operator () (int_t) const { throw exception("invalid () operation on int"); }
+        result_type operator () (double_t) const { throw exception("invalid () operation on double"); }
+        result_type operator () (const string_t& value) const { throw exception("invalid () operation on string"); }
+        result_type operator () (const wstring_t& value) const { throw exception("invalid () operation on wstring"); }
+        result_type operator () (const list_ptr& ptr) const { ptr->push_back(value); return self; }
+        result_type operator () (const vector_ptr& ptr) const { ptr->push_back(value); return self; }
+        result_type operator () (const set_ptr& ptr) const { ptr->insert(value); return self; }
+        result_type operator () (const map_ptr& ptr) const { ptr->insert(map_t::value_type(value, none)); return self; }
+    };
     var& var::operator () (const var& v) {    
-        switch (get_type()) {
-            case type_null :    throw exception("invalid () operation on none");
-            case type_int :     throw exception("invalid () operation on int");
-            case type_double :  throw exception("invalid () operation on double");
-            case type_string :  throw exception("invalid () operation on string");
-            case type_wstring : throw exception("invalid () operation on wstring");
-            case type_list :    boost::get<list_ptr>(_var)->push_back(v); break;
-            case type_vector :  boost::get<vector_ptr>(_var)->push_back(v); break;
-            case type_set :     boost::get<set_ptr>(_var)->insert(v); break;
-            case type_map :     boost::get<map_ptr>(_var)->insert(std::make_pair<var,var>(v, none)); break;
-            default :           throw exception("unhandled () operation");
-        }
-        return *this;
+        return boost::apply_visitor(append_value_visitor(*this, v), _var);
     }
 
     ///
@@ -225,7 +229,7 @@ namespace dynamic {
     ///
     struct var::index_var_visitor : public boost::static_visitor<var&>
     {
-        index_var_visitor(const var& v) : key(v) {}
+        index_var_visitor(const var& key) : key(key) {}
         const var& key;
         result_type operator () (null_t) const { throw exception("cannot apply [var] to none"); }
         result_type operator () (bool_t) const { throw exception("cannot apply [var] to bool"); }

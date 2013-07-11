@@ -361,6 +361,7 @@ namespace dynamic {
         struct count_visitor;
         struct index_int_visitor;
         struct index_var_visitor;
+        struct append_value_visitor;
     };
 
     /// ostream << var

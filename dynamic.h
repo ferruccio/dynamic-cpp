@@ -75,6 +75,8 @@ namespace dynamic {
     ///
     class var {
     public :
+        typedef std::size_t size_type;
+
         var();
         var(bool);
         var(int n);
@@ -203,7 +205,7 @@ namespace dynamic {
         std::wostream& _write_wstring(std::wostream& os);
         std::wostream& _write_collection(std::wostream& os);
         
-        unsigned int count() const;
+        size_type count() const;
         var& operator [] (int n);
         var& operator [] (double n);
         var& operator [] (const std::string& s);

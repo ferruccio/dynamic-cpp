@@ -130,7 +130,7 @@ namespace dynamic {
     ///
     /// count of objects in a collection or characters in a string
     ///
-    unsigned int var::count() const {
+    var::size_type var::count() const {
         switch (get_type()) {
             case type_null :    throw exception("invalid .count() operation on none");
             case type_bool :     throw exception("invalid .count() operation on bool");

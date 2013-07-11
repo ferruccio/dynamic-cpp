@@ -238,11 +238,13 @@ namespace dynamic {
         result_type operator () (const set_ptr& ptr) const { throw exception("set[] requires int"); }
         result_type operator () (const map_ptr& ptr) const
         {
-            map_t::iterator it = ptr->find(key);
-            if (it != ptr->end())
-                return it->second;
-            (*ptr)[key] = none;
-            return (*ptr)[key];
+            // See Effective STL (Meyers) item 45
+            map_t::iterator it = ptr->lower_bound(key);
+            if ((it == ptr->end()) || (ptr->key_comp()(key, it->first)))
+            {
+                it = ptr->insert(it, map_t::value_type(key, none));
+            }
+            return it->second;
         }
     };
     var& var::operator [] (const var& v) {

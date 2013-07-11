@@ -115,20 +115,25 @@ namespace dynamic {
     ///
     /// add a key,value to a map
     ///
-    var& var::operator () (const var& k, const var& v) {
-        switch (get_type()) {
-            case type_null :    throw exception("invalid (,) operation on none");
-            case type_int :     throw exception("invalid (,) operation on int");
-            case type_double :  throw exception("invalid (,) operation on double");
-            case type_string :  throw exception("invalid (,) operation on string");
-            case type_wstring : throw exception("invalid (,) operation on wstring");
-            case type_list :    throw exception("invalid (,) operation on list");
-            case type_vector :  throw exception("invalid (,) operation on vector");
-            case type_set :     throw exception("invalid (,) operation on set");
-            case type_map :     boost::get<map_ptr>(_var)->insert(std::make_pair<var,var>(k, v)); break;
-            default :           throw exception("unhandled (,) operation");
-        }
-        return *this;
+    struct var::append_key_value_visitor : public boost::static_visitor<var&>
+    {
+        append_key_value_visitor(var& self, const var& key, const var& value) : self(self), key(key), value(value) {}
+        var& self;
+        const var& key;
+        const var& value;
+        result_type operator () (null_t) const { throw exception("invalid (,) operation on none"); }
+        result_type operator () (bool_t) const { throw exception("invalid (,) operation on bool"); }
+        result_type operator () (int_t) const { throw exception("invalid (,) operation on int"); }
+        result_type operator () (double_t) const { throw exception("invalid (,) operation on double"); }
+        result_type operator () (const string_t& value) const { throw exception("invalid (,) operation on string"); }
+        result_type operator () (const wstring_t& value) const { throw exception("invalid (,) operation on wstring"); }
+        result_type operator () (const list_ptr& ptr) const { throw exception("invalid (,) operation on list"); }
+        result_type operator () (const vector_ptr& ptr) const { throw exception("invalid (,) operation on vector"); }
+        result_type operator () (const set_ptr& ptr) const { throw exception("invalid (,) operation on set"); }
+        result_type operator () (const map_ptr& ptr) const { ptr->insert(map_t::value_type(key, value)); return self; }
+    };
+    var& var::operator () (const var& key, const var& value) {
+        return boost::apply_visitor(append_key_value_visitor(*this, key, value), _var);
     }
 
     ///

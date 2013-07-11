@@ -150,42 +150,49 @@ namespace dynamic {
     ///
     /// index[] operator for collections
     ///
-    var& var::operator [] (int n) {
-        switch (get_type()) {
-            case type_null :    throw exception("cannot apply [] to none");
-            case type_bool :    throw exception("cannot apply [] to bool");
-            case type_int :     throw exception("cannot apply [] to int");
-            case type_double :  throw exception("cannot apply [] to double");
-            case type_string :  throw exception("cannot apply [] to string");
-            case type_wstring : throw exception("cannot apply [] to wstring");
-            case type_list :    {
-                                    list_ptr& l = boost::get<list_ptr>(_var);
-                                    if (n < 0 || n >= int(l->size())) throw exception("[] out of range in list");
-                                    list_t::iterator li = l->begin();
-                                    advance(li, n);
-                                    return *li;
-                                }
-            case type_vector :  {
-                                    vector_ptr& a = boost::get<vector_ptr>(_var);
-                                    if (n < 0 || n >= int(a->size())) throw exception("[] out of range in vector");
-                                    return (*a)[n];
-                                }
-            case type_set :     {
-                                    set_ptr& s = boost::get<set_ptr>(_var);
-                                    if (n < 0 || n >= int(s->size())) throw exception("[] out of range in set");
-                                    set_t::iterator si = s->begin();
-                                    advance(si, n);
-                                    return const_cast<var&>(*si);
-                                }
-            case type_map :    {
-                                    map_ptr& d = boost::get<map_ptr>(_var);
-                                    var key(n);
-                                    map_t::iterator di = d->find(key);
-                                    if (di == d->end()) throw exception("[] not found in map");
-                                    return di->second;
-                                }
-            default :           throw exception("unhandled [] operation");
+    struct var::index_int_visitor : public boost::static_visitor<var&>
+    {
+        index_int_visitor(int n) : n(n) {}
+        int n;
+        result_type operator () (null_t) const { throw exception("cannot apply [] to none"); }
+        result_type operator () (bool_t) const { throw exception("cannot apply [] to bool"); }
+        result_type operator () (int_t) const { throw exception("cannot apply [] to int"); }
+        result_type operator () (double_t) const { throw exception("cannot apply [] to double"); }
+        result_type operator () (const string_t&) const { throw exception("cannot apply [] to string"); }
+        result_type operator () (const wstring_t&) const { throw exception("cannot apply [] to wstring"); }
+        result_type operator () (const list_ptr& ptr) const
+        {
+            if (n < 0 || n >= int(ptr->size()))
+                throw exception("[] out of range in list");
+            list_t::iterator it = ptr->begin();
+            std::advance(it, n);
+            return *it;
         }
+        result_type operator () (const vector_ptr& ptr) const
+        {
+            if (n < 0 || n >= int(ptr->size()))
+                throw exception("[] out of range in vector");
+            return (*ptr)[n];
+        }
+        result_type operator () (const set_ptr& ptr) const
+        {
+            if (n < 0 || n >= int(ptr->size()))
+                throw exception("[] out of range in set");
+            set_t::iterator it = ptr->begin();
+            std::advance(it, n);
+            return const_cast<result_type>(*it);
+        }
+        result_type operator () (const map_ptr& ptr) const
+        {
+            var key(n);
+            map_t::iterator it = ptr->find(key);
+            if (it == ptr->end())
+                throw exception("[] not found in map");
+            return it->second;
+        }
+    };
+    var& var::operator [] (int n) {
+        return boost::apply_visitor(index_int_visitor(n), _var);
     }
 
     ///

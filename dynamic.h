@@ -359,6 +359,7 @@ namespace dynamic {
             type_t operator () (map_ptr) const { return type_map; }
         };
         struct count_visitor;
+        struct index_int_visitor;
     };
 
     /// ostream << var

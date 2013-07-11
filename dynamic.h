@@ -1,3 +1,6 @@
+#ifndef DYNAMIC_DYNAMIC_HPP
+#define DYNAMIC_DYNAMIC_HPP
+
 /*
     Copyright (C) 2009, Ferruccio Barletta (ferruccio.barletta@gmail.com)
 
@@ -382,3 +385,5 @@ namespace dynamic {
     inline var make_map(const var& k, const var& v) { return dynamic::make_map()(k, v); }
 
 }
+
+#endif /* DYNAMIC_DYNAMIC_HPP */

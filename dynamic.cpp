@@ -130,20 +130,21 @@ namespace dynamic {
     ///
     /// count of objects in a collection or characters in a string
     ///
+    struct var::count_visitor : public boost::static_visitor<size_type>
+    {
+        result_type operator () (null_t) const { throw exception("invalid .count() operator on none"); }
+        result_type operator () (bool_t) const { throw exception("invalid .count() operator on bool"); }
+        result_type operator () (int_t) const { throw exception("invalid .count() operator on int"); }
+        result_type operator () (double_t) const { throw exception("invalid .count() operator on double"); }
+        result_type operator () (const string_t& value) const { return value.ps->length(); }
+        result_type operator () (const wstring_t& value) const { return value.ps->length(); }
+        result_type operator () (const list_ptr& ptr) const { return static_cast<result_type>(ptr->size()); }
+        result_type operator () (const vector_ptr& ptr) const { return static_cast<result_type>(ptr->size()); }
+        result_type operator () (const set_ptr& ptr) const { return static_cast<result_type>(ptr->size()); }
+        result_type operator () (const map_ptr& ptr) const { return static_cast<result_type>(ptr->size()); }
+    };
     var::size_type var::count() const {
-        switch (get_type()) {
-            case type_null :    throw exception("invalid .count() operation on none");
-            case type_bool :     throw exception("invalid .count() operation on bool");
-            case type_int :     throw exception("invalid .count() operation on int");
-            case type_double :  throw exception("invalid .count() operation on double");
-            case type_string :  return static_cast<unsigned int>(boost::get<string_t>(_var).ps->length());
-            case type_wstring : return static_cast<unsigned int>(boost::get<wstring_t>(_var).ps->length());
-            case type_list :    return static_cast<unsigned int>(boost::get<list_ptr>(_var)->size());
-            case type_vector :  return static_cast<unsigned int>(boost::get<vector_ptr>(_var)->size());
-            case type_set :     return static_cast<unsigned int>(boost::get<set_ptr>(_var)->size());
-            case type_map :     return static_cast<unsigned int>(boost::get<map_ptr>(_var)->size());
-            default :           throw exception("unhandled .count() operation");
-        }
+        return boost::apply_visitor(count_visitor(), _var);
     }
 
     ///

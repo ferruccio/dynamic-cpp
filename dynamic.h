@@ -358,7 +358,7 @@ namespace dynamic {
             type_t operator () (set_ptr) const { return type_set; }
             type_t operator () (map_ptr) const { return type_map; }
         };
-
+        struct count_visitor;
     };
 
     /// ostream << var

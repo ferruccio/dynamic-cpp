@@ -360,6 +360,7 @@ namespace dynamic {
         };
         struct count_visitor;
         struct index_int_visitor;
+        struct index_var_visitor;
     };
 
     /// ostream << var

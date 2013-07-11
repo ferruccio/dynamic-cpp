@@ -154,16 +154,16 @@ namespace dynamic {
     {
         index_int_visitor(int n) : n(n) {}
         int n;
-        result_type operator () (null_t) const { throw exception("cannot apply [] to none"); }
-        result_type operator () (bool_t) const { throw exception("cannot apply [] to bool"); }
-        result_type operator () (int_t) const { throw exception("cannot apply [] to int"); }
-        result_type operator () (double_t) const { throw exception("cannot apply [] to double"); }
-        result_type operator () (const string_t&) const { throw exception("cannot apply [] to string"); }
-        result_type operator () (const wstring_t&) const { throw exception("cannot apply [] to wstring"); }
+        result_type operator () (null_t) const { throw exception("cannot apply [int] to none"); }
+        result_type operator () (bool_t) const { throw exception("cannot apply [int] to bool"); }
+        result_type operator () (int_t) const { throw exception("cannot apply [int] to int"); }
+        result_type operator () (double_t) const { throw exception("cannot apply [int] to double"); }
+        result_type operator () (const string_t&) const { throw exception("cannot apply [int] to string"); }
+        result_type operator () (const wstring_t&) const { throw exception("cannot apply [int] to wstring"); }
         result_type operator () (const list_ptr& ptr) const
         {
             if (n < 0 || n >= int(ptr->size()))
-                throw exception("[] out of range in list");
+                throw exception("[int] out of range in list");
             list_t::iterator it = ptr->begin();
             std::advance(it, n);
             return *it;
@@ -171,13 +171,13 @@ namespace dynamic {
         result_type operator () (const vector_ptr& ptr) const
         {
             if (n < 0 || n >= int(ptr->size()))
-                throw exception("[] out of range in vector");
+                throw exception("[int] out of range in vector");
             return (*ptr)[n];
         }
         result_type operator () (const set_ptr& ptr) const
         {
             if (n < 0 || n >= int(ptr->size()))
-                throw exception("[] out of range in set");
+                throw exception("[int] out of range in set");
             set_t::iterator it = ptr->begin();
             std::advance(it, n);
             return const_cast<result_type>(*it);
@@ -187,7 +187,7 @@ namespace dynamic {
             var key(n);
             map_t::iterator it = ptr->find(key);
             if (it == ptr->end())
-                throw exception("[] not found in map");
+                throw exception("[int] not found in map");
             return it->second;
         }
     };
@@ -223,27 +223,30 @@ namespace dynamic {
     ///
     /// index a collection
     ///
-    var& var::operator [] (const var& v) {    
-        switch (get_type()) {
-            case type_null :    throw exception("cannot apply [var] to none");
-            case type_bool :    throw exception("cannot apply [var] to bool");
-            case type_int :     throw exception("cannot apply [var] to int");
-            case type_double :  throw exception("cannot apply [var] to double");
-            case type_string :  throw exception("cannot apply [var] to string");
-            case type_wstring : throw exception("cannot apply [var] to wstring");
-            case type_list :    throw exception("list[] requires int");
-            case type_vector :  throw exception("vector[] requires int");
-            case type_set :     throw exception("set[] requires int");
-            case type_map :     {
-                                    var key(v);
-                                    map_ptr& d = boost::get<map_ptr>(_var);
-                                    map_t::iterator di = d->find(key);
-                                    if (di != d->end()) return di->second;
-                                    (*d)[key] = none;
-                                    return (*d)[key];
-                                }
-            default :           throw exception("unhandled [var] operation");
+    struct var::index_var_visitor : public boost::static_visitor<var&>
+    {
+        index_var_visitor(const var& v) : key(v) {}
+        const var& key;
+        result_type operator () (null_t) const { throw exception("cannot apply [var] to none"); }
+        result_type operator () (bool_t) const { throw exception("cannot apply [var] to bool"); }
+        result_type operator () (int_t) const { throw exception("cannot apply [var] to int"); }
+        result_type operator () (double_t) const { throw exception("cannot apply [var] to double"); }
+        result_type operator () (const string_t&) const { throw exception("cannot apply [var] to string"); }
+        result_type operator () (const wstring_t&) const { throw exception("cannot apply [var] to wstring"); }
+        result_type operator () (const list_ptr& ptr) const { throw exception("list[] requires int"); }
+        result_type operator () (const vector_ptr& ptr) const { throw exception("vector[] requires int"); }
+        result_type operator () (const set_ptr& ptr) const { throw exception("set[] requires int"); }
+        result_type operator () (const map_ptr& ptr) const
+        {
+            map_t::iterator it = ptr->find(key);
+            if (it != ptr->end())
+                return it->second;
+            (*ptr)[key] = none;
+            return (*ptr)[key];
         }
+    };
+    var& var::operator [] (const var& v) {
+        return boost::apply_visitor(index_var_visitor(v), _var);
     }
 
     ///

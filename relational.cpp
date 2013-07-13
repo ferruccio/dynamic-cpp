@@ -202,75 +202,63 @@ namespace dynamic {
     /// var < bool
     ///
     bool var::operator < (bool n) const {
-        if (is_bool()) return boost::get<bool_t>(_var) < n;
-        throw exception("invalid < comparison to bool");
+        const var v(n);
+        return less_var()(*this, v);
     }
 
     ///
     /// var < int
     ///
     bool var::operator < (int n) const {
-        if (is_int()) return boost::get<int_t>(_var) < n;
-        throw exception("invalid < comparison to int");
+        const var v(n);
+        return less_var()(*this, v);
     }
 
     ///
     /// var < double
     ///
     bool var::operator < (double n) const {
-        if (is_double()) return boost::get<double_t>(_var) < n;
-        throw exception("invalid < comparison to double");
+        const var v(n);
+        return less_var()(*this, v);
     }
 
     ///
     /// var < string
     ///
     bool var::operator < (const std::string& s) const {
-        if (is_string()) return *boost::get<string_t>(_var).ps < s;
-        throw exception("invalid < comparison to string");
+        const var v(s);
+        return less_var()(*this, v);
     }
 
     ///
     /// var < string constant
     ///
     bool var::operator < (const char* s) const {
-        if (is_string()) return *boost::get<string_t>(_var).ps < s;
-        throw exception("invalid < comparison to char*");
+        const var v(s);
+        return less_var()(*this, v);
     }
 
     ///
     /// var < wide string
     ///
     bool var::operator < (const std::wstring& s) const {
-        if (is_wstring()) return *boost::get<wstring_t>(_var).ps < s;
-        throw exception("invalid < comparison to wstring");
+        const var v(s);
+        return less_var()(*this, v);
     }
 
     ///
     /// var < wide string constant
     ///
     bool var::operator < (const wchar_t* s) const {
-        if (is_wstring()) return *boost::get<wstring_t>(_var).ps < s;
-        throw exception("invalid < comparison to wchar_t*");
+        const var v(s);
+        return less_var()(*this, v);
     }
 
     ///
     /// var < var
     ///
     bool var::operator < (const var& v) const {
-        switch (get_type()) {
-            case type_null :    throw exception("invalid < comparison to none");
-            case type_bool :    return v.is_bool() && boost::get<bool_t>(_var) < boost::get<bool_t>(v._var);
-            case type_int :     return v.is_int() && boost::get<int_t>(_var) < boost::get<int_t>(v._var);
-            case type_double :  return v.is_double() && boost::get<double_t>(_var) < boost::get<double_t>(v._var);
-            case type_string :  return v.is_string() && *boost::get<string_t>(_var).ps < *boost::get<string_t>(v._var).ps;
-            case type_wstring : return v.is_wstring() && *boost::get<wstring_t>(_var).ps < *boost::get<wstring_t>(v._var).ps;
-            case type_list :    throw exception("list < not implemented");
-            case type_vector :  throw exception("vector < not implemented");
-            case type_set :     throw exception("set < not implemented");
-            case type_map :     throw exception("map < not implemented");
-            default :           throw exception("(unhandled type) < not implemented");
-        }
+        return less_var()(*this, v);
     }
 
     ///

@@ -87,7 +87,7 @@ namespace dynamic {
     ///
     struct var::type_string_visitor : public boost::static_visitor<std::string>
     {
-        result_type operator () (null_t) const { return "none"; }
+        result_type operator () (null_t) const { return "null"; }
         result_type operator () (bool_t) const { return "bool"; }
         result_type operator () (int_t) const { return "int"; }
         result_type operator () (double_t) const { return "double"; }

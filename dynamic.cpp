@@ -266,9 +266,9 @@ namespace dynamic {
     std::ostream& var::_write_var(std::ostream& os) {
         switch (get_type()) {
             case type_null :    os << "none"; return os;
-            case type_bool:     os << (boost::get<bool>(_var) ? "true" : "false"); return os;
-            case type_int :     os << boost::get<int>(_var); return os;
-            case type_double :  os << boost::get<double>(_var); return os;
+            case type_bool:     os << (boost::get<bool_t>(_var) ? "true" : "false"); return os;
+            case type_int :     os << boost::get<int_t>(_var); return os;
+            case type_double :  os << boost::get<double_t>(_var); return os;
             case type_string :  return _write_string(os);
             case type_wstring : return _write_wstring(os);
             case type_list :
@@ -363,9 +363,9 @@ namespace dynamic {
     std::wostream& var::_write_var(std::wostream& os) {
         switch (get_type()) {
             case type_null :    os << "none"; return os;
-            case type_bool:     os << (boost::get<bool>(_var) ? "true" : "false"); return os;
-            case type_int :     os << boost::get<int>(_var); return os;
-            case type_double :  os << boost::get<double>(_var); return os;
+            case type_bool:     os << (boost::get<bool_t>(_var) ? "true" : "false"); return os;
+            case type_int :     os << boost::get<int_t>(_var); return os;
+            case type_double :  os << boost::get<double_t>(_var); return os;
             case type_string :  return _write_string(os);
             case type_wstring : return _write_wstring(os);
             case type_list :

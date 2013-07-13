@@ -305,8 +305,6 @@ namespace dynamic {
         friend var make_set();
         friend var make_map();
 
-        enum type_t { type_null, type_bool, type_int, type_double, type_string, type_wstring, type_list, type_vector, type_set, type_map };
-
         struct null_t { null_t() {} };
 
         struct string_t {
@@ -339,25 +337,14 @@ namespace dynamic {
         var(set_ptr _set);
         var(map_ptr _map);
 
+        // Make sure type_t and the variant list for var_t always match
+        enum type_t { type_null = 0, type_bool, type_int, type_double, type_string, type_wstring, type_list, type_vector, type_set, type_map };
         typedef boost::variant<null_t, bool_t, int_t, double_t, string_t, wstring_t, list_ptr, vector_ptr, set_ptr, map_ptr> var_t;
 
         type_t get_type() const;
 
         var_t _var;
 
-        /// used to retrieve type from var
-        struct type_visitor : public boost::static_visitor<type_t> {
-            type_t operator () (null_t) const { return type_null; }
-            type_t operator () (bool_t) const { return type_bool; }
-            type_t operator () (int_t) const { return type_int; }
-            type_t operator () (double_t) const { return type_double; }
-            type_t operator () (string_t s) const { return type_string; }
-            type_t operator () (wstring_t s) const { return type_wstring; }
-            type_t operator () (list_ptr) const { return type_list; }
-            type_t operator () (vector_ptr) const { return type_vector; }
-            type_t operator () (set_ptr) const { return type_set; }
-            type_t operator () (map_ptr) const { return type_map; }
-        };
         struct type_string_visitor;
         struct count_visitor;
         struct index_int_visitor;

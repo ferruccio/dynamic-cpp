@@ -106,7 +106,7 @@ namespace dynamic {
     /// @return type identifier
     ///
     var::type_t var::get_type() const {
-        return boost::apply_visitor(type_visitor(), _var);
+        return type_t(_var.which());
     }
 
 }

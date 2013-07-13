@@ -358,6 +358,7 @@ namespace dynamic {
             type_t operator () (set_ptr) const { return type_set; }
             type_t operator () (map_ptr) const { return type_map; }
         };
+        struct type_string_visitor;
         struct count_visitor;
         struct index_int_visitor;
         struct index_var_visitor;

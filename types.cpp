@@ -85,20 +85,21 @@ namespace dynamic {
     ///
     /// @return type name
     ///
+    struct var::type_string_visitor : public boost::static_visitor<std::string>
+    {
+        result_type operator () (null_t) const { return "none"; }
+        result_type operator () (bool_t) const { return "bool"; }
+        result_type operator () (int_t) const { return "int"; }
+        result_type operator () (double_t) const { return "double"; }
+        result_type operator () (const string_t& value) const { return "string"; }
+        result_type operator () (const wstring_t& value) const { return "wstring"; }
+        result_type operator () (const list_ptr& ptr) const { return "list"; }
+        result_type operator () (const vector_ptr& ptr) const { return "vector"; }
+        result_type operator () (const set_ptr& ptr) const { return "set"; }
+        result_type operator () (const map_ptr& ptr) const { return "map"; }
+    };
     std::string var::type() const {
-        switch (get_type()) {
-            case type_null :    return "null";
-            case type_bool :    return "bool";
-            case type_int :     return "int";
-            case type_double :  return "double";
-            case type_string :  return "string";
-            case type_wstring : return "wstring";
-            case type_list :    return "list";
-            case type_vector :  return "vector";
-            case type_set :     return "set";
-            case type_map :     return "map";
-            default :           throw exception("var::type() unhandled type");
-        }
+        return boost::apply_visitor(type_string_visitor(), _var);
     }
 
     ///

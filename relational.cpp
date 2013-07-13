@@ -32,49 +32,49 @@ namespace dynamic {
     /// var == bool
     ///
     bool var::operator == (bool n) const {
-        return is_bool() && boost::get<bool_t>(_var) == n;
+        return *this == var(n);
     }
 
     ///
     /// var == int
     ///
     bool var::operator == (int n) const {
-        return is_int() && boost::get<int_t>(_var) == n;
+        return *this == var(n);
     }
 
     ///
     /// var == double
     ///
     bool var::operator == (double n) const {
-        return is_double() && boost::get<double_t>(_var) == n;
+        return *this == var(n);
     }
 
     ///
     /// var == string
     ///
     bool var::operator == (const std::string& s) const {
-        return is_string() && *boost::get<string_t>(_var).ps == s;
+        return *this == var(s);
     }
 
     ///
     /// var == string constant
     ///
     bool var::operator == (const char* s) const {
-        return is_string() && *boost::get<string_t>(_var).ps == s;
+        return *this == var(s);
     }
 
     ///
     /// var == wide string
     ///
     bool var::operator == (const std::wstring& s) const {
-        return is_wstring() && *boost::get<wstring_t>(_var).ps == s;
+        return *this == var(s);
     }
 
     ///
     /// var == wide string constant
     ///
     bool var::operator == (const wchar_t* s) const {
-        return is_wstring() && *boost::get<wstring_t>(_var).ps == s;
+        return *this == var(s);
     }
 
     ///
@@ -146,49 +146,49 @@ namespace dynamic {
     /// var != bool
     ///
     bool var::operator != (bool n) const {
-        return !is_bool() || boost::get<bool_t>(_var) != n;
+        return *this != var(n);
     }
 
     ///
     /// var != int
     ///
     bool var::operator != (int n) const {
-        return !is_int() || boost::get<int_t>(_var) != n;
+        return *this != var(n);
     }
 
     ///
     /// var != double
     ///
     bool var::operator != (double n) const {
-        return !is_double() || boost::get<double_t>(_var) != n;
+        return *this != var(n);
     }
 
     ///
     /// var != string
     ///
     bool var::operator != (const std::string& s) const {
-        return !is_string() || *boost::get<string_t>(_var).ps != s;
+        return *this != var(s);
     }
 
     ///
     /// var != string constant
     ///
     bool var::operator != (const char* s) const {
-        return !is_string() || *boost::get<string_t>(_var).ps != s;
+        return *this != var(s);
     }
 
     ///
     /// var != wide string
     ///
     bool var::operator != (const std::wstring& s) const {
-        return !is_wstring() || *boost::get<wstring_t>(_var).ps != s;
+        return *this != var(s);
     }
 
     ///
     /// var != wide string constant
     ///
     bool var::operator != (const wchar_t* s) const {
-        return !is_wstring() || *boost::get<wstring_t>(_var).ps != s;
+        return *this != var(s);
     }
 
     ///

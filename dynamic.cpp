@@ -97,10 +97,10 @@ namespace dynamic {
         append_value_visitor(var& self, const var& value) : self(self), value(value) {}
         var& self;
         const var& value;
-        result_type operator () (null_t) const { throw exception("invalid () operation on none"); }
-        result_type operator () (bool_t) const { throw exception("invalid () operation on bool"); }
-        result_type operator () (int_t) const { throw exception("invalid () operation on int"); }
-        result_type operator () (double_t) const { throw exception("invalid () operation on double"); }
+        result_type operator () (const null_t&) const { throw exception("invalid () operation on none"); }
+        result_type operator () (const bool_t&) const { throw exception("invalid () operation on bool"); }
+        result_type operator () (const int_t&) const { throw exception("invalid () operation on int"); }
+        result_type operator () (const double_t&) const { throw exception("invalid () operation on double"); }
         result_type operator () (const string_t& value) const { throw exception("invalid () operation on string"); }
         result_type operator () (const wstring_t& value) const { throw exception("invalid () operation on wstring"); }
         result_type operator () (const list_ptr& ptr) const { ptr->push_back(value); return self; }
@@ -121,10 +121,10 @@ namespace dynamic {
         var& self;
         const var& key;
         const var& value;
-        result_type operator () (null_t) const { throw exception("invalid (,) operation on none"); }
-        result_type operator () (bool_t) const { throw exception("invalid (,) operation on bool"); }
-        result_type operator () (int_t) const { throw exception("invalid (,) operation on int"); }
-        result_type operator () (double_t) const { throw exception("invalid (,) operation on double"); }
+        result_type operator () (const null_t&) const { throw exception("invalid (,) operation on none"); }
+        result_type operator () (const bool_t&) const { throw exception("invalid (,) operation on bool"); }
+        result_type operator () (const int_t&) const { throw exception("invalid (,) operation on int"); }
+        result_type operator () (const double_t&) const { throw exception("invalid (,) operation on double"); }
         result_type operator () (const string_t& value) const { throw exception("invalid (,) operation on string"); }
         result_type operator () (const wstring_t& value) const { throw exception("invalid (,) operation on wstring"); }
         result_type operator () (const list_ptr& ptr) const { throw exception("invalid (,) operation on list"); }
@@ -141,10 +141,10 @@ namespace dynamic {
     ///
     struct var::count_visitor : public boost::static_visitor<size_type>
     {
-        result_type operator () (null_t) const { throw exception("invalid .count() operator on none"); }
-        result_type operator () (bool_t) const { throw exception("invalid .count() operator on bool"); }
-        result_type operator () (int_t) const { throw exception("invalid .count() operator on int"); }
-        result_type operator () (double_t) const { throw exception("invalid .count() operator on double"); }
+        result_type operator () (const null_t&) const { throw exception("invalid .count() operator on none"); }
+        result_type operator () (const bool_t&) const { throw exception("invalid .count() operator on bool"); }
+        result_type operator () (const int_t&) const { throw exception("invalid .count() operator on int"); }
+        result_type operator () (const double_t&) const { throw exception("invalid .count() operator on double"); }
         result_type operator () (const string_t& value) const { return value.ps->length(); }
         result_type operator () (const wstring_t& value) const { return value.ps->length(); }
         result_type operator () (const list_ptr& ptr) const { return static_cast<result_type>(ptr->size()); }
@@ -163,10 +163,10 @@ namespace dynamic {
     {
         index_int_visitor(int n) : n(n) {}
         int n;
-        result_type operator () (null_t) const { throw exception("cannot apply [int] to none"); }
-        result_type operator () (bool_t) const { throw exception("cannot apply [int] to bool"); }
-        result_type operator () (int_t) const { throw exception("cannot apply [int] to int"); }
-        result_type operator () (double_t) const { throw exception("cannot apply [int] to double"); }
+        result_type operator () (const null_t&) const { throw exception("cannot apply [int] to none"); }
+        result_type operator () (const bool_t&) const { throw exception("cannot apply [int] to bool"); }
+        result_type operator () (const int_t&) const { throw exception("cannot apply [int] to int"); }
+        result_type operator () (const double_t&) const { throw exception("cannot apply [int] to double"); }
         result_type operator () (const string_t&) const { throw exception("cannot apply [int] to string"); }
         result_type operator () (const wstring_t&) const { throw exception("cannot apply [int] to wstring"); }
         result_type operator () (const list_ptr& ptr) const
@@ -236,10 +236,10 @@ namespace dynamic {
     {
         index_var_visitor(const var& key) : key(key) {}
         const var& key;
-        result_type operator () (null_t) const { throw exception("cannot apply [var] to none"); }
-        result_type operator () (bool_t) const { throw exception("cannot apply [var] to bool"); }
-        result_type operator () (int_t) const { throw exception("cannot apply [var] to int"); }
-        result_type operator () (double_t) const { throw exception("cannot apply [var] to double"); }
+        result_type operator () (const null_t&) const { throw exception("cannot apply [var] to none"); }
+        result_type operator () (const bool_t&) const { throw exception("cannot apply [var] to bool"); }
+        result_type operator () (const int_t&) const { throw exception("cannot apply [var] to int"); }
+        result_type operator () (const double_t&) const { throw exception("cannot apply [var] to double"); }
         result_type operator () (const string_t&) const { throw exception("cannot apply [var] to string"); }
         result_type operator () (const wstring_t&) const { throw exception("cannot apply [var] to wstring"); }
         result_type operator () (const list_ptr& ptr) const { throw exception("list[] requires int"); }

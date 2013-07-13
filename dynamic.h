@@ -305,7 +305,7 @@ namespace dynamic {
         friend var make_set();
         friend var make_map();
 
-        struct null_t { null_t() {} };
+        typedef boost::blank null_t;
 
         struct string_t {
             string_t() : ps(boost::make_shared<std::string>()) {}

@@ -87,10 +87,10 @@ namespace dynamic {
     ///
     struct var::type_string_visitor : public boost::static_visitor<std::string>
     {
-        result_type operator () (null_t) const { return "null"; }
-        result_type operator () (bool_t) const { return "bool"; }
-        result_type operator () (int_t) const { return "int"; }
-        result_type operator () (double_t) const { return "double"; }
+        result_type operator () (const null_t&) const { return "null"; }
+        result_type operator () (const bool_t&) const { return "bool"; }
+        result_type operator () (const int_t&) const { return "int"; }
+        result_type operator () (const double_t&) const { return "double"; }
         result_type operator () (const string_t& value) const { return "string"; }
         result_type operator () (const wstring_t& value) const { return "wstring"; }
         result_type operator () (const list_ptr& ptr) const { return "list"; }

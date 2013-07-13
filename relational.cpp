@@ -23,6 +23,7 @@
     OTHER DEALINGS IN THE SOFTWARE.
 */
 
+#include <algorithm> // std::equal
 #include "dynamic.h"
 
 namespace dynamic {
@@ -79,20 +80,66 @@ namespace dynamic {
     ///
     /// var == var
     ///
-    bool var::operator == (const var& v) const {
-        switch (get_type()) {
-            case type_null :    return v.is_null();
-            case type_bool :    return v.is_bool() && boost::get<bool_t>(_var) == boost::get<bool_t>(v._var);
-            case type_int :     return v.is_int() && boost::get<int_t>(_var) == boost::get<int_t>(v._var);
-            case type_double :  return v.is_double() && boost::get<double_t>(_var) == boost::get<double_t>(v._var);
-            case type_string :  return v.is_string() && *boost::get<string_t>(_var).ps == *boost::get<string_t>(v._var).ps;
-            case type_wstring : return v.is_wstring() && *boost::get<wstring_t>(_var).ps == *boost::get<wstring_t>(v._var).ps;
-            case type_list :    throw exception("list == not implemented");
-            case type_vector :  throw exception("vector == not implemented");
-            case type_set :     throw exception("set == not implemented");
-            case type_map :     throw exception("map == not implemented");
-            default :           throw exception("(unhandled type) == not implemented");
+    struct var::equal_visitor : public boost::static_visitor<bool>
+    {
+        // Different types
+        template <typename T, typename U>
+        result_type operator () (const T& lhs, const U& rhs) const
+        {
+            return false;
         }
+        // Same types
+        template <typename T>
+        result_type operator () (const T& lhs, const T& rhs) const
+        {
+            // Use overloaded functions to handle explicit specialization
+            return equal(lhs, rhs);
+        }
+
+    private:
+        bool equal(const null_t&, const null_t&) const
+        {
+            return true;
+        }
+        bool equal(const bool_t& lhs, const bool_t& rhs) const
+        {
+            return lhs == rhs;
+        }
+        bool equal(const int_t& lhs, const int_t& rhs) const
+        {
+            return lhs == rhs;
+        }
+        bool equal(const double_t& lhs, const double_t& rhs) const
+        {
+            return lhs == rhs;
+        }
+        bool equal(const string_t& lhs, const string_t& rhs) const
+        {
+            return *(lhs.ps) == *(rhs.ps);
+        }
+        bool equal(const wstring_t& lhs, const wstring_t& rhs) const
+        {
+            return *(lhs.ps) == *(rhs.ps);
+        }
+        bool equal(const list_ptr& lhs, const list_ptr& rhs) const
+        {
+            return std::equal(lhs->begin(), lhs->end(), rhs->begin());
+        }
+        bool equal(const vector_ptr& lhs, const vector_ptr& rhs) const
+        {
+            return std::equal(lhs->begin(), lhs->end(), rhs->begin());
+        }
+        bool equal(const set_ptr& lhs, const set_ptr& rhs) const
+        {
+            return std::equal(lhs->begin(), lhs->end(), rhs->begin());
+        }
+        bool equal(const map_ptr& lhs, const map_ptr& rhs) const
+        {
+            return std::equal(lhs->begin(), lhs->end(), rhs->begin());
+        }
+    };
+    bool var::operator == (const var& v) const {
+        return boost::apply_visitor(equal_visitor(), _var, v._var);
     }
 
     ///

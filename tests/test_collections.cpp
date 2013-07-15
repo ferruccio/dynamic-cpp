@@ -29,7 +29,7 @@ using namespace std;
 #include <boost/test/unit_test.hpp>
 #include <boost/test/floating_point_comparison.hpp>
 
-#include "dynamic.h"
+#include <dynamic/dynamic.hpp>
 
 using namespace dynamic;
 

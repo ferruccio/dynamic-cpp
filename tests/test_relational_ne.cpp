@@ -25,7 +25,7 @@
 
 #include <boost/test/unit_test.hpp>
 
-#include "dynamic.h"
+#include <dynamic/dynamic.hpp>
 
 using namespace dynamic;
 

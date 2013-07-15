@@ -23,71 +23,71 @@
     OTHER DEALINGS IN THE SOFTWARE.
 */
 
-#include "dynamic.h"
+#include <dynamic/var.hpp>
 
 namespace dynamic {
 
-    ///
-    /// assign bool to var
-    ///
-    var& var::operator = (bool n) {
-        _var = n;
-        return *this;
-    }
+///
+/// assign bool to var
+///
+var& var::operator = (bool n) {
+    _var = n;
+    return *this;
+}
 
-    ///
-    /// assign int to var
-    ///
-    var& var::operator = (int n) {
-        _var = n;
-        return *this;
-    }
+///
+/// assign int to var
+///
+var& var::operator = (int n) {
+    _var = n;
+    return *this;
+}
 
-    ///
-    /// assign double to var
-    ///
-    var& var::operator = (double n) {
-        _var = n;
-        return *this;
-    }
+///
+/// assign double to var
+///
+var& var::operator = (double n) {
+    _var = n;
+    return *this;
+}
 
-    ///
-    /// assign string to var
-    ///
-    var& var::operator = (const std::string& s) {
-        _var = string_t(s);
-        return *this;
-    }
+///
+/// assign string to var
+///
+var& var::operator = (const std::string& s) {
+    _var = string_t(s);
+    return *this;
+}
 
-    ///
-    /// assign string constant to var
-    ///
-    var& var::operator = (const char* s) {
-        _var = string_t(s);
-        return *this;
-    }
+///
+/// assign string constant to var
+///
+var& var::operator = (const char* s) {
+    _var = string_t(s);
+    return *this;
+}
     
-    ///
-    /// assign wide string to var
-    ///
-    var& var::operator = (const std::wstring& s) {
-        _var = wstring_t(s);
-        return *this;
-    }
+///
+/// assign wide string to var
+///
+var& var::operator = (const std::wstring& s) {
+    _var = wstring_t(s);
+    return *this;
+}
 
-    ///
-    /// assign wide string constant to var
-    var& var::operator = (const wchar_t* s) {
-        _var = wstring_t(s);
-        return *this;
-    }
+///
+/// assign wide string constant to var
+var& var::operator = (const wchar_t* s) {
+    _var = wstring_t(s);
+    return *this;
+}
 
-    ///
-    /// assign var to var
-    ///
-    var& var::operator = (const var& v) {
-        _var = v._var;
-        return *this;
-    }
+///
+/// assign var to var
+///
+var& var::operator = (const var& v) {
+    _var = v._var;
+    return *this;
+}
 
 }

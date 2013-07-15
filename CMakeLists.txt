@@ -40,11 +40,22 @@ link_directories ( ${Boost_LIBRARY_DIRS} )
 include_directories ( ${Boost_INCLUDE_DIRS} )
 
 ###############################################################################
+# Doxygen package
+###############################################################################
+
+find_package(Doxygen)
+if (${DOXYGEN_FOUND} STREQUAL "YES") # Cannot check result directly due to CMP0012
+  add_custom_target(doc
+    COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile
+  )
+endif()
+
+###############################################################################
 # Dynamic package
 ###############################################################################
 
 include_directories(include)
-link_directories(${CMAKE_CURRENT_SOURCE_DIR/lib})
+link_directories(${CMAKE_CURRENT_BINARY_DIR/lib})
 set(LIBRARY_OUTPUT_PATH lib)
 add_library( dynamic STATIC
   src/assign.cpp

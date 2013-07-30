@@ -167,15 +167,15 @@ public :
     var& operator () (const var& v);
     var& operator () (const var& k, const var& v);
         
-    std::ostream& _write_var(std::ostream& os);
-    std::ostream& _write_string(std::ostream& os);
-    std::ostream& _write_wstring(std::ostream& os);
-    std::ostream& _write_collection(std::ostream& os);
+    std::ostream& _write_var(std::ostream& os) const;
+    std::ostream& _write_string(std::ostream& os) const;
+    std::ostream& _write_wstring(std::ostream& os) const;
+    std::ostream& _write_collection(std::ostream& os) const;
 
-    std::wostream& _write_var(std::wostream& os);
-    std::wostream& _write_string(std::wostream& os);
-    std::wostream& _write_wstring(std::wostream& os);
-    std::wostream& _write_collection(std::wostream& os);
+    std::wostream& _write_var(std::wostream& os) const;
+    std::wostream& _write_string(std::wostream& os) const;
+    std::wostream& _write_wstring(std::wostream& os) const;
+    std::wostream& _write_collection(std::wostream& os) const;
         
     size_type count() const;
     var& operator [] (int n);
@@ -185,6 +185,7 @@ public :
     var& operator [] (const std::wstring& s);
     var& operator [] (const wchar_t* s);
     var& operator [] (const var& v);
+    const var& operator [] (const var& v) const;
 
     /// var comparison functor
     struct less_var {
@@ -202,31 +203,32 @@ public :
     typedef std::map<var, var, less_var> map_t;
 
     ///
-    /// collection iterator class
+    /// collection const_iterator class
     ///
-    class iterator {
+    class const_iterator {
     public :
-        /// initialize from list iterator
-        iterator(list_t::iterator iter) : _iter(iter) {}
-        /// initialize from vector iterator
-        iterator(vector_t::iterator iter) : _iter(iter) {}
-        /// initialize from set iterator
-        iterator(set_t::iterator iter) : _iter(iter) {}
-        /// initialize from map iterator
-        iterator(map_t::iterator iter) : _iter(iter) {}
+        const_iterator operator++();
+        const_iterator operator++(int);
+        const_iterator operator--();
+        const_iterator operator--(int);
 
-        iterator operator++();
-        iterator operator++(int);
-        iterator operator--();
-        iterator operator--(int);
-
-        bool operator==(iterator rhs);
+        bool operator==(const_iterator rhs);
         /// iterator inequality
-        bool operator!=(iterator rhs) { return !(*this == rhs); }
+        bool operator!=(const_iterator rhs) { return !(*this == rhs); }
 
-        var& operator*();
+        const var& operator*() const;
 
     private :
+        friend class var;
+        /// initialize from list iterator
+        const_iterator(list_t::iterator iter) : _iter(iter) {}
+        /// initialize from vector iterator
+        const_iterator(vector_t::iterator iter) : _iter(iter) {}
+        /// initialize from set iterator
+        const_iterator(set_t::iterator iter) : _iter(iter) {}
+        /// initialize from map iterator
+        const_iterator(map_t::iterator iter) : _iter(iter) {}
+
         // make sure base_type and the variant list for iter_t always match
         enum base_type { list_type = 0, vector_type, set_type, map_type };
         typedef boost::variant<list_t::iterator, vector_t::iterator, set_t::iterator, map_t::iterator> iter_t;
@@ -234,8 +236,29 @@ public :
         iter_t _iter;
     };
 
+    ///
+    /// collection iterator class
+    ///
+    class iterator : public const_iterator {
+    public:
+        var& operator*();
+
+    private:
+        friend class var;
+        /// initialize from list iterator
+        iterator(list_t::iterator iter) : const_iterator(iter) {}
+        /// initialize from vector iterator
+        iterator(vector_t::iterator iter) : const_iterator(iter) {}
+        /// initialize from set iterator
+        iterator(set_t::iterator iter) : const_iterator(iter) {}
+        /// initialize from map iterator
+        iterator(map_t::iterator iter) : const_iterator(iter) {}
+    };
+
     iterator begin();
+    const_iterator begin() const;
     iterator end();
+    const_iterator end() const;
 
     ///
     /// collection reverse_iterator class
@@ -332,9 +355,9 @@ private :
 extern const var none;
 
 /// ostream << var
-inline std::ostream& operator << (std::ostream& os, var& v) { return v._write_var(os); }
+inline std::ostream& operator << (std::ostream& os, const var& v) { return v._write_var(os); }
 /// wostream << var
-inline std::wostream& operator << (std::wostream& os, var& v) { return v._write_var(os); }
+inline std::wostream& operator << (std::wostream& os, const var& v) { return v._write_var(os); }
 
 /// create empty list
 inline var make_list() { return var(boost::make_shared<var::list_t>()); }

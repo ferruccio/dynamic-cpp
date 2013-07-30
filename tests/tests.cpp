@@ -196,7 +196,7 @@ BOOST_AUTO_TEST_CASE(Examples) {
 
     cout << "c: " << a << endl;
     // some iterator support
-    for (var::iterator i = a.begin(); i != a.end(); ++i)
+    for (var::const_iterator i = a.begin(); i != a.end(); ++i)
         cout << *i << endl;
 
     a = make_map("name", "fred")("age", 35)("city", "bedrock")(12, make_vector(1)(2)(3)); // keys and values can be any type

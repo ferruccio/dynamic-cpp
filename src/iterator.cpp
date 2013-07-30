@@ -31,7 +31,7 @@ namespace dynamic {
 ///
 /// @return iterator to the first item in a collection
 ///
-var::iterator var::begin() {
+var::const_iterator var::begin() const {
     switch (get_type()) {
     case type_null :    throw exception("invalid .begin() operation on $");
     case type_int :     throw exception("invalid .begin() operation on int");
@@ -46,10 +46,16 @@ var::iterator var::begin() {
     }
 }
 
+var::iterator var::begin() {
+    // iterator is implemented via object slicing, so we need to do const casting
+    const_iterator result = const_cast<const var*>(this)->begin(); // Call begin() const
+    return static_cast<var::iterator&>(result);
+}
+
 ///
 /// @return iterator past the last item in a collection
 ///
-var::iterator var::end() {
+var::const_iterator var::end() const {
     switch (get_type()) {
     case type_null :    throw exception("invalid .end() operation on $");
     case type_int :     throw exception("invalid .end() operation on int");
@@ -64,10 +70,15 @@ var::iterator var::end() {
     }
 }
 
+var::iterator var::end() {
+    const_iterator result = const_cast<const var*>(this)->end(); // Call end() const
+    return static_cast<var::iterator&>(result);
+}
+
 ///
 /// pre-increment interator
 ///
-var::iterator var::iterator::operator++() {
+var::const_iterator var::const_iterator::operator++() {
     switch (_iter.which()) {
     case list_type :    return ++boost::get<list_t::iterator&>(_iter);
     case vector_type :  return ++boost::get<vector_t::iterator&>(_iter);
@@ -80,7 +91,7 @@ var::iterator var::iterator::operator++() {
 ///
 /// post-increment iterator
 ///
-var::iterator var::iterator::operator++(int) {
+var::const_iterator var::const_iterator::operator++(int) {
     switch (_iter.which()) {
     case list_type :    return boost::get<list_t::iterator&>(_iter)++;
     case vector_type :  return boost::get<vector_t::iterator&>(_iter)++;
@@ -93,7 +104,7 @@ var::iterator var::iterator::operator++(int) {
 ///
 /// pre-decrement iterator
 ///
-var::iterator var::iterator::operator--() {
+var::const_iterator var::const_iterator::operator--() {
     switch (_iter.which()) {
     case list_type :    return --boost::get<list_t::iterator&>(_iter);
     case vector_type :  return --boost::get<vector_t::iterator&>(_iter);
@@ -106,7 +117,7 @@ var::iterator var::iterator::operator--() {
 ///
 /// post-decement iterator
 ///
-var::iterator var::iterator::operator--(int) {
+var::const_iterator var::const_iterator::operator--(int) {
     switch (_iter.which()) {
     case list_type :    return boost::get<list_t::iterator&>(_iter)--;
     case vector_type :  return boost::get<vector_t::iterator&>(_iter)--;
@@ -129,14 +140,14 @@ struct are_strict_equals : public boost::static_visitor<bool> {
 ///
 /// test two vars for equality
 ///
-bool var::iterator::operator==(var::iterator rhs) {
+bool var::const_iterator::operator==(var::const_iterator rhs) {
     return boost::apply_visitor(are_strict_equals(), _iter, rhs._iter);
 }
 
 ///
 /// dereference iterator
 ///
-var& var::iterator::operator*() {
+const var& var::const_iterator::operator*() const {
     switch (_iter.which()) {
     case list_type :    return *boost::get<list_t::iterator>(_iter);
     case vector_type :  return *boost::get<vector_t::iterator>(_iter);
@@ -144,6 +155,11 @@ var& var::iterator::operator*() {
     case map_type :     return const_cast<var&>(boost::get<map_t::iterator>(_iter)->first);
     default :           throw exception("unhandled *iter");
     }
+}
+
+var& var::iterator::operator*() {
+    const var& result = static_cast<var::const_iterator *>(this)->operator*();  // Call const_iterator::operator*()
+    return const_cast<var&>(result);
 }
 
 ///

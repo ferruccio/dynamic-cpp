@@ -262,10 +262,14 @@ var& var::operator [] (const var& v) {
     return boost::apply_visitor(index_var_visitor(v), _var);
 }
 
+const var& var::operator [] (const var& v) const {
+    return boost::apply_visitor(index_var_visitor(v), _var);
+}
+
 ///
 /// write a var to an ostream
 ///
-std::ostream& var::_write_var(std::ostream& os) {
+std::ostream& var::_write_var(std::ostream& os) const {
     switch (get_type()) {
     case type_null :    os << "none"; return os;
     case type_bool:     os << (boost::get<bool_t>(_var) ? "true" : "false"); return os;
@@ -284,7 +288,7 @@ std::ostream& var::_write_var(std::ostream& os) {
 ///
 /// write a string to an ostream
 ///
-std::ostream& var::_write_string(std::ostream& os) {
+std::ostream& var::_write_string(std::ostream& os) const {
     assert(is_string());
     os << '\'';
     for (const char* s = (*boost::get<string_t>(_var).ps).c_str(); *s; ++s)
@@ -307,7 +311,7 @@ std::ostream& var::_write_string(std::ostream& os) {
 ///
 /// write a wide string to an ostream
 ///
-std::ostream& var::_write_wstring(std::ostream& os) {
+std::ostream& var::_write_wstring(std::ostream& os) const {
     assert(is_wstring());
     os << '\'';
     for (const wchar_t* s = (*boost::get<wstring_t>(_var).ps).c_str(); *s; ++s)
@@ -330,7 +334,7 @@ std::ostream& var::_write_wstring(std::ostream& os) {
 ///
 /// write a collection to an ostream
 ///
-std::ostream& var::_write_collection(std::ostream& os) {
+std::ostream& var::_write_collection(std::ostream& os) const {
     assert(is_collection());
     switch (get_type())
     {
@@ -340,7 +344,7 @@ std::ostream& var::_write_collection(std::ostream& os) {
     case type_map : os << "<"; break;
     default : assert(false);
     }
-    for (var::iterator vi = begin(); vi != end(); ++vi) {
+    for (var::const_iterator vi = begin(); vi != end(); ++vi) {
         if (vi != begin()) os << " ";
         (*vi)._write_var(os);
         if (get_type() == type_map) {
@@ -362,7 +366,7 @@ std::ostream& var::_write_collection(std::ostream& os) {
 ///
 /// write a var to a wostream
 ///
-std::wostream& var::_write_var(std::wostream& os) {
+std::wostream& var::_write_var(std::wostream& os) const {
     switch (get_type()) {
     case type_null :    os << "none"; return os;
     case type_bool:     os << (boost::get<bool_t>(_var) ? "true" : "false"); return os;
@@ -381,7 +385,7 @@ std::wostream& var::_write_var(std::wostream& os) {
 ///
 /// write a string to a wostream
 ///
-std::wostream& var::_write_string(std::wostream& os) {
+std::wostream& var::_write_string(std::wostream& os) const {
     assert(is_string());
     os << '\'';
     for (const char* s = (*boost::get<string_t>(_var).ps).c_str(); *s; ++s)
@@ -404,7 +408,7 @@ std::wostream& var::_write_string(std::wostream& os) {
 ///
 /// write a wide string to a wostream
 ///
-std::wostream& var::_write_wstring(std::wostream& os) {
+std::wostream& var::_write_wstring(std::wostream& os) const {
     assert(is_wstring());
     os << '\'';
     for (const wchar_t* s = (*boost::get<wstring_t>(_var).ps).c_str(); *s; ++s)
@@ -427,7 +431,7 @@ std::wostream& var::_write_wstring(std::wostream& os) {
 ///
 /// write a collection to a wostream
 ///
-std::wostream& var::_write_collection(std::wostream& os) {
+std::wostream& var::_write_collection(std::wostream& os) const {
     assert(is_collection());
     switch (get_type())
     {
@@ -437,7 +441,7 @@ std::wostream& var::_write_collection(std::wostream& os) {
     case type_map : os << L"<"; break;
     default : assert(false);
     }
-    for (var::iterator vi = begin(); vi != end(); ++vi) {
+    for (var::const_iterator vi = begin(); vi != end(); ++vi) {
         if (vi != begin()) os << L" ";
         (*vi)._write_var(os);
         if (get_type() == type_map) {

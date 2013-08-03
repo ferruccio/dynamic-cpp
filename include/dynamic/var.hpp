@@ -207,6 +207,7 @@ public :
     ///
     class const_iterator {
     public :
+        typedef map_t::value_type pair_type;
         const_iterator operator++();
         const_iterator operator++(int);
         const_iterator operator--();
@@ -217,6 +218,7 @@ public :
         bool operator!=(const_iterator rhs) { return !(*this == rhs); }
 
         const var& operator*() const;
+        const pair_type& pair() const;
 
     private :
         friend class var;
@@ -242,6 +244,7 @@ public :
     class iterator : public const_iterator {
     public:
         var& operator*();
+        pair_type& pair();
 
     private:
         friend class var;

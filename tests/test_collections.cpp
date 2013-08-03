@@ -105,6 +105,10 @@ BOOST_AUTO_TEST_CASE (test_maps) {
     BOOST_CHECK(d4["hello"] == "world");
     BOOST_CHECK(d4["test"] == none);
     BOOST_CHECK_EQUAL(d4.count(), 2);
+
+    var::map_t::value_type v = d4.begin().pair();
+    BOOST_CHECK_EQUAL(v.first, "hello");
+    BOOST_CHECK_EQUAL(v.second, "world");
 }
 
 BOOST_AUTO_TEST_CASE (test_complex) {

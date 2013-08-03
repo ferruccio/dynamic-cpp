@@ -33,7 +33,7 @@ namespace dynamic {
 ///
 var::const_iterator var::begin() const {
     switch (get_type()) {
-    case type_null :    throw exception("invalid .begin() operation on $");
+    case type_null :    throw exception("invalid .begin() operation on none");
     case type_int :     throw exception("invalid .begin() operation on int");
     case type_double :  throw exception("invalid .begin() operation on double");
     case type_string :  throw exception("invalid .begin() operation on string");
@@ -57,7 +57,7 @@ var::iterator var::begin() {
 ///
 var::const_iterator var::end() const {
     switch (get_type()) {
-    case type_null :    throw exception("invalid .end() operation on $");
+    case type_null :    throw exception("invalid .end() operation on none");
     case type_int :     throw exception("invalid .end() operation on int");
     case type_double :  throw exception("invalid .end() operation on double");
     case type_string :  throw exception("invalid .end() operation on string");
@@ -153,7 +153,7 @@ const var& var::const_iterator::operator*() const {
     case vector_type :  return *boost::get<vector_t::iterator>(_iter);
     case set_type :     return const_cast<var&>(*boost::get<set_t::iterator>(_iter));
     case map_type :     return const_cast<var&>(boost::get<map_t::iterator>(_iter)->first);
-    default :           throw exception("unhandled *iter");
+    default :           throw exception("invalid operator*() operation");
     }
 }
 
@@ -163,11 +163,26 @@ var& var::iterator::operator*() {
 }
 
 ///
+/// dereference iterator as pair
+///
+const var::const_iterator::pair_type& var::const_iterator::pair() const {
+    switch (_iter.which()) {
+    case map_type : return *boost::get<map_t::iterator>(_iter);
+    default : throw exception("invalid .value() operation");
+    }
+}
+
+var::const_iterator::pair_type& var::iterator::pair() {
+    const var::const_iterator::pair_type& result = static_cast<var::const_iterator *>(this)->pair();  // Call const_iterator::pair())
+    return const_cast<var::const_iterator::pair_type&>(result);
+}
+
+///
 /// @return reverse_iterator to last item in collection
 ///
 var::reverse_iterator var::rbegin() {
     switch (get_type()) {
-    case type_null :    throw exception("invalid .rbegin() operation on $");
+    case type_null :    throw exception("invalid .rbegin() operation on none");
     case type_int :     throw exception("invalid .rbegin() operation on int");
     case type_double :  throw exception("invalid .rbegin() operation on double");
     case type_string :  throw exception("invalid .rbegin() operation on string");
@@ -185,7 +200,7 @@ var::reverse_iterator var::rbegin() {
 ///
 var::reverse_iterator var::rend() {
     switch (get_type()) {
-    case type_null :    throw exception("invalid .rend() operation on $");
+    case type_null :    throw exception("invalid .rend() operation on none");
     case type_int :     throw exception("invalid .rend() operation on int");
     case type_double :  throw exception("invalid .rend() operation on double");
     case type_string :  throw exception("invalid .rend() operation on string");

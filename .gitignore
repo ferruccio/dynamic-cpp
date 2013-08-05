@@ -1,0 +1,9 @@
+.gitignore
+*~
+bin
+lib
+docs
+CMakeFiles
+CMakeCache.txt
+Makefile
+cmake_install.cmake

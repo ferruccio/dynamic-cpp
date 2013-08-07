@@ -194,20 +194,21 @@ public :
     };
 
     /// list type
-    typedef std::list<var> list_t;
+    typedef std::list<var> list_type;
     /// vector type
-    typedef std::vector<var> vector_t;
+    typedef std::vector<var> vector_type;
     /// set type
-    typedef std::set<var, less_var> set_t;
+    typedef std::set<var, less_var> set_type;
     /// map type
-    typedef std::map<var, var, less_var> map_t;
+    typedef std::map<var, var, less_var> map_type;
+    /// pair type
+    typedef map_type::value_type pair_type;
 
     ///
     /// collection const_iterator class
     ///
     class const_iterator {
     public :
-        typedef map_t::value_type pair_type;
         const_iterator operator++();
         const_iterator operator++(int);
         const_iterator operator--();
@@ -223,17 +224,17 @@ public :
     private :
         friend class var;
         /// initialize from list iterator
-        const_iterator(list_t::iterator iter) : _iter(iter) {}
+        const_iterator(list_type::iterator iter) : _iter(iter) {}
         /// initialize from vector iterator
-        const_iterator(vector_t::iterator iter) : _iter(iter) {}
+        const_iterator(vector_type::iterator iter) : _iter(iter) {}
         /// initialize from set iterator
-        const_iterator(set_t::iterator iter) : _iter(iter) {}
+        const_iterator(set_type::iterator iter) : _iter(iter) {}
         /// initialize from map iterator
-        const_iterator(map_t::iterator iter) : _iter(iter) {}
+        const_iterator(map_type::iterator iter) : _iter(iter) {}
 
         // make sure base_type and the variant list for iter_t always match
-        enum base_type { list_type = 0, vector_type, set_type, map_type };
-        typedef boost::variant<list_t::iterator, vector_t::iterator, set_t::iterator, map_t::iterator> iter_t;
+        enum base_type { type_list = 0, type_vector, type_set, type_map };
+        typedef boost::variant<list_type::iterator, vector_type::iterator, set_type::iterator, map_type::iterator> iter_t;
 
         iter_t _iter;
     };
@@ -249,13 +250,13 @@ public :
     private:
         friend class var;
         /// initialize from list iterator
-        iterator(list_t::iterator iter) : const_iterator(iter) {}
+        iterator(list_type::iterator iter) : const_iterator(iter) {}
         /// initialize from vector iterator
-        iterator(vector_t::iterator iter) : const_iterator(iter) {}
+        iterator(vector_type::iterator iter) : const_iterator(iter) {}
         /// initialize from set iterator
-        iterator(set_t::iterator iter) : const_iterator(iter) {}
+        iterator(set_type::iterator iter) : const_iterator(iter) {}
         /// initialize from map iterator
-        iterator(map_t::iterator iter) : const_iterator(iter) {}
+        iterator(map_type::iterator iter) : const_iterator(iter) {}
     };
 
     iterator begin();
@@ -269,13 +270,13 @@ public :
     class reverse_iterator {
     public :
         /// initialize from list reverse iterator
-        reverse_iterator(list_t::reverse_iterator riter) : _riter(riter) {}
+        reverse_iterator(list_type::reverse_iterator riter) : _riter(riter) {}
         /// initialize from vector reverse iterator
-        reverse_iterator(vector_t::reverse_iterator riter) : _riter(riter) {}
+        reverse_iterator(vector_type::reverse_iterator riter) : _riter(riter) {}
         /// initialize from set reverse iterator
-        reverse_iterator(set_t::reverse_iterator riter) : _riter(riter) {}
+        reverse_iterator(set_type::reverse_iterator riter) : _riter(riter) {}
         /// initialize from map reverse iterator
-        reverse_iterator(map_t::reverse_iterator riter) : _riter(riter) {}
+        reverse_iterator(map_type::reverse_iterator riter) : _riter(riter) {}
 
         reverse_iterator operator++();
         reverse_iterator operator++(int);
@@ -288,8 +289,8 @@ public :
 
     private :
         // make sure base_type and the variant list for riter_t always match
-        enum base_type { list_type = 0, vector_type, set_type, map_type };
-        typedef boost::variant<list_t::reverse_iterator, vector_t::reverse_iterator, set_t::reverse_iterator, map_t::reverse_iterator> riter_t;
+        enum base_type { type_list = 0, type_vector, type_set, type_map };
+        typedef boost::variant<list_type::reverse_iterator, vector_type::reverse_iterator, set_type::reverse_iterator, map_type::reverse_iterator> riter_t;
 
         riter_t _riter;
     };
@@ -325,10 +326,10 @@ private :
     typedef int int_t;
     typedef double double_t;
 
-    typedef boost::shared_ptr<list_t> list_ptr;
-    typedef boost::shared_ptr<vector_t> vector_ptr;
-    typedef boost::shared_ptr<set_t> set_ptr;
-    typedef boost::shared_ptr<map_t> map_ptr;
+    typedef boost::shared_ptr<list_type> list_ptr;
+    typedef boost::shared_ptr<vector_type> vector_ptr;
+    typedef boost::shared_ptr<set_type> set_ptr;
+    typedef boost::shared_ptr<map_type> map_ptr;
 
     var(list_ptr _list);
     var(vector_ptr _vector);
@@ -363,13 +364,13 @@ inline std::ostream& operator << (std::ostream& os, const var& v) { return v._wr
 inline std::wostream& operator << (std::wostream& os, const var& v) { return v._write_var(os); }
 
 /// create empty list
-inline var make_list() { return var(boost::make_shared<var::list_t>()); }
+inline var make_list() { return var(boost::make_shared<var::list_type>()); }
 /// create empty vector
-inline var make_vector() { return var(boost::make_shared<var::vector_t>()); }
+inline var make_vector() { return var(boost::make_shared<var::vector_type>()); }
 /// create empty set
-inline var make_set() { return var(boost::make_shared<var::set_t>()); }
+inline var make_set() { return var(boost::make_shared<var::set_type>()); }
 /// create empty map
-inline var make_map() { return var(boost::make_shared<var::map_t>()); }
+inline var make_map() { return var(boost::make_shared<var::map_type>()); }
 
 /// create list with one item
 inline var make_list(const var& v) { return dynamic::make_list()(v); }

@@ -80,10 +80,10 @@ var::iterator var::end() {
 ///
 var::const_iterator var::const_iterator::operator++() {
     switch (_iter.which()) {
-    case list_type :    return ++boost::get<list_t::iterator&>(_iter);
-    case vector_type :  return ++boost::get<vector_t::iterator&>(_iter);
-    case set_type :     return ++boost::get<set_t::iterator&>(_iter);
-    case map_type :     return ++boost::get<map_t::iterator&>(_iter);
+    case type_list :    return ++boost::get<list_type::iterator&>(_iter);
+    case type_vector :  return ++boost::get<vector_type::iterator&>(_iter);
+    case type_set :     return ++boost::get<set_type::iterator&>(_iter);
+    case type_map :     return ++boost::get<map_type::iterator&>(_iter);
     default :           throw exception("unhandled ++iter");
     }
 }
@@ -93,10 +93,10 @@ var::const_iterator var::const_iterator::operator++() {
 ///
 var::const_iterator var::const_iterator::operator++(int) {
     switch (_iter.which()) {
-    case list_type :    return boost::get<list_t::iterator&>(_iter)++;
-    case vector_type :  return boost::get<vector_t::iterator&>(_iter)++;
-    case set_type :     return boost::get<set_t::iterator&>(_iter)++;
-    case map_type :     return boost::get<map_t::iterator&>(_iter)++;
+    case type_list :    return boost::get<list_type::iterator&>(_iter)++;
+    case type_vector :  return boost::get<vector_type::iterator&>(_iter)++;
+    case type_set :     return boost::get<set_type::iterator&>(_iter)++;
+    case type_map :     return boost::get<map_type::iterator&>(_iter)++;
     default :           throw exception("unhandled iter++");
     }
 }
@@ -106,10 +106,10 @@ var::const_iterator var::const_iterator::operator++(int) {
 ///
 var::const_iterator var::const_iterator::operator--() {
     switch (_iter.which()) {
-    case list_type :    return --boost::get<list_t::iterator&>(_iter);
-    case vector_type :  return --boost::get<vector_t::iterator&>(_iter);
-    case set_type :     return --boost::get<set_t::iterator&>(_iter);
-    case map_type :     return --boost::get<map_t::iterator&>(_iter);
+    case type_list :    return --boost::get<list_type::iterator&>(_iter);
+    case type_vector :  return --boost::get<vector_type::iterator&>(_iter);
+    case type_set :     return --boost::get<set_type::iterator&>(_iter);
+    case type_map :     return --boost::get<map_type::iterator&>(_iter);
     default :           throw exception("unhandled --iter");
     }
 }
@@ -119,10 +119,10 @@ var::const_iterator var::const_iterator::operator--() {
 ///
 var::const_iterator var::const_iterator::operator--(int) {
     switch (_iter.which()) {
-    case list_type :    return boost::get<list_t::iterator&>(_iter)--;
-    case vector_type :  return boost::get<vector_t::iterator&>(_iter)--;
-    case set_type :     return boost::get<set_t::iterator&>(_iter)--;
-    case map_type :     return boost::get<map_t::iterator&>(_iter)++;
+    case type_list :    return boost::get<list_type::iterator&>(_iter)--;
+    case type_vector :  return boost::get<vector_type::iterator&>(_iter)--;
+    case type_set :     return boost::get<set_type::iterator&>(_iter)--;
+    case type_map :     return boost::get<map_type::iterator&>(_iter)++;
     default :           throw exception("unhandled iter--");
     }
 }
@@ -149,10 +149,10 @@ bool var::const_iterator::operator==(var::const_iterator rhs) {
 ///
 const var& var::const_iterator::operator*() const {
     switch (_iter.which()) {
-    case list_type :    return *boost::get<list_t::iterator>(_iter);
-    case vector_type :  return *boost::get<vector_t::iterator>(_iter);
-    case set_type :     return const_cast<var&>(*boost::get<set_t::iterator>(_iter));
-    case map_type :     return const_cast<var&>(boost::get<map_t::iterator>(_iter)->first);
+    case type_list :    return *boost::get<list_type::iterator>(_iter);
+    case type_vector :  return *boost::get<vector_type::iterator>(_iter);
+    case type_set :     return const_cast<var&>(*boost::get<set_type::iterator>(_iter));
+    case type_map :     return const_cast<var&>(boost::get<map_type::iterator>(_iter)->first);
     default :           throw exception("invalid operator*() operation");
     }
 }
@@ -165,16 +165,16 @@ var& var::iterator::operator*() {
 ///
 /// dereference iterator as pair
 ///
-const var::const_iterator::pair_type& var::const_iterator::pair() const {
+const var::pair_type& var::const_iterator::pair() const {
     switch (_iter.which()) {
-    case map_type : return *boost::get<map_t::iterator>(_iter);
+    case type_map : return *boost::get<map_type::iterator>(_iter);
     default : throw exception("invalid .value() operation");
     }
 }
 
-var::const_iterator::pair_type& var::iterator::pair() {
-    const var::const_iterator::pair_type& result = static_cast<var::const_iterator *>(this)->pair();  // Call const_iterator::pair())
-    return const_cast<var::const_iterator::pair_type&>(result);
+var::pair_type& var::iterator::pair() {
+    const var::pair_type& result = static_cast<var::const_iterator *>(this)->pair();  // Call const_iterator::pair())
+    return const_cast<var::pair_type&>(result);
 }
 
 ///
@@ -218,10 +218,10 @@ var::reverse_iterator var::rend() {
 ///
 var::reverse_iterator var::reverse_iterator::operator++() {
     switch (_riter.which()) {
-    case list_type :    return ++boost::get<list_t::reverse_iterator&>(_riter);
-    case vector_type :  return ++boost::get<vector_t::reverse_iterator&>(_riter);
-    case set_type :     return ++boost::get<set_t::reverse_iterator&>(_riter);
-    case map_type :     return ++boost::get<map_t::reverse_iterator&>(_riter);
+    case type_list :    return ++boost::get<list_type::reverse_iterator&>(_riter);
+    case type_vector :  return ++boost::get<vector_type::reverse_iterator&>(_riter);
+    case type_set :     return ++boost::get<set_type::reverse_iterator&>(_riter);
+    case type_map :     return ++boost::get<map_type::reverse_iterator&>(_riter);
     default :           throw exception("unhandled ++riter");
     }
 }
@@ -231,10 +231,10 @@ var::reverse_iterator var::reverse_iterator::operator++() {
 ///
 var::reverse_iterator var::reverse_iterator::operator++(int) {
     switch (_riter.which()) {
-    case list_type :    return boost::get<list_t::reverse_iterator&>(_riter)++;
-    case vector_type :  return boost::get<vector_t::reverse_iterator&>(_riter)++;
-    case set_type :     return boost::get<set_t::reverse_iterator&>(_riter)++;
-    case map_type :     return boost::get<map_t::reverse_iterator&>(_riter)++;
+    case type_list :    return boost::get<list_type::reverse_iterator&>(_riter)++;
+    case type_vector :  return boost::get<vector_type::reverse_iterator&>(_riter)++;
+    case type_set :     return boost::get<set_type::reverse_iterator&>(_riter)++;
+    case type_map :     return boost::get<map_type::reverse_iterator&>(_riter)++;
     default :           throw exception("unhandled riter++");
     }
 }
@@ -244,10 +244,10 @@ var::reverse_iterator var::reverse_iterator::operator++(int) {
 ///
 var::reverse_iterator var::reverse_iterator::operator--() {
     switch (_riter.which()) {
-    case list_type :    return --boost::get<list_t::reverse_iterator&>(_riter);
-    case vector_type :  return --boost::get<vector_t::reverse_iterator&>(_riter);
-    case set_type :     return --boost::get<set_t::reverse_iterator&>(_riter);
-    case map_type :     return --boost::get<map_t::reverse_iterator&>(_riter);
+    case type_list :    return --boost::get<list_type::reverse_iterator&>(_riter);
+    case type_vector :  return --boost::get<vector_type::reverse_iterator&>(_riter);
+    case type_set :     return --boost::get<set_type::reverse_iterator&>(_riter);
+    case type_map :     return --boost::get<map_type::reverse_iterator&>(_riter);
     default :           throw exception("unhandled --riter");
     }
 }
@@ -257,10 +257,10 @@ var::reverse_iterator var::reverse_iterator::operator--() {
 ///
 var::reverse_iterator var::reverse_iterator::operator--(int) {
     switch (_riter.which()) {
-    case list_type :    return boost::get<list_t::reverse_iterator&>(_riter)--;
-    case vector_type :  return boost::get<vector_t::reverse_iterator&>(_riter)--;
-    case set_type :     return boost::get<set_t::reverse_iterator&>(_riter)--;
-    case map_type :     return boost::get<map_t::reverse_iterator&>(_riter)++;
+    case type_list :    return boost::get<list_type::reverse_iterator&>(_riter)--;
+    case type_vector :  return boost::get<vector_type::reverse_iterator&>(_riter)--;
+    case type_set :     return boost::get<set_type::reverse_iterator&>(_riter)--;
+    case type_map :     return boost::get<map_type::reverse_iterator&>(_riter)++;
     default :           throw exception("unhandled iter--");
     }
 }

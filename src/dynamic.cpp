@@ -108,7 +108,7 @@ struct var::append_value_visitor : public boost::static_visitor<var&>
     result_type operator () (const list_ptr& ptr) const { ptr->push_back(value); return self; }
     result_type operator () (const vector_ptr& ptr) const { ptr->push_back(value); return self; }
     result_type operator () (const set_ptr& ptr) const { ptr->insert(value); return self; }
-    result_type operator () (const map_ptr& ptr) const { ptr->insert(map_t::value_type(value, none)); return self; }
+    result_type operator () (const map_ptr& ptr) const { ptr->insert(map_type::value_type(value, none)); return self; }
 };
 var& var::operator () (const var& v) {    
     return boost::apply_visitor(append_value_visitor(*this, v), _var);
@@ -132,7 +132,7 @@ struct var::append_key_value_visitor : public boost::static_visitor<var&>
     result_type operator () (const list_ptr& ptr) const { throw exception("invalid (,) operation on list"); }
     result_type operator () (const vector_ptr& ptr) const { throw exception("invalid (,) operation on vector"); }
     result_type operator () (const set_ptr& ptr) const { throw exception("invalid (,) operation on set"); }
-    result_type operator () (const map_ptr& ptr) const { ptr->insert(map_t::value_type(key, value)); return self; }
+    result_type operator () (const map_ptr& ptr) const { ptr->insert(map_type::value_type(key, value)); return self; }
 };
 var& var::operator () (const var& key, const var& value) {
     return boost::apply_visitor(append_key_value_visitor(*this, key, value), _var);
@@ -175,7 +175,7 @@ struct var::index_int_visitor : public boost::static_visitor<var&>
     {
         if (n < 0 || n >= int(ptr->size()))
             throw exception("[int] out of range in list");
-        list_t::iterator it = ptr->begin();
+        list_type::iterator it = ptr->begin();
         std::advance(it, n);
         return *it;
     }
@@ -189,14 +189,14 @@ struct var::index_int_visitor : public boost::static_visitor<var&>
     {
         if (n < 0 || n >= int(ptr->size()))
             throw exception("[int] out of range in set");
-        set_t::iterator it = ptr->begin();
+        set_type::iterator it = ptr->begin();
         std::advance(it, n);
         return const_cast<result_type>(*it);
     }
     result_type operator () (const map_ptr& ptr) const
     {
         var key(n);
-        map_t::iterator it = ptr->find(key);
+        map_type::iterator it = ptr->find(key);
         if (it == ptr->end())
             throw exception("[int] not found in map");
         return it->second;
@@ -250,10 +250,10 @@ struct var::index_var_visitor : public boost::static_visitor<var&>
     result_type operator () (const map_ptr& ptr) const
     {
         // See Effective STL (Meyers) item 45
-        map_t::iterator it = ptr->lower_bound(key);
+        map_type::iterator it = ptr->lower_bound(key);
         if ((it == ptr->end()) || (ptr->key_comp()(key, it->first)))
         {
-            it = ptr->insert(it, map_t::value_type(key, none));
+            it = ptr->insert(it, map_type::value_type(key, none));
         }
         return it->second;
     }

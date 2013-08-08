@@ -24,6 +24,7 @@
 */
 
 #include <cassert>
+#include <cctype>
 #include <iostream>
 #include <iomanip>
 
@@ -245,7 +246,7 @@ const var& var::operator [] (const var& v) const {
 ///
 std::ostream& var::_write_var(std::ostream& os) const {
     switch (type()) {
-    case type_null :    os << "none"; return os;
+    case type_null :    os << "null"; return os;
     case type_bool:     os << (boost::get<bool_t>(_var) ? "true" : "false"); return os;
     case type_int :     os << boost::get<int_t>(_var); return os;
     case type_double :  os << boost::get<double_t>(_var); return os;
@@ -262,7 +263,7 @@ std::ostream& var::_write_var(std::ostream& os) const {
 ///
 std::ostream& var::_write_string(std::ostream& os) const {
     assert(is_string());
-    os << '\'';
+    os << '"';
     for (const char* s = (*boost::get<string_t>(_var).ps).c_str(); *s; ++s)
         switch (*s) {
         case '\b' : os << "\\b"; break;
@@ -271,12 +272,13 @@ std::ostream& var::_write_string(std::ostream& os) const {
         case '\f' : os << "\\f"; break;
         case '\t' : os << "\\t"; break;
         case '\\' : os << "\\\\"; break;
-        case '\'' : os << "\\'"; break;
+        case '\"' : os << "\\\""; break;
+        case '/' : os << "\\/"; break;
         default :
-            if (*s < ' ') os << "0" << std::oct << std::setw(3) << std::setfill('0') << int(*s);
+            if (std::iscntrl(*s)) os << "0" << std::oct << std::setw(3) << std::setfill('0') << int(*s);
             else os << *s;
         }
-    os << '\'';
+    os << '"';
     return os;
 }
 
@@ -285,21 +287,22 @@ std::ostream& var::_write_string(std::ostream& os) const {
 ///
 std::ostream& var::_write_wstring(std::ostream& os) const {
     assert(is_wstring());
-    os << '\'';
+    os << '"';
     for (const wchar_t* s = (*boost::get<wstring_t>(_var).ps).c_str(); *s; ++s)
         switch (*s) {
-        case '\b' : os << L"\\b"; break;
-        case '\r' : os << L"\\r"; break;
-        case '\n' : os << L"\\n"; break;
-        case '\f' : os << L"\\f"; break;
-        case '\t' : os << L"\\t"; break;
-        case '\\' : os << L"\\\\"; break;
-        case '\'' : os << L"\\'"; break;
+        case L'\b' : os << L"\\b"; break;
+        case L'\r' : os << L"\\r"; break;
+        case L'\n' : os << L"\\n"; break;
+        case L'\f' : os << L"\\f"; break;
+        case L'\t' : os << L"\\t"; break;
+        case L'\\' : os << L"\\\\"; break;
+        case L'\"' : os << L"\\\""; break;
+        case L'/' : os << L"\\/"; break;
         default :
-            if (*s < ' ') os << L"0" << std::oct << std::setw(3) << std::setfill('0') << int(*s);
+            if (std::iswcntrl(*s)) os << L"0" << std::oct << std::setw(3) << std::setfill('0') << int(*s);
             else os << *s;
         }
-    os << '\'';
+    os << '"';
     return os;
 }
 
@@ -308,24 +311,34 @@ std::ostream& var::_write_wstring(std::ostream& os) const {
 ///
 std::ostream& var::_write_collection(std::ostream& os) const {
     assert(is_collection());
-    switch (type())
+    const code current = type();
+    switch (current)
     {
-    case type_vector : os << "["; break;
-    case type_map : os << "{"; break;
+    case type_vector : os << "[ "; break;
+    case type_map : os << "{ "; break;
     default : assert(false);
     }
     for (var::const_iterator vi = begin(); vi != end(); ++vi) {
-        if (vi != begin()) os << " ";
-        (*vi)._write_var(os);
-        if (type() == type_map) {
-            os << ":";
+        switch (current)
+        {
+        case type_vector:
+            if (vi != begin()) os << ", ";
+            (*vi)._write_var(os);
+            break;
+        case type_map:
+            if (vi != begin()) os << ", ";
+            (*vi)._write_var(os);
+            os << " : ";
             (*this)[*vi]._write_var(os);
+            break;
+        default:
+            assert(false);
         }
     }
-    switch (type())
+    switch (current)
     {
-    case type_vector : os << "]"; break;
-    case type_map : os << "}"; break;
+    case type_vector : os << " ]"; break;
+    case type_map : os << " }"; break;
     default : assert(false);
     }
     return os;
@@ -336,7 +349,7 @@ std::ostream& var::_write_collection(std::ostream& os) const {
 ///
 std::wostream& var::_write_var(std::wostream& os) const {
     switch (type()) {
-    case type_null :    os << "none"; return os;
+    case type_null :    os << "null"; return os;
     case type_bool:     os << (boost::get<bool_t>(_var) ? "true" : "false"); return os;
     case type_int :     os << boost::get<int_t>(_var); return os;
     case type_double :  os << boost::get<double_t>(_var); return os;
@@ -399,24 +412,34 @@ std::wostream& var::_write_wstring(std::wostream& os) const {
 ///
 std::wostream& var::_write_collection(std::wostream& os) const {
     assert(is_collection());
-    switch (type())
+    const code current = type();
+    switch (current)
     {
-    case type_vector : os << L"["; break;
-    case type_map : os << L"{"; break;
+    case type_vector : os << L"[ "; break;
+    case type_map : os << L"{ "; break;
     default : assert(false);
     }
     for (var::const_iterator vi = begin(); vi != end(); ++vi) {
-        if (vi != begin()) os << L" ";
-        (*vi)._write_var(os);
-        if (type() == type_map) {
-            os << L":";
+        switch (current)
+        {
+        case type_vector:
+            if (vi != begin()) os << L", ";
+            (*vi)._write_var(os);
+            break;
+        case type_map:
+            if (vi != begin()) os << L", ";
+            (*vi)._write_var(os);
+            os << L" : ";
             (*this)[*vi]._write_var(os);
+            break;
+        default:
+            assert(false);
         }
     }
-    switch (type())
+    switch (current)
     {
-    case type_vector : os << L"]"; break;
-    case type_map : os << L"}"; break;
+    case type_vector : os << L" ]"; break;
+    case type_map : os << L" }"; break;
     default : assert(false);
     }
     return os;

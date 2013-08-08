@@ -102,16 +102,16 @@ BOOST_AUTO_TEST_CASE (test_complex) {
 
     stringstream ss;
     ss << d;
-    BOOST_CHECK_EQUAL(ss.str(), "{'map':{'a':4 'b':5.5 'c':'plover'} 'vector':[1 1.5 'hello']}");
+    BOOST_CHECK_EQUAL(ss.str(), "{ \"map\" : { \"a\" : 4, \"b\" : 5.5, \"c\" : \"plover\" }, \"vector\" : [ 1, 1.5, \"hello\" ] }");
 
     d["vector"][0] = d["vector"][1] = d["vector"][2] = none;
     ss.str(string());
     ss << d;
-    BOOST_CHECK_EQUAL(ss.str(), "{'map':{'a':4 'b':5.5 'c':'plover'} 'vector':[none none none]}");
+    BOOST_CHECK_EQUAL(ss.str(), "{ \"map\" : { \"a\" : 4, \"b\" : 5.5, \"c\" : \"plover\" }, \"vector\" : [ null, null, null ] }");
 
     d["map"]["b"] = make_vector(1)(2.1)(3)(make_vector(1)("b"));
     ss.str(string());
     ss << d;
-    BOOST_CHECK_EQUAL(ss.str(), "{'map':{'a':4 'b':[1 2.1 3 [1 'b']] 'c':'plover'} 'vector':[none none none]}");
+    BOOST_CHECK_EQUAL(ss.str(), "{ \"map\" : { \"a\" : 4, \"b\" : [ 1, 2.1, 3, [ 1, \"b\" ] ], \"c\" : \"plover\" }, \"vector\" : [ null, null, null ] }");
 }
 

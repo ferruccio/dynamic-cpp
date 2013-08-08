@@ -66,7 +66,7 @@ BOOST_AUTO_TEST_CASE (simple_ctor) {
     BOOST_CHECK(!v.is_collection());
     BOOST_CHECK_EQUAL(v.name(), "null");
     ss << v;
-    BOOST_CHECK_EQUAL(ss.str(), "none");
+    BOOST_CHECK_EQUAL(ss.str(), "null");
 
     var vi(12);
     BOOST_CHECK(vi.is_int());
@@ -98,7 +98,7 @@ BOOST_AUTO_TEST_CASE (simple_ctor) {
     BOOST_CHECK_EQUAL(string(vs), "hello");
     ss.str(string());
     ss << vs;
-    BOOST_CHECK_EQUAL(ss.str(), "'hello'");
+    BOOST_CHECK_EQUAL(ss.str(), "\"hello\"");
 
     var vn(vs);
     BOOST_CHECK(vn.is_string());
@@ -107,7 +107,7 @@ BOOST_AUTO_TEST_CASE (simple_ctor) {
     BOOST_CHECK_EQUAL(string(vn), "hello");
     ss.str(string());
     ss << vn;
-    BOOST_CHECK_EQUAL(ss.str(), "'hello'");
+    BOOST_CHECK_EQUAL(ss.str(), "\"hello\"");
 }
 
 BOOST_AUTO_TEST_CASE (simple_assign) {
@@ -120,7 +120,7 @@ BOOST_AUTO_TEST_CASE (simple_assign) {
     BOOST_CHECK(!v.is_collection());
     BOOST_CHECK_EQUAL(v.name(), "null");
     ss << v;
-    BOOST_CHECK_EQUAL(ss.str(), "none");
+    BOOST_CHECK_EQUAL(ss.str(), "null");
 
     var vi;
     vi = 12;
@@ -152,7 +152,7 @@ BOOST_AUTO_TEST_CASE (simple_assign) {
     BOOST_CHECK(!vs.is_collection());
     ss.str(string());
     ss << vs;
-    BOOST_CHECK_EQUAL(ss.str(), "'hello'");
+    BOOST_CHECK_EQUAL(ss.str(), "\"hello\"");
 
     string world = "world";
     vs = world;
@@ -162,7 +162,7 @@ BOOST_AUTO_TEST_CASE (simple_assign) {
     BOOST_CHECK_EQUAL(string(vs), "world");
     ss.str(string());
     ss << vs;
-    BOOST_CHECK_EQUAL(ss.str(), "'world'");
+    BOOST_CHECK_EQUAL(ss.str(), "\"world\"");
 
     var vn;
     vn = vd;

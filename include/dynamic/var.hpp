@@ -74,7 +74,7 @@ public :
     operator std::string() const;
     operator std::wstring() const;
 
-    std::string type() const;
+    std::string name() const;
 
     bool operator == (bool) const;
     bool operator == (int n) const;
@@ -344,7 +344,7 @@ private :
 
     var_t _var;
 
-    struct type_string_visitor;
+    struct name_visitor;
     struct count_visitor;
     struct index_int_visitor;
     struct index_var_visitor;

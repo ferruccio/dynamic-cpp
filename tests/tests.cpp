@@ -50,7 +50,7 @@ BOOST_AUTO_TEST_CASE (ctor_bool)
     var vb(true);
     BOOST_REQUIRE(vb.is_bool());
     BOOST_REQUIRE(!vb.is_collection());
-    BOOST_REQUIRE_EQUAL(vb.type(), "bool");
+    BOOST_REQUIRE_EQUAL(vb.name(), "bool");
     BOOST_REQUIRE_EQUAL(bool(vb), true);
     BOOST_REQUIRE_NO_THROW(ss << vb);
     BOOST_REQUIRE_EQUAL(ss.str(), "true");
@@ -62,7 +62,7 @@ BOOST_AUTO_TEST_CASE (simple_ctor) {
     var v;
     BOOST_CHECK(v.is_null());
     BOOST_CHECK(!v.is_collection());
-    BOOST_CHECK_EQUAL(v.type(), "null");
+    BOOST_CHECK_EQUAL(v.name(), "null");
     ss << v;
     BOOST_CHECK_EQUAL(ss.str(), "none");
 
@@ -70,7 +70,7 @@ BOOST_AUTO_TEST_CASE (simple_ctor) {
     BOOST_CHECK(vi.is_int());
     BOOST_CHECK(vi.is_numeric());
     BOOST_CHECK(!vi.is_collection());
-    BOOST_CHECK_EQUAL(vi.type(), "int");
+    BOOST_CHECK_EQUAL(vi.name(), "int");
     BOOST_CHECK_EQUAL(int(vi), 12);
     ss.str(string());
     ss << vi;
@@ -80,7 +80,7 @@ BOOST_AUTO_TEST_CASE (simple_ctor) {
     BOOST_CHECK(vd.is_double());
     BOOST_CHECK(vd.is_numeric());
     BOOST_CHECK(!vd.is_collection());
-    BOOST_CHECK_EQUAL(vd.type(), "double");
+    BOOST_CHECK_EQUAL(vd.name(), "double");
     BOOST_CHECK_CLOSE(double(vd), 100.5, 1e-6);
     ss.str(string());
     ss << vd;
@@ -89,7 +89,7 @@ BOOST_AUTO_TEST_CASE (simple_ctor) {
     var vs("hello");
     BOOST_CHECK(vs.is_string());
     BOOST_CHECK(!vs.is_collection());
-    BOOST_CHECK_EQUAL(vs.type(), "string");
+    BOOST_CHECK_EQUAL(vs.name(), "string");
     BOOST_CHECK_EQUAL(string(vs), "hello");
     ss.str(string());
     ss << vs;
@@ -98,7 +98,7 @@ BOOST_AUTO_TEST_CASE (simple_ctor) {
     var vn(vs);
     BOOST_CHECK(vn.is_string());
     BOOST_CHECK(!vn.is_collection());
-    BOOST_CHECK_EQUAL(vn.type(), "string");
+    BOOST_CHECK_EQUAL(vn.name(), "string");
     BOOST_CHECK_EQUAL(string(vn), "hello");
     ss.str(string());
     ss << vn;
@@ -113,7 +113,7 @@ BOOST_AUTO_TEST_CASE (simple_assign) {
     v = none;
     BOOST_CHECK(v.is_null());
     BOOST_CHECK(!v.is_collection());
-    BOOST_CHECK_EQUAL(v.type(), "null");
+    BOOST_CHECK_EQUAL(v.name(), "null");
     ss << v;
     BOOST_CHECK_EQUAL(ss.str(), "none");
 
@@ -122,7 +122,7 @@ BOOST_AUTO_TEST_CASE (simple_assign) {
     BOOST_CHECK(vi.is_int());
     BOOST_CHECK(vi.is_numeric());
     BOOST_CHECK(!vi.is_collection());
-    BOOST_CHECK_EQUAL(vi.type(), "int");
+    BOOST_CHECK_EQUAL(vi.name(), "int");
     BOOST_CHECK_EQUAL(int(vi), 12);
     ss.str(string());
     ss << vi;
@@ -133,7 +133,7 @@ BOOST_AUTO_TEST_CASE (simple_assign) {
     BOOST_CHECK(vd.is_double());
     BOOST_CHECK(vd.is_numeric());
     BOOST_CHECK(!vd.is_collection());
-    BOOST_CHECK_EQUAL(vd.type(), "double");
+    BOOST_CHECK_EQUAL(vd.name(), "double");
     BOOST_CHECK_CLOSE(double(vd), 100.5, 1e-6);
     ss.str(string());
     ss << vd;
@@ -142,7 +142,7 @@ BOOST_AUTO_TEST_CASE (simple_assign) {
     var vs;
     vs = "hello";
     BOOST_CHECK(vs.is_string());
-    BOOST_CHECK_EQUAL(vs.type(), "string");
+    BOOST_CHECK_EQUAL(vs.name(), "string");
     BOOST_CHECK_EQUAL(string(vs), "hello");
     BOOST_CHECK(!vs.is_collection());
     ss.str(string());
@@ -153,7 +153,7 @@ BOOST_AUTO_TEST_CASE (simple_assign) {
     vs = world;
     BOOST_CHECK(vs.is_string());
     BOOST_CHECK(!vs.is_collection());
-    BOOST_CHECK_EQUAL(vs.type(), "string");
+    BOOST_CHECK_EQUAL(vs.name(), "string");
     BOOST_CHECK_EQUAL(string(vs), "world");
     ss.str(string());
     ss << vs;
@@ -164,7 +164,7 @@ BOOST_AUTO_TEST_CASE (simple_assign) {
     BOOST_CHECK(vn.is_double());
     BOOST_CHECK(vn.is_numeric());
     BOOST_CHECK(!vn.is_collection());
-    BOOST_CHECK_EQUAL(vn.type(), "double");
+    BOOST_CHECK_EQUAL(vn.name(), "double");
     BOOST_CHECK_CLOSE(double(vn), 100.5, 1e-6);
     ss.str(string());
     ss << vn;

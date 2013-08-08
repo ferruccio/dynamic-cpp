@@ -86,7 +86,7 @@ var::operator std::wstring() const {
 ///
 /// @return type name
 ///
-struct var::type_string_visitor : public boost::static_visitor<std::string>
+struct var::name_visitor : public boost::static_visitor<std::string>
 {
     result_type operator () (const null_t&) const { return "null"; }
     result_type operator () (const bool_t&) const { return "bool"; }
@@ -99,8 +99,8 @@ struct var::type_string_visitor : public boost::static_visitor<std::string>
     result_type operator () (const set_ptr& ptr) const { return "set"; }
     result_type operator () (const map_ptr& ptr) const { return "map"; }
 };
-std::string var::type() const {
-    return boost::apply_visitor(type_string_visitor(), _var);
+std::string var::name() const {
+    return boost::apply_visitor(name_visitor(), _var);
 }
 
 ///

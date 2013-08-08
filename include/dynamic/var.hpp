@@ -28,7 +28,6 @@
 
 #include <string>
 #include <vector>
-#include <set>
 #include <map>
 
 #include <boost/variant.hpp>
@@ -48,7 +47,7 @@ class var {
 public :
     typedef std::size_t size_type;
     // Note to dynamic developer: Make sure that code and the variant list for var_t always match
-    enum code { type_null = 0, type_bool, type_int, type_double, type_string, type_wstring, type_vector, type_set, type_map };
+    enum code { type_null = 0, type_bool, type_int, type_double, type_string, type_wstring, type_vector, type_map };
 
     var();
     var(bool);
@@ -150,12 +149,10 @@ public :
     bool is_string_type() const { return is_string() || is_wstring(); }
     /// is var a vector?
     bool is_vector() const { return type() == type_vector; }
-    /// is var a set?
-    bool is_set() const { return type() == type_set; }
     /// is var a map?
     bool is_map() const { return type() == type_map; }
     /// is var a collection type?
-    bool is_collection() const { return is_vector() || is_set() || is_map(); }
+    bool is_collection() const { return is_vector() || is_map(); }
 
     var& operator () (bool);
     var& operator () (int n);
@@ -195,8 +192,6 @@ public :
 
     /// vector type
     typedef std::vector<var> vector_type;
-    /// set type
-    typedef std::set<var, less_var> set_type;
     /// map type
     typedef std::map<var, var, less_var> map_type;
     /// pair type
@@ -223,14 +218,12 @@ public :
         friend class var;
         /// initialize from vector iterator
         const_iterator(vector_type::iterator iter) : _iter(iter) {}
-        /// initialize from set iterator
-        const_iterator(set_type::iterator iter) : _iter(iter) {}
         /// initialize from map iterator
         const_iterator(map_type::iterator iter) : _iter(iter) {}
 
         // make sure base_type and the variant list for iter_t always match
-        enum base_type { type_vector = 0, type_set, type_map };
-        typedef boost::variant<vector_type::iterator, set_type::iterator, map_type::iterator> iter_t;
+        enum base_type { type_vector = 0, type_map };
+        typedef boost::variant<vector_type::iterator, map_type::iterator> iter_t;
 
         iter_t _iter;
     };
@@ -247,8 +240,6 @@ public :
         friend class var;
         /// initialize from vector iterator
         iterator(vector_type::iterator iter) : const_iterator(iter) {}
-        /// initialize from set iterator
-        iterator(set_type::iterator iter) : const_iterator(iter) {}
         /// initialize from map iterator
         iterator(map_type::iterator iter) : const_iterator(iter) {}
     };
@@ -265,8 +256,6 @@ public :
     public :
         /// initialize from vector reverse iterator
         reverse_iterator(vector_type::reverse_iterator riter) : _riter(riter) {}
-        /// initialize from set reverse iterator
-        reverse_iterator(set_type::reverse_iterator riter) : _riter(riter) {}
         /// initialize from map reverse iterator
         reverse_iterator(map_type::reverse_iterator riter) : _riter(riter) {}
 
@@ -281,8 +270,8 @@ public :
 
     private :
         // make sure base_type and the variant list for riter_t always match
-        enum base_type { type_vector = 0, type_set, type_map };
-        typedef boost::variant<vector_type::reverse_iterator, set_type::reverse_iterator, map_type::reverse_iterator> riter_t;
+        enum base_type { type_vector = 0, type_map };
+        typedef boost::variant<vector_type::reverse_iterator, map_type::reverse_iterator> riter_t;
 
         riter_t _riter;
     };
@@ -292,7 +281,6 @@ public :
 
 private :
     friend var make_vector();
-    friend var make_set();
     friend var make_map();
 
     typedef boost::blank null_t;
@@ -318,14 +306,12 @@ private :
     typedef double double_t;
 
     typedef boost::shared_ptr<vector_type> vector_ptr;
-    typedef boost::shared_ptr<set_type> set_ptr;
     typedef boost::shared_ptr<map_type> map_ptr;
 
     var(vector_ptr _vector);
-    var(set_ptr _set);
     var(map_ptr _map);
 
-    typedef boost::variant<null_t, bool_t, int_t, double_t, string_t, wstring_t, vector_ptr, set_ptr, map_ptr> var_t;
+    typedef boost::variant<null_t, bool_t, int_t, double_t, string_t, wstring_t, vector_ptr, map_ptr> var_t;
 
     var_t _var;
 
@@ -350,15 +336,11 @@ inline std::wostream& operator << (std::wostream& os, const var& v) { return v._
 
 /// create empty vector
 inline var make_vector() { return var(boost::make_shared<var::vector_type>()); }
-/// create empty set
-inline var make_set() { return var(boost::make_shared<var::set_type>()); }
 /// create empty map
 inline var make_map() { return var(boost::make_shared<var::map_type>()); }
 
 /// create vector with one item
 inline var make_vector(const var& v) { return dynamic::make_vector()(v); }
-/// create set with one item
-inline var make_set(const var& v) { return dynamic::make_set()(v); }
 /// create map with one item (a key) and null value
 inline var make_map(const var& k) { return dynamic::make_map()(k); }
 /// create map with one item (a key,value pair)

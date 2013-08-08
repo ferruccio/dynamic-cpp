@@ -95,7 +95,6 @@ struct var::name_visitor : public boost::static_visitor<std::string>
     result_type operator () (const string_t& value) const { return "string"; }
     result_type operator () (const wstring_t& value) const { return "wstring"; }
     result_type operator () (const vector_ptr& ptr) const { return "vector"; }
-    result_type operator () (const set_ptr& ptr) const { return "set"; }
     result_type operator () (const map_ptr& ptr) const { return "map"; }
 };
 std::string var::name() const {

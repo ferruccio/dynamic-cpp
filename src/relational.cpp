@@ -127,10 +127,6 @@ private:
     {
         return std::equal(lhs->begin(), lhs->end(), rhs->begin());
     }
-    bool equal(const set_ptr& lhs, const set_ptr& rhs) const
-    {
-        return std::equal(lhs->begin(), lhs->end(), rhs->begin());
-    }
     bool equal(const map_ptr& lhs, const map_ptr& rhs) const
     {
         return std::equal(lhs->begin(), lhs->end(), rhs->begin());
@@ -327,7 +323,6 @@ bool var::operator <= (const var& v) const {
     case type_string :  return v.is_string() && *boost::get<string_t>(_var).ps <= *boost::get<string_t>(v._var).ps;
     case type_wstring : return v.is_wstring() && *boost::get<wstring_t>(_var).ps <= *boost::get<wstring_t>(v._var).ps;
     case type_vector :  throw exception("vector <= not implemented");
-    case type_set :     throw exception("set <= not implemented");
     case type_map :     throw exception("map <= not implemented");
     default :           throw exception("(unhandled type) <= not implemented");
     }
@@ -400,7 +395,6 @@ bool var::operator > (const var& v) const {
     case type_string :  return v.is_string() && *boost::get<string_t>(_var).ps > *boost::get<string_t>(v._var).ps;
     case type_wstring : return v.is_wstring() && *boost::get<wstring_t>(_var).ps > *boost::get<wstring_t>(v._var).ps;
     case type_vector :  throw exception("vector > not implemented");
-    case type_set :     throw exception("set > not implemented");
     case type_map :     throw exception("map > not implemented");
     default :           throw exception("(unhandled type) > not implemented");
     }
@@ -474,7 +468,6 @@ bool var::operator >= (const var& v) const {
     case type_string :  return v.is_string() && *boost::get<string_t>(_var).ps >= *boost::get<string_t>(v._var).ps;
     case type_wstring : return v.is_wstring() && *boost::get<wstring_t>(_var).ps >= *boost::get<wstring_t>(v._var).ps;
     case type_vector :  throw exception("vector >= not implemented");
-    case type_set :     throw exception("set >= not implemented");
     case type_map :     throw exception("map >= not implemented");
     default :           throw exception("(unhandled type) >= not implemented");
     }

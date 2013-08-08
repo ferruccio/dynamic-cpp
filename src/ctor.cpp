@@ -78,11 +78,6 @@ var::var(const var& v) : _var(v._var) {}
 var::var(vector_ptr _vector) : _var(_vector) {}
 
 ///
-/// ctor: init with set
-///
-var::var(set_ptr _set) : _var(_set) {}
-
-///
 /// ctor: init with map
 ///
 var::var(map_ptr _map) : _var(_map) {}

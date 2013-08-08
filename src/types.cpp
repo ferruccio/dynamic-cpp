@@ -106,8 +106,8 @@ std::string var::name() const {
 ///
 /// @return type identifier
 ///
-var::type_t var::get_type() const {
-    return type_t(_var.which());
+var::code var::type() const {
+    return code(_var.which());
 }
 
 }

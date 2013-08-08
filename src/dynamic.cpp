@@ -36,7 +36,7 @@ const var none;
 
 bool var::less_var::operator () (const var& lhs, const var& rhs) {
     // if the two vars are of different types, order by type
-    type_t lht = lhs.get_type(), rht = rhs.get_type();
+    code lht = lhs.type(), rht = rhs.type();
     if (lht != rht) return lht < rht;
 
     // they are of the same type, order by value
@@ -270,7 +270,7 @@ const var& var::operator [] (const var& v) const {
 /// write a var to an ostream
 ///
 std::ostream& var::_write_var(std::ostream& os) const {
-    switch (get_type()) {
+    switch (type()) {
     case type_null :    os << "none"; return os;
     case type_bool:     os << (boost::get<bool_t>(_var) ? "true" : "false"); return os;
     case type_int :     os << boost::get<int_t>(_var); return os;
@@ -336,7 +336,7 @@ std::ostream& var::_write_wstring(std::ostream& os) const {
 ///
 std::ostream& var::_write_collection(std::ostream& os) const {
     assert(is_collection());
-    switch (get_type())
+    switch (type())
     {
     case type_list : os << "("; break;
     case type_vector : os << "["; break;
@@ -347,12 +347,12 @@ std::ostream& var::_write_collection(std::ostream& os) const {
     for (var::const_iterator vi = begin(); vi != end(); ++vi) {
         if (vi != begin()) os << " ";
         (*vi)._write_var(os);
-        if (get_type() == type_map) {
+        if (type() == type_map) {
             os << ":";
             (*this)[*vi]._write_var(os);
         }
     }
-    switch (get_type())
+    switch (type())
     {
     case type_list : os << ")"; break;
     case type_vector : os << "]"; break;
@@ -367,7 +367,7 @@ std::ostream& var::_write_collection(std::ostream& os) const {
 /// write a var to a wostream
 ///
 std::wostream& var::_write_var(std::wostream& os) const {
-    switch (get_type()) {
+    switch (type()) {
     case type_null :    os << "none"; return os;
     case type_bool:     os << (boost::get<bool_t>(_var) ? "true" : "false"); return os;
     case type_int :     os << boost::get<int_t>(_var); return os;
@@ -433,7 +433,7 @@ std::wostream& var::_write_wstring(std::wostream& os) const {
 ///
 std::wostream& var::_write_collection(std::wostream& os) const {
     assert(is_collection());
-    switch (get_type())
+    switch (type())
     {
     case type_list : os << L"("; break;
     case type_vector : os << L"["; break;
@@ -444,12 +444,12 @@ std::wostream& var::_write_collection(std::wostream& os) const {
     for (var::const_iterator vi = begin(); vi != end(); ++vi) {
         if (vi != begin()) os << L" ";
         (*vi)._write_var(os);
-        if (get_type() == type_map) {
+        if (type() == type_map) {
             os << L":";
             (*this)[*vi]._write_var(os);
         }
     }
-    switch (get_type())
+    switch (type())
     {
     case type_list : os << L")"; break;
     case type_vector : os << L"]"; break;

@@ -49,6 +49,7 @@ BOOST_AUTO_TEST_CASE (ctor_bool)
 
     var vb(true);
     BOOST_REQUIRE(vb.is_bool());
+    BOOST_REQUIRE_EQUAL(vb.type(), var::type_bool);
     BOOST_REQUIRE(!vb.is_collection());
     BOOST_REQUIRE_EQUAL(vb.name(), "bool");
     BOOST_REQUIRE_EQUAL(bool(vb), true);
@@ -61,6 +62,7 @@ BOOST_AUTO_TEST_CASE (simple_ctor) {
 
     var v;
     BOOST_CHECK(v.is_null());
+    BOOST_CHECK_EQUAL(v.type(), var::type_null);
     BOOST_CHECK(!v.is_collection());
     BOOST_CHECK_EQUAL(v.name(), "null");
     ss << v;
@@ -68,6 +70,7 @@ BOOST_AUTO_TEST_CASE (simple_ctor) {
 
     var vi(12);
     BOOST_CHECK(vi.is_int());
+    BOOST_CHECK_EQUAL(vi.type(), var::type_int);
     BOOST_CHECK(vi.is_numeric());
     BOOST_CHECK(!vi.is_collection());
     BOOST_CHECK_EQUAL(vi.name(), "int");
@@ -78,6 +81,7 @@ BOOST_AUTO_TEST_CASE (simple_ctor) {
 
     var vd(100.5);
     BOOST_CHECK(vd.is_double());
+    BOOST_CHECK_EQUAL(vd.type(), var::type_double);
     BOOST_CHECK(vd.is_numeric());
     BOOST_CHECK(!vd.is_collection());
     BOOST_CHECK_EQUAL(vd.name(), "double");
@@ -88,6 +92,7 @@ BOOST_AUTO_TEST_CASE (simple_ctor) {
 
     var vs("hello");
     BOOST_CHECK(vs.is_string());
+    BOOST_CHECK_EQUAL(vs.type(), var::type_string);
     BOOST_CHECK(!vs.is_collection());
     BOOST_CHECK_EQUAL(vs.name(), "string");
     BOOST_CHECK_EQUAL(string(vs), "hello");

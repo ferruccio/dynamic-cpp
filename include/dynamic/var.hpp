@@ -48,6 +48,8 @@ namespace dynamic {
 class var {
 public :
     typedef std::size_t size_type;
+    // Note to dynamic developer: Make sure that code and the variant list for var_t always match
+    enum code { type_null = 0, type_bool, type_int, type_double, type_string, type_wstring, type_list, type_vector, type_set, type_map };
 
     var();
     var(bool);
@@ -74,6 +76,7 @@ public :
     operator std::string() const;
     operator std::wstring() const;
 
+    enum code type() const;
     std::string name() const;
 
     bool operator == (bool) const;
@@ -131,29 +134,29 @@ public :
     bool operator >= (const var& v) const;
         
     /// is var a null?
-    bool is_null() const { return get_type() == type_null; }
+    bool is_null() const { return type() == type_null; }
     /// is var a bool?
-    bool is_bool() const { return get_type() == type_bool; }
+    bool is_bool() const { return type() == type_bool; }
     /// is var an int?
-    bool is_int() const { return get_type() == type_int; }
+    bool is_int() const { return type() == type_int; }
     /// is var a double?
-    bool is_double() const { return get_type() == type_double; }
+    bool is_double() const { return type() == type_double; }
     /// is var a numeric type?
     bool is_numeric() const { return is_int() || is_double(); }
     /// is var a string?
-    bool is_string() const { return get_type() == type_string; }
+    bool is_string() const { return type() == type_string; }
     /// is var a wide string?
-    bool is_wstring() const { return get_type() == type_wstring; }
+    bool is_wstring() const { return type() == type_wstring; }
     /// is var a string type?
     bool is_string_type() const { return is_string() || is_wstring(); }
     /// is var a list?
-    bool is_list() const { return get_type() == type_list; }
+    bool is_list() const { return type() == type_list; }
     /// is var a vector?
-    bool is_vector() const { return get_type() == type_vector; }
+    bool is_vector() const { return type() == type_vector; }
     /// is var a set?
-    bool is_set() const { return get_type() == type_set; }
+    bool is_set() const { return type() == type_set; }
     /// is var a map?
-    bool is_map() const { return get_type() == type_map; }
+    bool is_map() const { return type() == type_map; }
     /// is var a collection type?
     bool is_collection() const { return is_list() || is_vector() || is_set() || is_map(); }
 
@@ -336,11 +339,7 @@ private :
     var(set_ptr _set);
     var(map_ptr _map);
 
-    // Make sure type_t and the variant list for var_t always match
-    enum type_t { type_null = 0, type_bool, type_int, type_double, type_string, type_wstring, type_list, type_vector, type_set, type_map };
     typedef boost::variant<null_t, bool_t, int_t, double_t, string_t, wstring_t, list_ptr, vector_ptr, set_ptr, map_ptr> var_t;
-
-    type_t get_type() const;
 
     var_t _var;
 

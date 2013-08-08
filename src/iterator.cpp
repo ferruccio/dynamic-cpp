@@ -32,7 +32,7 @@ namespace dynamic {
 /// @return iterator to the first item in a collection
 ///
 var::const_iterator var::begin() const {
-    switch (get_type()) {
+    switch (type()) {
     case type_null :    throw exception("invalid .begin() operation on none");
     case type_int :     throw exception("invalid .begin() operation on int");
     case type_double :  throw exception("invalid .begin() operation on double");
@@ -56,7 +56,7 @@ var::iterator var::begin() {
 /// @return iterator past the last item in a collection
 ///
 var::const_iterator var::end() const {
-    switch (get_type()) {
+    switch (type()) {
     case type_null :    throw exception("invalid .end() operation on none");
     case type_int :     throw exception("invalid .end() operation on int");
     case type_double :  throw exception("invalid .end() operation on double");
@@ -181,7 +181,7 @@ var::pair_type& var::iterator::pair() {
 /// @return reverse_iterator to last item in collection
 ///
 var::reverse_iterator var::rbegin() {
-    switch (get_type()) {
+    switch (type()) {
     case type_null :    throw exception("invalid .rbegin() operation on none");
     case type_int :     throw exception("invalid .rbegin() operation on int");
     case type_double :  throw exception("invalid .rbegin() operation on double");
@@ -199,7 +199,7 @@ var::reverse_iterator var::rbegin() {
 /// @return reverse_iterator preceding first item in collection
 ///
 var::reverse_iterator var::rend() {
-    switch (get_type()) {
+    switch (type()) {
     case type_null :    throw exception("invalid .rend() operation on none");
     case type_int :     throw exception("invalid .rend() operation on int");
     case type_double :  throw exception("invalid .rend() operation on double");

@@ -323,7 +323,7 @@ bool var::operator <= (const wchar_t* s) const {
 /// var <= var
 ///
 bool var::operator <= (const var& v) const {
-    switch (get_type()) {
+    switch (type()) {
     case type_null :    throw exception("invalid <= comparison to none");
     case type_bool :    return v.is_bool() && boost::get<bool_t>(_var) <= boost::get<bool_t>(v._var);
     case type_int :     return v.is_int() && boost::get<int_t>(_var) <= boost::get<int_t>(v._var);
@@ -397,7 +397,7 @@ bool var::operator > (const wchar_t* s) const {
 /// var > var
 ///
 bool var::operator > (const var& v) const {
-    switch (get_type()) {
+    switch (type()) {
     case type_null :    throw exception("invalid > comparison to none");
     case type_bool :    return v.is_bool() && boost::get<bool_t>(_var) > boost::get<bool_t>(v._var);
     case type_int :     return v.is_int() && boost::get<int_t>(_var) > boost::get<int_t>(v._var);
@@ -472,7 +472,7 @@ bool var::operator >= (const wchar_t* s) const {
 /// var >= var
 ///
 bool var::operator >= (const var& v) const {
-    switch (get_type()) {
+    switch (type()) {
     case type_null :    throw exception("invalid >= comparison to none");
     case type_bool :    return v.is_bool() && boost::get<bool_t>(_var) >= boost::get<bool_t>(v._var);
     case type_int :     return v.is_int() && boost::get<int_t>(_var) >= boost::get<int_t>(v._var);

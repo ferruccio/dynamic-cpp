@@ -73,11 +73,6 @@ var::var(const wchar_t* s) : _var(wstring_t(s)) {}
 var::var(const var& v) : _var(v._var) {}
 
 ///
-/// ctor: init with list
-///
-var::var(list_ptr _list) : _var(_list) {}
-
-///
 /// ctor: init with vector
 ///
 var::var(vector_ptr _vector) : _var(_vector) {}

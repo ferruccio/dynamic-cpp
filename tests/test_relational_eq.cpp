@@ -182,16 +182,3 @@ BOOST_FIXTURE_TEST_CASE (relational_eq_string_charp, eq_fixture) {
     BOOST_CHECK(!(vca == vsb));
     BOOST_CHECK(!(vca == _vsb));
 }
-
-BOOST_AUTO_TEST_CASE(relational_eq_list_equal)
-{
-    var alpha = make_list(1);
-    var bravo = make_list(1);
-    BOOST_REQUIRE(alpha == bravo);
-}
-BOOST_AUTO_TEST_CASE(relational_eq_list_different)
-{
-    var alpha = make_list(1);
-    var bravo = make_list(2);
-    BOOST_REQUIRE(!(alpha == bravo));
-}

@@ -47,7 +47,6 @@ bool var::less_var::operator () (const var& lhs, const var& rhs) {
     case type_double : return boost::get<double_t>(lhs._var) < boost::get<double_t>(rhs._var);
     case type_string : return *(boost::get<string_t>(lhs._var).ps) < *(boost::get<string_t>(rhs._var).ps);
     case type_wstring : return *(boost::get<wstring_t>(lhs._var).ps) < *(boost::get<wstring_t>(rhs._var).ps);
-    case type_list :
     case type_vector :
     case type_set :
     case type_map :
@@ -105,7 +104,6 @@ struct var::append_value_visitor : public boost::static_visitor<var&>
     result_type operator () (const double_t&) const { throw exception("invalid () operation on double"); }
     result_type operator () (const string_t& value) const { throw exception("invalid () operation on string"); }
     result_type operator () (const wstring_t& value) const { throw exception("invalid () operation on wstring"); }
-    result_type operator () (const list_ptr& ptr) const { ptr->push_back(value); return self; }
     result_type operator () (const vector_ptr& ptr) const { ptr->push_back(value); return self; }
     result_type operator () (const set_ptr& ptr) const { ptr->insert(value); return self; }
     result_type operator () (const map_ptr& ptr) const { ptr->insert(map_type::value_type(value, none)); return self; }
@@ -129,7 +127,6 @@ struct var::append_key_value_visitor : public boost::static_visitor<var&>
     result_type operator () (const double_t&) const { throw exception("invalid (,) operation on double"); }
     result_type operator () (const string_t& value) const { throw exception("invalid (,) operation on string"); }
     result_type operator () (const wstring_t& value) const { throw exception("invalid (,) operation on wstring"); }
-    result_type operator () (const list_ptr& ptr) const { throw exception("invalid (,) operation on list"); }
     result_type operator () (const vector_ptr& ptr) const { throw exception("invalid (,) operation on vector"); }
     result_type operator () (const set_ptr& ptr) const { throw exception("invalid (,) operation on set"); }
     result_type operator () (const map_ptr& ptr) const { ptr->insert(map_type::value_type(key, value)); return self; }
@@ -149,7 +146,6 @@ struct var::count_visitor : public boost::static_visitor<size_type>
     result_type operator () (const double_t&) const { throw exception("invalid .count() operator on double"); }
     result_type operator () (const string_t& value) const { return value.ps->length(); }
     result_type operator () (const wstring_t& value) const { return value.ps->length(); }
-    result_type operator () (const list_ptr& ptr) const { return static_cast<result_type>(ptr->size()); }
     result_type operator () (const vector_ptr& ptr) const { return static_cast<result_type>(ptr->size()); }
     result_type operator () (const set_ptr& ptr) const { return static_cast<result_type>(ptr->size()); }
     result_type operator () (const map_ptr& ptr) const { return static_cast<result_type>(ptr->size()); }
@@ -171,14 +167,6 @@ struct var::index_int_visitor : public boost::static_visitor<var&>
     result_type operator () (const double_t&) const { throw exception("cannot apply [int] to double"); }
     result_type operator () (const string_t&) const { throw exception("cannot apply [int] to string"); }
     result_type operator () (const wstring_t&) const { throw exception("cannot apply [int] to wstring"); }
-    result_type operator () (const list_ptr& ptr) const
-    {
-        if (n < 0 || n >= int(ptr->size()))
-            throw exception("[int] out of range in list");
-        list_type::iterator it = ptr->begin();
-        std::advance(it, n);
-        return *it;
-    }
     result_type operator () (const vector_ptr& ptr) const
     {
         if (n < 0 || n >= int(ptr->size()))
@@ -244,7 +232,6 @@ struct var::index_var_visitor : public boost::static_visitor<var&>
     result_type operator () (const double_t&) const { throw exception("cannot apply [var] to double"); }
     result_type operator () (const string_t&) const { throw exception("cannot apply [var] to string"); }
     result_type operator () (const wstring_t&) const { throw exception("cannot apply [var] to wstring"); }
-    result_type operator () (const list_ptr& ptr) const { throw exception("list[] requires int"); }
     result_type operator () (const vector_ptr& ptr) const { throw exception("vector[] requires int"); }
     result_type operator () (const set_ptr& ptr) const { throw exception("set[] requires int"); }
     result_type operator () (const map_ptr& ptr) const
@@ -277,7 +264,6 @@ std::ostream& var::_write_var(std::ostream& os) const {
     case type_double :  os << boost::get<double_t>(_var); return os;
     case type_string :  return _write_string(os);
     case type_wstring : return _write_wstring(os);
-    case type_list :
     case type_vector :
     case type_set :
     case type_map :     return _write_collection(os);
@@ -338,7 +324,6 @@ std::ostream& var::_write_collection(std::ostream& os) const {
     assert(is_collection());
     switch (type())
     {
-    case type_list : os << "("; break;
     case type_vector : os << "["; break;
     case type_set : os << "{"; break;
     case type_map : os << "<"; break;
@@ -354,7 +339,6 @@ std::ostream& var::_write_collection(std::ostream& os) const {
     }
     switch (type())
     {
-    case type_list : os << ")"; break;
     case type_vector : os << "]"; break;
     case type_set : os << "}"; break;
     case type_map : os << ">"; break;
@@ -374,7 +358,6 @@ std::wostream& var::_write_var(std::wostream& os) const {
     case type_double :  os << boost::get<double_t>(_var); return os;
     case type_string :  return _write_string(os);
     case type_wstring : return _write_wstring(os);
-    case type_list :
     case type_vector :
     case type_set :
     case type_map :     return _write_collection(os);
@@ -435,7 +418,6 @@ std::wostream& var::_write_collection(std::wostream& os) const {
     assert(is_collection());
     switch (type())
     {
-    case type_list : os << L"("; break;
     case type_vector : os << L"["; break;
     case type_set : os << L"{"; break;
     case type_map : os << L"<"; break;
@@ -451,7 +433,6 @@ std::wostream& var::_write_collection(std::wostream& os) const {
     }
     switch (type())
     {
-    case type_list : os << L")"; break;
     case type_vector : os << L"]"; break;
     case type_set : os << L"}"; break;
     case type_map : os << L">"; break;

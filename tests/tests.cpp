@@ -193,11 +193,11 @@ BOOST_AUTO_TEST_CASE(Examples) {
     a = L"hello, wide world!"; // a is now a wide string
     cout << a << endl;
 
-    a = make_list(1)(2)(3); // a is now a list of integers
+    a = make_vector(1)(2)(3); // a is now an array of integers
     cout << a << endl;
 
-    a = make_list(1)(2)(3.5)("hello")(make_vector(1)(2.0)("three"));
-    // a is now a list containing 2 ints, a double, a string and a vector of three items
+    a = make_vector(1)(2)(3.5)("hello")(make_vector(1)(2.0)("three"));
+    // a is now an array containing 2 ints, a double, a string and an array of three items
 
     cout << "c: " << a << endl;
     // some iterator support

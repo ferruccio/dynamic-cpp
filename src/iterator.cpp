@@ -38,7 +38,6 @@ var::const_iterator var::begin() const {
     case type_double :  throw exception("invalid .begin() operation on double");
     case type_string :  throw exception("invalid .begin() operation on string");
     case type_wstring : throw exception("invalid .begin() operation on wstring");
-    case type_list :    return boost::get<list_ptr>(_var)->begin();
     case type_vector :  return boost::get<vector_ptr>(_var)->begin();
     case type_set :     return boost::get<set_ptr>(_var)->begin();
     case type_map :     return boost::get<map_ptr>(_var)->begin();
@@ -62,7 +61,6 @@ var::const_iterator var::end() const {
     case type_double :  throw exception("invalid .end() operation on double");
     case type_string :  throw exception("invalid .end() operation on string");
     case type_wstring : throw exception("invalid .end() operation on wstring");
-    case type_list :    return boost::get<list_ptr>(_var)->end();
     case type_vector :  return boost::get<vector_ptr>(_var)->end();
     case type_set :     return boost::get<set_ptr>(_var)->end();
     case type_map :     return boost::get<map_ptr>(_var)->end();
@@ -80,7 +78,6 @@ var::iterator var::end() {
 ///
 var::const_iterator var::const_iterator::operator++() {
     switch (_iter.which()) {
-    case type_list :    return ++boost::get<list_type::iterator&>(_iter);
     case type_vector :  return ++boost::get<vector_type::iterator&>(_iter);
     case type_set :     return ++boost::get<set_type::iterator&>(_iter);
     case type_map :     return ++boost::get<map_type::iterator&>(_iter);
@@ -93,7 +90,6 @@ var::const_iterator var::const_iterator::operator++() {
 ///
 var::const_iterator var::const_iterator::operator++(int) {
     switch (_iter.which()) {
-    case type_list :    return boost::get<list_type::iterator&>(_iter)++;
     case type_vector :  return boost::get<vector_type::iterator&>(_iter)++;
     case type_set :     return boost::get<set_type::iterator&>(_iter)++;
     case type_map :     return boost::get<map_type::iterator&>(_iter)++;
@@ -106,7 +102,6 @@ var::const_iterator var::const_iterator::operator++(int) {
 ///
 var::const_iterator var::const_iterator::operator--() {
     switch (_iter.which()) {
-    case type_list :    return --boost::get<list_type::iterator&>(_iter);
     case type_vector :  return --boost::get<vector_type::iterator&>(_iter);
     case type_set :     return --boost::get<set_type::iterator&>(_iter);
     case type_map :     return --boost::get<map_type::iterator&>(_iter);
@@ -119,7 +114,6 @@ var::const_iterator var::const_iterator::operator--() {
 ///
 var::const_iterator var::const_iterator::operator--(int) {
     switch (_iter.which()) {
-    case type_list :    return boost::get<list_type::iterator&>(_iter)--;
     case type_vector :  return boost::get<vector_type::iterator&>(_iter)--;
     case type_set :     return boost::get<set_type::iterator&>(_iter)--;
     case type_map :     return boost::get<map_type::iterator&>(_iter)++;
@@ -149,7 +143,6 @@ bool var::const_iterator::operator==(var::const_iterator rhs) {
 ///
 const var& var::const_iterator::operator*() const {
     switch (_iter.which()) {
-    case type_list :    return *boost::get<list_type::iterator>(_iter);
     case type_vector :  return *boost::get<vector_type::iterator>(_iter);
     case type_set :     return const_cast<var&>(*boost::get<set_type::iterator>(_iter));
     case type_map :     return const_cast<var&>(boost::get<map_type::iterator>(_iter)->first);
@@ -187,7 +180,6 @@ var::reverse_iterator var::rbegin() {
     case type_double :  throw exception("invalid .rbegin() operation on double");
     case type_string :  throw exception("invalid .rbegin() operation on string");
     case type_wstring : throw exception("invalid .rbegin() operation on wstring");
-    case type_list :    return boost::get<list_ptr>(_var)->rbegin();
     case type_vector :  return boost::get<vector_ptr>(_var)->rbegin();
     case type_set :     return boost::get<set_ptr>(_var)->rbegin();
     case type_map :     return boost::get<map_ptr>(_var)->rbegin();
@@ -205,7 +197,6 @@ var::reverse_iterator var::rend() {
     case type_double :  throw exception("invalid .rend() operation on double");
     case type_string :  throw exception("invalid .rend() operation on string");
     case type_wstring : throw exception("invalid .rend() operation on wstring");
-    case type_list :    return boost::get<list_ptr>(_var)->rend();
     case type_vector :  return boost::get<vector_ptr>(_var)->rend();
     case type_set :     return boost::get<set_ptr>(_var)->rend();
     case type_map :     return boost::get<map_ptr>(_var)->rend();
@@ -218,7 +209,6 @@ var::reverse_iterator var::rend() {
 ///
 var::reverse_iterator var::reverse_iterator::operator++() {
     switch (_riter.which()) {
-    case type_list :    return ++boost::get<list_type::reverse_iterator&>(_riter);
     case type_vector :  return ++boost::get<vector_type::reverse_iterator&>(_riter);
     case type_set :     return ++boost::get<set_type::reverse_iterator&>(_riter);
     case type_map :     return ++boost::get<map_type::reverse_iterator&>(_riter);
@@ -231,7 +221,6 @@ var::reverse_iterator var::reverse_iterator::operator++() {
 ///
 var::reverse_iterator var::reverse_iterator::operator++(int) {
     switch (_riter.which()) {
-    case type_list :    return boost::get<list_type::reverse_iterator&>(_riter)++;
     case type_vector :  return boost::get<vector_type::reverse_iterator&>(_riter)++;
     case type_set :     return boost::get<set_type::reverse_iterator&>(_riter)++;
     case type_map :     return boost::get<map_type::reverse_iterator&>(_riter)++;
@@ -244,7 +233,6 @@ var::reverse_iterator var::reverse_iterator::operator++(int) {
 ///
 var::reverse_iterator var::reverse_iterator::operator--() {
     switch (_riter.which()) {
-    case type_list :    return --boost::get<list_type::reverse_iterator&>(_riter);
     case type_vector :  return --boost::get<vector_type::reverse_iterator&>(_riter);
     case type_set :     return --boost::get<set_type::reverse_iterator&>(_riter);
     case type_map :     return --boost::get<map_type::reverse_iterator&>(_riter);
@@ -257,7 +245,6 @@ var::reverse_iterator var::reverse_iterator::operator--() {
 ///
 var::reverse_iterator var::reverse_iterator::operator--(int) {
     switch (_riter.which()) {
-    case type_list :    return boost::get<list_type::reverse_iterator&>(_riter)--;
     case type_vector :  return boost::get<vector_type::reverse_iterator&>(_riter)--;
     case type_set :     return boost::get<set_type::reverse_iterator&>(_riter)--;
     case type_map :     return boost::get<map_type::reverse_iterator&>(_riter)++;
